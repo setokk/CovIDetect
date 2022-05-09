@@ -28,27 +28,32 @@ public class EmailVerifier
     public static final List<String> academicEmailList = Arrays.asList("@uom.edu.gr");
 
     // Path in which the output result file will be written from isValid method
-    private static final String path = ".\\src\\main\\java\\emailverification\\";
-    private static final String apiKey = "65a83ee9a9dce5af8a939d3dc2dea5cd";
+    public static final String path = ".\\src\\main\\java\\com\\pasoftxperts\\covidetect\\emailverification\\";
+    public static final String apiKey = "65a83ee9a9dce5af8a939d3dc2dea5cd";
 
     public static boolean isValid(String email)
     {
         boolean result = false;
 
         // Run API Email Verifier Script (Python JSON)
-        try
-        {
-            Process process = new ProcessBuilder
+        Process process;
+        try {
+            process = new ProcessBuilder
                     (path + "emailvalidator.exe", email, apiKey, path)
                     .start();
             process.waitFor();
-        }
-        catch (IOException|InterruptedException e) { System.exit(1); }
 
+        }
+        catch (IOException|InterruptedException e)
+        {
+            // Retry again
+            return isValid(email);
+        }
 
         // Reading the output of the Email Verifier Script
         try
         {
+            System.getProperty("user.dir");
             File resultFile = new File(path + "ValidEmailOutput.txt");
 
             FileReader fileReader = new FileReader(resultFile);
@@ -69,7 +74,7 @@ public class EmailVerifier
             temp = null;
             System.gc();
 
-        } catch (Exception exception) { System.exit(1); }
+        } catch (Exception e) { e.printStackTrace(); }
 
         return result;
     }

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="511.0" prefWidth="600.0" stylesheets="@loginGUIstyles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pasoftxperts.covidetect.guicontrollers.RegisterGUIController">
+   <children>
+      <Label id="covidDetectLabel" alignment="CENTER" layoutX="134.0" layoutY="40.0" prefHeight="53.0" prefWidth="342.0" stylesheets="@loginGUIstyles.css" text="Register Account" textAlignment="CENTER" textFill="#3463e4">
+         <font>
+            <Font name="Corbel Light" size="44.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="53.0" fitWidth="62.0" layoutX="279.0" layoutY="93.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@icons/covidDetectLogo.jpg" />
+         </image>
+      </ImageView>
+      <TextField fx:id="emailField" layoutX="202.0" layoutY="189.0" prefHeight="25.0" prefWidth="204.0" styleClass="textField" stylesheets="@loginGUIstyles.css">
+         <font>
+            <Font name="Corbel Light" size="17.0" />
+         </font></TextField>
+      <PasswordField fx:id="passwordField" layoutX="202.0" layoutY="278.0" prefHeight="25.0" prefWidth="204.0" styleClass="textField" stylesheets="@loginGUIstyles.css">
+         <font>
+            <Font name="Corbel Light" size="17.0" />
+         </font></PasswordField>
+      <Button id="loginButton" fx:id="registerButton" layoutX="258.0" layoutY="425.0" mnemonicParsing="false" onAction="#registerAdmin" prefHeight="34.0" prefWidth="97.0" stylesheets="@loginGUIstyles.css" text="Register" textFill="WHITE">
+         <font>
+            <Font name="Candara Light" size="19.0" />
+         </font>
+      </Button>
+      <Label alignment="CENTER" layoutX="246.0" layoutY="158.0" prefHeight="31.0" prefWidth="116.0" text="Email" textAlignment="CENTER" textFill="#3463e4" underline="true">
+         <font>
+            <Font name="Corbel Light" size="26.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="237.0" layoutY="247.0" prefHeight="31.0" prefWidth="135.0" text="Password" textAlignment="CENTER" textFill="#3463e4" underline="true">
+         <font>
+            <Font name="Corbel Light" size="26.0" />
+         </font>
+      </Label>
+      <Separator id="separator" layoutY="-24.0" prefHeight="38.0" prefWidth="600.0" stylesheets="@loginGUIstyles.css" />
+      <Separator id="separator" layoutY="489.0" prefHeight="44.0" prefWidth="600.0" stylesheets="@loginGUIstyles.css" />
+      <PasswordField fx:id="passwordRepeatField" layoutX="204.0" layoutY="368.0" prefHeight="25.0" prefWidth="204.0" styleClass="textField" stylesheets="@loginGUIstyles.css">
+         <font>
+            <Font name="Corbel Light" size="17.0" />
+         </font>
+      </PasswordField>
+      <Label alignment="CENTER" layoutX="204.0" layoutY="337.0" prefHeight="31.0" prefWidth="204.0" text="Repeat Password" textAlignment="CENTER" textFill="#3463e4" underline="true">
+         <font>
+            <Font name="Corbel Light" size="26.0" />
+         </font>
+      </Label>
+      <Label id="goBackLabel" fx:id="goBackLabel" layoutX="498.0" layoutY="433.0" onMouseClicked="#openLoginPage" prefHeight="17.0" prefWidth="72.0" stylesheets="@loginGUIstyles.css" text="Go back" textFill="#181bff" underline="true">
+         <font>
+            <Font name="Corbel Light Italic" size="20.0" />
+         </font>
+      </Label>
+      <ImageView id="infoIcon" fx:id="infoIcon" fitHeight="19.0" fitWidth="19.0" layoutX="366.0" layoutY="254.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@icons/infoIcon.png" />
+         </image>
+      </ImageView>
+      <Label id="infoLabel" fx:id="infoLabel" layoutX="390.0" layoutY="245.0" prefHeight="100.0" prefWidth="197.0" stylesheets="@loginGUIstyles.css" text="Passwords must contain:&#10;• 8 between 15 characters.&#10;• At least one special character.&#10;• At least one upper case." textFill="WHITE">
+         <font>
+            <Font name="Corbel Light" size="15.0" />
+         </font>
+         <padding>
+            <Insets bottom="6.0" left="6.0" top="6.0" />
+         </padding>
+      </Label>
+   </children>
+</AnchorPane>

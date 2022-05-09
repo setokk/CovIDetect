@@ -9,14 +9,15 @@ email = sys.argv[1]
 api_key = sys.argv[2]
 url = "http://apilayer.net/api/check?access_key=" + api_key + "&email=" + email + "&smtp=1&format=1"
 
-# Check for MX Found only 
+# Check for MX Found and SMTP
 response = requests.get(url)
 data = response.json()
-data = data['mx_found']
+mx_found = data['mx_found']
+smtp_check = data['smtp_check']
 
 # Write boolean output to file
 f = open(sys.argv[3] + "ValidEmailOutput.txt", "w")
-f.write(str(data))
+f.write(str(mx_found && smtp_check))
 f.close()
 
 

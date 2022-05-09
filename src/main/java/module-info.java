@@ -13,4 +13,6 @@ module com.pasoftxperts.covidetect {
 
     opens com.pasoftxperts.covidetect to javafx.fxml;
     exports com.pasoftxperts.covidetect;
+    exports com.pasoftxperts.covidetect.guicontrollers;
+    opens com.pasoftxperts.covidetect.guicontrollers to javafx.fxml;
 }

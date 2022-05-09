@@ -24,7 +24,7 @@ public class AdminLog implements Serializable
     {
         try
         {
-            FileOutputStream fileOut = new FileOutputStream(new File(".\\src\\main\\java\\userhandler\\adminLog.ser"));
+            FileOutputStream fileOut = new FileOutputStream(new File(".\\src\\main\\java\\com\\pasoftxperts\\covidetect\\userhandler\\adminLog.ser"));
             ObjectOutputStream objOut = new ObjectOutputStream(fileOut);
 
             // Write object ArrayList
@@ -38,7 +38,7 @@ public class AdminLog implements Serializable
     {
         try
         {
-            FileInputStream fileIn = new FileInputStream(".\\src\\main\\java\\userhandler\\adminLog.ser");
+            FileInputStream fileIn = new FileInputStream(".\\src\\main\\java\\com\\pasoftxperts\\covidetect\\userhandler\\adminLog.ser");
             ObjectInputStream objIn = new ObjectInputStream(fileIn);
 
             // Read object ArrayList
@@ -50,11 +50,13 @@ public class AdminLog implements Serializable
         catch (IOException i) { return; }
     }
 
-    public static void printAdminLog()
+    // Checks if the email is not registered. If registered, returns the admin with that email.
+    // Otherwise, it returns an admin with an email of "Not Registered"
+    public static Admin emailIsNotRegistered(String email)
     {
-        for (Admin a : adminList)
-        {
-            System.out.println("Admin: " + a.getEmail() + ", " + a.getPassword());
-        }
+        return adminList.stream()
+                .filter(e -> e.getEmail().equals(email))
+                .findFirst()
+                .orElse(new Admin("Not Registered", ""));
     }
 }

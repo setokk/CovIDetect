@@ -6,7 +6,6 @@ import com.pasoftxperts.covidetect.guicontrollers.passwordchecker.PasswordChecke
 import com.pasoftxperts.covidetect.guicontrollers.popupwindow.PopupWindow;
 import com.pasoftxperts.covidetect.userhandler.Admin;
 import com.pasoftxperts.covidetect.userhandler.AdminLog;
-import javafx.animation.PauseTransition;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,13 +17,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
@@ -184,18 +181,19 @@ public class RegisterGUIController implements Initializable
                 ex.printStackTrace();
             }
 
-            emailField.setText("");
-            passwordField.setText("");
-            passwordRepeatField.setText("");
-
             // After all those validations, we can now register the admin.
             AdminLog.addAdmin(new Admin(emailField.getText(), passwordField.getText()));
             AdminLog.updateAdminLog();
+
+            emailField.setText("");
+            passwordField.setText("");
+            passwordRepeatField.setText("");
         });
 
         Thread taskThread = new Thread(emailVerifierTask);
         taskThread.start();
 
+        System.out.println();
         // Deallocate memory
         loadingScene = null;
         System.gc();

@@ -15,10 +15,10 @@ This class contains methods for verifying the email address of a user.
 
 package com.pasoftxperts.covidetect.emailverification;
 
-import java.io.File;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import com.pasoftxperts.covidetect.RunApplication;
+import com.pasoftxperts.covidetect.executablefile.ExecuteExeFile;
+
+import java.io.*;
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,50 +27,52 @@ public class EmailVerifier
     // List of academic email domains
     public static final List<String> academicEmailList = Arrays.asList("@uom.edu.gr");
 
-    // Path in which the output result file will be written from isValid method
-    public static final String path = ".\\src\\main\\java\\com\\pasoftxperts\\covidetect\\emailverification\\";
+    // Api Key for email verification.
     public static final String apiKey = "65a83ee9a9dce5af8a939d3dc2dea5cd";
 
-    public static boolean isValid(String email)
-    {
+    public static boolean isValid(String email) throws IOException {
         boolean result = false;
 
         // Run API Email Verifier Script (Python JSON)
+        OutputStream os = ExecuteExeFile.copyToTempDir("emailvalidator.exe");
+        File script = new File("emailvalidator.exe");
+
         Process process;
-        try {
+
+        try
+        {
+            // We say substring(1) because path here starts off / (python script does not understand it)
             process = new ProcessBuilder
-                    (path + "emailvalidator.exe", email, apiKey, path)
+                    ("emailvalidator.exe", email, apiKey)
                     .start();
             process.waitFor();
-
+            System.out.println();
         }
         catch (IOException|InterruptedException e)
         {
             // Retry again
-            return isValid(email);
+            e.printStackTrace();
         }
 
         // Reading the output of the Email Verifier Script
         try
         {
-            System.getProperty("user.dir");
-            File resultFile = new File(path + "ValidEmailOutput.txt");
-
-            FileReader fileReader = new FileReader(resultFile);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            File output = new File("ValidEmailOutput.txt");
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(output));
 
             String temp = bufferedReader.readLine();
             result = Boolean.parseBoolean(temp);
 
             bufferedReader.close();
-            fileReader.close();
-            if (!resultFile.delete())
-                throw new Exception("Could not delete api script result file");
+
+            // Delete files
+            boolean scriptDel = script.delete();
+            boolean outputDel = output.delete();
+            if (!scriptDel || !outputDel)
+                throw new Exception("Cannot delete files.");
 
             // Deallocate memory
             bufferedReader = null;
-            fileReader = null;
-            resultFile = null;
             temp = null;
             System.gc();
 

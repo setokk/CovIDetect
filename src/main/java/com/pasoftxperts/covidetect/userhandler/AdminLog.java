@@ -1,12 +1,8 @@
 package com.pasoftxperts.covidetect.userhandler;
 
-import java.io.File;
-import java.io.Serializable;
-import java.io.ObjectOutputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
+import com.pasoftxperts.covidetect.RunApplication;
+
+import java.io.*;
 
 import java.util.ArrayList;
 
@@ -20,16 +16,21 @@ public class AdminLog implements Serializable
 
     public static void removeAdmin(Admin admin){ adminList.remove(admin); } // protected?
 
+    // We save the admin log file to the user directory of the jar file.
+    private static String path = System.getProperty("user.dir");
+
     public static void updateAdminLog()
     {
         try
         {
-            FileOutputStream fileOut = new FileOutputStream(new File(".\\src\\main\\java\\com\\pasoftxperts\\covidetect\\userhandler\\adminLog.ser"));
+            FileOutputStream fileOut = new FileOutputStream(path + "/adminlog/adminLog.ser");
             ObjectOutputStream objOut = new ObjectOutputStream(fileOut);
 
             // Write object ArrayList
             objOut.writeObject(adminList);
+
             objOut.close();
+            fileOut.close();
         }
         catch (IOException i) { return; }
     }
@@ -38,7 +39,7 @@ public class AdminLog implements Serializable
     {
         try
         {
-            FileInputStream fileIn = new FileInputStream(".\\src\\main\\java\\com\\pasoftxperts\\covidetect\\userhandler\\adminLog.ser");
+            FileInputStream fileIn = new FileInputStream(path + "/adminlog/adminLog.ser");
             ObjectInputStream objIn = new ObjectInputStream(fileIn);
 
             // Read object ArrayList
@@ -46,6 +47,7 @@ public class AdminLog implements Serializable
             catch (ClassNotFoundException c){}
 
             objIn.close();
+            fileIn.close();
         }
         catch (IOException i) { return; }
     }

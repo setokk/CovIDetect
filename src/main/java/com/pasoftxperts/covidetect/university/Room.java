@@ -12,7 +12,6 @@ public class Room
     private final int seatRows;
     private String roomId;
     private ArrayList<TimeStamp> timeStampList;
-    private ArrayList<UndirectedGraph<Seat, Integer>> seatGraphList;
 
     public Room(int capacity, int seatRows, String roomId)
     {
@@ -34,10 +33,10 @@ public class Room
 
     public int getSeatRows() { return seatRows; }
 
+    public ArrayList<TimeStamp> getTimeStampList() { return timeStampList; }
+
     public void addTimeStamp(TimeStamp ts)
     {
         timeStampList.add(ts);
     }
-
-    public void addGraph(UndirectedGraph<Seat, Integer> graph) { seatGraphList.add(graph); }
 }

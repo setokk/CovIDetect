@@ -2,10 +2,10 @@ package com.pasoftxperts.covidetect.guicontrollers;
 
 import com.pasoftxperts.covidetect.RunApplication;
 import com.pasoftxperts.covidetect.emailverification.EmailVerifier;
-import com.pasoftxperts.covidetect.guicontrollers.passwordchecker.PasswordChecker;
+import com.pasoftxperts.covidetect.passwordchecker.PasswordChecker;
 import com.pasoftxperts.covidetect.guicontrollers.popupwindow.PopupWindow;
-import com.pasoftxperts.covidetect.userhandler.Admin;
-import com.pasoftxperts.covidetect.userhandler.AdminLog;
+import com.pasoftxperts.covidetect.userhandler.Administrator;
+import com.pasoftxperts.covidetect.userhandler.AdministratorLog;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,6 +15,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -56,13 +57,24 @@ public class RegisterGUIController implements Initializable
     @FXML
     private TextField passwordRepeatField;
 
+    @FXML
+    private TextField visiblePasswordField;
+
+    @FXML
+    private TextField visibleRepeatPasswordField;
+
+    @FXML
+    private CheckBox passwordCheckBox;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
         infoLabel.visibleProperty().bind(infoIcon.hoverProperty());
+        visiblePasswordField.setVisible(false);
+        visibleRepeatPasswordField.setVisible(false);
     }
 
-    // This method switches from the register/any other page, to the login page
+    // This method switches from the register page, to the login page
     @FXML
     protected void openLoginPage(MouseEvent event) throws IOException
     {
@@ -81,13 +93,30 @@ public class RegisterGUIController implements Initializable
         window.show();
     }
 
+    // Registers an admin after a series of checks and validations.
     @FXML
-    protected void registerAdmin(ActionEvent event) throws Exception {
-        // First we check if the user has not input anything
-        if (emailField.getText().equals("")
-                || passwordField.getText().equals("")
-                || passwordRepeatField.getText().equals(""))
+    protected void registerAdmin(ActionEvent event) throws Exception
+    {
+        // First we check if the user has not input an email
+        if (emailField.getText().equals(""))
+        {
+            PopupWindow.display("Please provide an email.");
             return;
+        }
+
+        // Check if the email has an academic email domain
+        if (EmailVerifier.checkAcademicEmail(emailField.getText()).equals("Not Academic"))
+        {
+            PopupWindow.display("Email is not academic.");
+            return;
+        }
+
+        // Check if the password fields are empty.
+        if (passwordField.getText().equals("") || passwordRepeatField.getText().equals(""))
+        {
+            PopupWindow.display("Please provide a password.");
+            return;
+        }
 
         // Here, we start off by checking the password in order of importance [length - special character - upper case character]
         if (!PasswordChecker.hasAppropriateLength(passwordField.getText()))
@@ -117,19 +146,12 @@ public class RegisterGUIController implements Initializable
             return;
         }
 
-        // We can now check if the email has an academic email domain
-        if (EmailVerifier.checkAcademicEmail(emailField.getText()).equals("Not Academic"))
-        {
-            PopupWindow.display("Email is not academic.");
-            return;
-        }
-
         // We check whether or not this email is already registered.
         // emailIsNotRegistered returns an admin with an email of "Not Registered"
         // if it does not find an admin with a particular email
-        AdminLog.readAdminLog();
+        AdministratorLog.readAdminLog();
 
-        if (!AdminLog.emailIsNotRegistered(emailField.getText())
+        if (!AdministratorLog.emailIsNotRegistered(emailField.getText())
                 .getEmail()
                 .equals("Not Registered"))
         {
@@ -141,14 +163,14 @@ public class RegisterGUIController implements Initializable
         Stage registerWindow = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
 
         // Show the loading screen scene.
-        Scene loadingScene = new Scene(FXMLLoader.load(RunApplication.class.getResource("loadingGUI.fxml")), 600, 500);
+        Scene loadingScene = new Scene(FXMLLoader.load(RunApplication.class.getResource("loadingGUI.fxml")), 600, 550);
         Stage loadingStage = new Stage();
         loadingStage.setScene(loadingScene);
         loadingStage.initStyle(StageStyle.UNDECORATED);
         loadingStage.show();
         registerWindow.centerOnScreen();
 
-        // We create a task class so that
+        // Task to support multi threading for long processes (isValid) without the GUI freezing
         Task<Boolean> emailVerifierTask = new Task<Boolean>()
         {
             @Override
@@ -162,6 +184,7 @@ public class RegisterGUIController implements Initializable
         emailVerifierTask.setOnSucceeded(e ->
         {
             loadingStage.close();
+
             boolean result = emailVerifierTask.getValue();
             if (!result)
             {
@@ -182,8 +205,8 @@ public class RegisterGUIController implements Initializable
             }
 
             // After all those validations, we can now register the admin.
-            AdminLog.addAdmin(new Admin(emailField.getText(), passwordField.getText()));
-            AdminLog.updateAdminLog();
+            AdministratorLog.addAdmin(new Administrator(emailField.getText(), passwordField.getText()));
+            AdministratorLog.updateAdminLog();
 
             emailField.setText("");
             passwordField.setText("");
@@ -193,9 +216,36 @@ public class RegisterGUIController implements Initializable
         Thread taskThread = new Thread(emailVerifierTask);
         taskThread.start();
 
-        System.out.println();
         // Deallocate memory
         loadingScene = null;
         System.gc();
+    }
+
+    // Shows or hides the password fields depending on if the checkbox to show or hide a password is on/off.
+    @FXML
+    protected void showHidePassword(ActionEvent event)
+    {
+        if (passwordCheckBox.isSelected())
+        {
+            visiblePasswordField.setText(passwordField.getText());
+            visibleRepeatPasswordField.setText(passwordRepeatField.getText());
+
+            // Show password field values.
+            passwordField.setVisible(false);
+            passwordRepeatField.setVisible(false);
+            visiblePasswordField.setVisible(true);
+            visibleRepeatPasswordField.setVisible(true);
+        }
+        else
+        {
+            passwordField.setText(visiblePasswordField.getText());
+            passwordRepeatField.setText(visibleRepeatPasswordField.getText());
+
+            // Hide password field values.
+            visiblePasswordField.setVisible(false);
+            visibleRepeatPasswordField.setVisible(false);
+            passwordField.setVisible(true);
+            passwordRepeatField.setVisible(true);
+        }
     }
 }

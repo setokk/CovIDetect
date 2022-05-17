@@ -34,6 +34,8 @@ public class HourSpan
 
     public Course getCourse() { return course; }
 
+    public void setCourse(Course course) { this.course = course; }
+
     public static boolean hourOutOfBounds(int hour)
     {
         return ((hour < START_HOUR_BOUND) || (hour > END_HOUR_BOUND));

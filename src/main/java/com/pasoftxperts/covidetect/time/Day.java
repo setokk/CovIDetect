@@ -4,18 +4,23 @@ import java.time.DayOfWeek;
 
 public class Day
 {
-    private DayOfWeek dayOfWeek;
+    private int dayNumber;
     private HourSpan hourSpan;
 
-    public Day(DayOfWeek dayOfWeek, HourSpan hourSpan)
+    public Day(int dayNumber, HourSpan hourSpan)
     {
-        this.dayOfWeek = dayOfWeek;
+        this.dayNumber = dayNumber;
         this.hourSpan = hourSpan;
     }
 
-    public DayOfWeek getDayOfWeek() { return dayOfWeek; }
+    public Day(int dayNumber)
+    {
+        this.dayNumber = dayNumber;
+    }
 
-    public void setDay(DayOfWeek day) { this.dayOfWeek = dayOfWeek; }
+    public int getDayNumber() { return dayNumber; }
+
+    public void setDayNumber(int dayNumber) { this.dayNumber = dayNumber; }
 
     public HourSpan getHourSpan() { return hourSpan; }
 

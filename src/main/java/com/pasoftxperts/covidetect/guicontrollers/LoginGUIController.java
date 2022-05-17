@@ -2,8 +2,8 @@ package com.pasoftxperts.covidetect.guicontrollers;
 
 import com.pasoftxperts.covidetect.RunApplication;
 import com.pasoftxperts.covidetect.guicontrollers.popupwindow.PopupWindow;
-import com.pasoftxperts.covidetect.userhandler.Admin;
-import com.pasoftxperts.covidetect.userhandler.AdminLog;
+import com.pasoftxperts.covidetect.userhandler.Administrator;
+import com.pasoftxperts.covidetect.userhandler.AdministratorLog;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,7 +20,7 @@ import java.io.IOException;
 
 public class LoginGUIController
 {
-    public static Admin adminSession;
+    public static Administrator adminSession;
 
     @FXML
     private Button loginButton;
@@ -58,8 +58,8 @@ public class LoginGUIController
             return;
 
         // Check if the email is present in admin log list (returns an admin)
-        AdminLog.readAdminLog();
-        Admin adminResult = AdminLog.emailIsNotRegistered(emailField.getText());
+        AdministratorLog.readAdminLog();
+        Administrator adminResult = AdministratorLog.emailIsNotRegistered(emailField.getText());
 
         if (adminResult.getEmail().equals("Not Registered"))
         {

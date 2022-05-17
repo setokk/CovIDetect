@@ -30,7 +30,8 @@ public class EmailVerifier
     // Api Key for email verification.
     public static final String apiKey = "65a83ee9a9dce5af8a939d3dc2dea5cd";
 
-    public static boolean isValid(String email) throws IOException {
+    public static boolean isValid(String email) throws IOException
+    {
         boolean result = false;
 
         // Run API Email Verifier Script (Python JSON)

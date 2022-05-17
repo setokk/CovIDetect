@@ -17,7 +17,7 @@
             <Font name="Corbel Light" size="44.0" />
          </font>
       </Label>
-      <ImageView fitHeight="98.0" fitWidth="97.0" layoutX="252.0" layoutY="93.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="87.0" fitWidth="97.0" layoutX="257.0" layoutY="103.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@icons/covidDetectLogo.jpg" />
          </image>
@@ -37,12 +37,12 @@
       </Button>
       <Label alignment="CENTER" layoutX="244.0" layoutY="212.0" prefHeight="31.0" prefWidth="116.0" text="Email" textAlignment="CENTER" textFill="#3463e4" underline="true">
          <font>
-            <Font name="Corbel Light" size="26.0" />
+            <Font name="Corbel Light" size="24.0" />
          </font>
       </Label>
       <Label alignment="CENTER" layoutX="237.0" layoutY="299.0" prefHeight="31.0" prefWidth="135.0" text="Password" textAlignment="CENTER" textFill="#3463e4" underline="true">
          <font>
-            <Font name="Corbel Light" size="26.0" />
+            <Font name="Corbel Light" size="24.0" />
          </font>
       </Label>
       <Separator id="separator" layoutY="-24.0" prefHeight="38.0" prefWidth="600.0" stylesheets="@loginGUIstyles.css" />

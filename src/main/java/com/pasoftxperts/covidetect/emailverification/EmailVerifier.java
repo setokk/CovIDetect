@@ -15,7 +15,6 @@ This class contains methods for verifying the email address of a user.
 
 package com.pasoftxperts.covidetect.emailverification;
 
-import com.pasoftxperts.covidetect.RunApplication;
 import com.pasoftxperts.covidetect.executablefile.ExecuteExeFile;
 
 import java.io.*;

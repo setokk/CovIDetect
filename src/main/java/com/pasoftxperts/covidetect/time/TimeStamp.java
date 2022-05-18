@@ -82,6 +82,36 @@ public class TimeStamp
         return f.format(date);
     }
 
+    public static String dayToText(int year, Month month, int dayNumber)
+    {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month.getValue() - 1, dayNumber, 0, 0, 0);
+
+        Date date = calendar.getTime();
+        Format f = new SimpleDateFormat("EEEE", Locale.US);
+
+        return f.format(date);
+    }
+
+    public static int getDayValueOfWeek(int year, Month month, int dayNumber)
+    {
+        switch (dayToText(year, month, dayNumber))
+        {
+            case "Monday":
+                return 0;
+            case "Tuesday":
+                return 1;
+            case "Wednesday":
+                return 2;
+            case "Thursday":
+                return 3;
+            case "Friday":
+                return 4;
+            default:
+                return -1;
+        }
+    }
+
     public String getMonthName()
     {
         Calendar calendar = Calendar.getInstance();

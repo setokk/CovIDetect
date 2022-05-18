@@ -2,8 +2,6 @@ package com.pasoftxperts.covidetect.covidcasecontroller;
 
 import com.pasoftxperts.covidetect.time.TimeStamp;
 import com.pasoftxperts.covidetect.university.Room;
-import com.pasoftxperts.covidetect.university.Seat;
-import edu.uci.ics.jung.graph.UndirectedGraph;
 
 import java.util.ArrayList;
 

@@ -2,8 +2,6 @@ package com.pasoftxperts.covidetect.university;
 
 import com.pasoftxperts.covidetect.time.TimeStamp;
 
-import edu.uci.ics.jung.graph.UndirectedGraph;
-
 import java.util.ArrayList;
 
 public class Room
@@ -13,7 +11,7 @@ public class Room
     private String roomId;
     private ArrayList<TimeStamp> timeStampList;
 
-    public Room(int capacity, int seatRows, String roomId)
+    public Room(String roomId, int capacity, int seatRows)
     {
         if ( (capacity <= 0) || (seatRows <=0) )
             throw new IllegalArgumentException("capacity and seat rows must be > 0");

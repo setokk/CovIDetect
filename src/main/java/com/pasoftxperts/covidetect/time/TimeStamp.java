@@ -1,7 +1,7 @@
 package com.pasoftxperts.covidetect.time;
 
 import com.pasoftxperts.covidetect.university.Seat;
-import edu.uci.ics.jung.graph.UndirectedGraph;
+import org.jgrapht.graph.DefaultUndirectedGraph;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -17,9 +17,9 @@ public class TimeStamp
     private int year;
     private Month month;
     private Day day;
-    private UndirectedGraph<Seat, Integer> graph;
+    private DefaultUndirectedGraph<Seat, Integer> graph;
 
-    public TimeStamp(int year, Month month, Day day, UndirectedGraph<Seat, Integer> graph)
+    public TimeStamp(int year, Month month, Day day, DefaultUndirectedGraph<Seat, Integer> graph)
     {
         this.year = year;
         this.month = month;
@@ -40,9 +40,9 @@ public class TimeStamp
 
     public Day getDay() { return day; }
 
-    public UndirectedGraph<Seat, Integer> getGraph() { return graph; }
+    public DefaultUndirectedGraph<Seat, Integer> getGraph() { return graph; }
 
-    public void addGraph(UndirectedGraph<Seat, Integer> graph) { this.graph = graph; }
+    public void addGraph(DefaultUndirectedGraph<Seat, Integer> graph) { this.graph = graph; }
 
     @Override
     public boolean equals(Object o)

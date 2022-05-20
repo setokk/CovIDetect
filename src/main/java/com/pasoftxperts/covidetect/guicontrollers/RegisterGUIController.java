@@ -98,28 +98,28 @@ public class RegisterGUIController implements Initializable
     protected void registerAdmin(ActionEvent event) throws Exception
     {
         // First we check if the user has not input an email
-        if (emailField.getText().equals(""))
+        if (emailField.getText().trim().equals(""))
         {
             PopupWindow.display("Please provide an email.");
             return;
         }
 
         // Check if the email has an academic email domain
-        if (EmailVerifier.checkAcademicEmail(emailField.getText()).equals("Not Academic"))
+        if (EmailVerifier.checkAcademicEmail(emailField.getText().trim()).equals("Not Academic"))
         {
             PopupWindow.display("Email is not academic.");
             return;
         }
 
         // Check if the password fields are empty.
-        if (passwordField.getText().equals("") || passwordRepeatField.getText().equals(""))
+        if (passwordField.getText().trim().equals("") || passwordRepeatField.getText().trim().equals(""))
         {
             PopupWindow.display("Please provide a password.");
             return;
         }
 
         // Here, we start off by checking the password in order of importance [length - special character - upper case character]
-        if (!PasswordChecker.hasAppropriateLength(passwordField.getText()))
+        if (!PasswordChecker.hasAppropriateLength(passwordField.getText().trim()))
         {
             PopupWindow.display("Password length has to be between " +
                     PasswordChecker.MIN_PASSWORD_LENGTH + " and " +
@@ -127,20 +127,20 @@ public class RegisterGUIController implements Initializable
             return;
         }
 
-        if (!PasswordChecker.hasSpecialCharacter(passwordField.getText()))
+        if (!PasswordChecker.hasSpecialCharacter(passwordField.getText().trim()))
         {
             PopupWindow.display("Password requires at least one special character.");
             return;
         }
 
-        if (!PasswordChecker.hasUpperCase(passwordField.getText()))
+        if (!PasswordChecker.hasUpperCase(passwordField.getText().trim()))
         {
             PopupWindow.display("Password must contain at least one upper case.");
             return;
         }
 
         // We are sure about the email format. Now we check if they are the same.
-        if (!passwordField.getText().equals(passwordRepeatField.getText()))
+        if (!passwordField.getText().equals(passwordRepeatField.getText().trim()))
         {
             PopupWindow.display("Passwords do not match");
             return;
@@ -151,7 +151,7 @@ public class RegisterGUIController implements Initializable
         // if it does not find an admin with a particular email
         AdministratorLog.readAdminLog();
 
-        if (!AdministratorLog.emailIsNotRegistered(emailField.getText())
+        if (!AdministratorLog.emailIsNotRegistered(emailField.getText().trim())
                 .getEmail()
                 .equals("Not Registered"))
         {
@@ -176,7 +176,7 @@ public class RegisterGUIController implements Initializable
             @Override
             public Boolean call() throws Exception
             {
-                return EmailVerifier.isValid(emailField.getText());
+                return EmailVerifier.isValid(emailField.getText().trim());
             }
         };
 
@@ -205,7 +205,7 @@ public class RegisterGUIController implements Initializable
             }
 
             // After all those validations, we can now register the admin.
-            AdministratorLog.addAdmin(new Administrator(emailField.getText(), passwordField.getText()));
+            AdministratorLog.addAdmin(new Administrator(emailField.getText().trim(), passwordField.getText().trim()));
             AdministratorLog.updateAdminLog();
 
             emailField.setText("");

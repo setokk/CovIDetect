@@ -54,12 +54,21 @@ public class LoginGUIController
     protected void loginAdmin(ActionEvent event) throws IOException
     {
         // Empty fields
-        if (emailField.getText().equals("") || passwordField.getText().equals(""))
+        if (emailField.getText().trim().equals(""))
+        {
+            PopupWindow.display("Please provide an email.");
             return;
+        }
+
+        if (passwordField.getText().trim().equals(""))
+        {
+            PopupWindow.display("Please provide a password.");
+            return;
+        }
 
         // Check if the email is present in admin log list (returns an admin)
         AdministratorLog.readAdminLog();
-        Administrator adminResult = AdministratorLog.emailIsNotRegistered(emailField.getText());
+        Administrator adminResult = AdministratorLog.emailIsNotRegistered(emailField.getText().trim());
 
         if (adminResult.getEmail().equals("Not Registered"))
         {
@@ -69,7 +78,7 @@ public class LoginGUIController
 
         // At this point, we found a registered admin email (adminResult email is not "Not Registered")
         // Check if password match
-        if (!passwordField.getText().equals(adminResult.getPassword()))
+        if (!passwordField.getText().trim().equals(adminResult.getPassword()))
         {
             PopupWindow.display("Password is incorrect.");
             return;

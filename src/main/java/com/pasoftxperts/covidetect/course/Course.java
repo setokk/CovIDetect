@@ -11,7 +11,6 @@ public class Course
     private int semesterNum;
     private ArrayList<Professor> professorList;
 
-
     public Course(String courseId,
                   String courseName,
                   int semesterNum)

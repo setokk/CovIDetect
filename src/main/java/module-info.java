@@ -9,7 +9,7 @@ module com.pasoftxperts.covidetect {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
-    requires jung.api;
+    requires org.jgrapht.core;
 
     opens com.pasoftxperts.covidetect to javafx.fxml;
     exports com.pasoftxperts.covidetect;

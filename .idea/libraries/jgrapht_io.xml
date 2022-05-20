@@ -1,0 +1,22 @@
+<component name="libraryTable">
+  <library name="jgrapht.io" type="repository">
+    <properties maven-id="org.jgrapht:jgrapht-io:1.5.1" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jgrapht/jgrapht-io/1.5.1/jgrapht-io-1.5.1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/jgrapht/jgrapht-core/1.5.1/jgrapht-core-1.5.1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/jheaps/jheaps/0.13/jheaps-0.13.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/antlr/antlr4-runtime/4.8-1/antlr4-runtime-4.8-1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/commons/commons-text/1.8/commons-text-1.8.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/commons/commons-lang3/3.9/commons-lang3-3.9.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jgrapht/jgrapht-io/1.5.1/jgrapht-io-1.5.1-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/jgrapht/jgrapht-core/1.5.1/jgrapht-core-1.5.1-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/jheaps/jheaps/0.13/jheaps-0.13-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/antlr/antlr4-runtime/4.8-1/antlr4-runtime-4.8-1-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/commons/commons-text/1.8/commons-text-1.8-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/commons/commons-lang3/3.9/commons-lang3-3.9-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES />
+  </library>
+</component>

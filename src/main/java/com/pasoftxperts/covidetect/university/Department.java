@@ -9,7 +9,6 @@ public class Department
     private ArrayList<Room> roomList;
     private int totalCourses;
 
-
     public Department(String departmentId, String departmentName, int totalCourses)
     {
         this.departmentId = departmentId;

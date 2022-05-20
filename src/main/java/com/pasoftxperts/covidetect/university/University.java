@@ -8,7 +8,6 @@ public class University
     private String universityName;
     private ArrayList<Department> departmentList;
 
-
     public University(String universityId, String universityName)
     {
         this.universityId = universityId;

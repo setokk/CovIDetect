@@ -1,7 +1,5 @@
 package com.pasoftxperts.covidetect.time;
 
-import java.time.DayOfWeek;
-
 public class Day
 {
     private int dayNumber;

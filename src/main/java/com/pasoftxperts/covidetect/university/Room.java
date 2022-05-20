@@ -31,6 +31,8 @@ public class Room
 
     public int getSeatRows() { return seatRows; }
 
+    public int getSeatColumns() { return capacity / seatRows; }
+
     public ArrayList<TimeStamp> getTimeStampList() { return timeStampList; }
 
     public void addTimeStamp(TimeStamp ts)

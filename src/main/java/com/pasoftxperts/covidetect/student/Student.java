@@ -7,9 +7,9 @@ public class Student
 
     public Student(String studentId, int healthIndicator)
     {
-        // Value between [0,3]
-        if ( (healthIndicator < 0) || (healthIndicator > 3) )
-            throw new IllegalArgumentException("health indicator value must be between [0,3]");
+        // Value between [0,2]
+        if ( (healthIndicator < 0) || (healthIndicator > 2) )
+            throw new IllegalArgumentException("health indicator value must be between [0,2]");
 
         this.healthIndicator = healthIndicator;
         this.studentId = studentId;
@@ -23,9 +23,9 @@ public class Student
 
     public void setHealthIndicator(int healthIndicator)
     {
-        // Value between [0,3]
-        if ( (healthIndicator < 0) || (healthIndicator > 3) )
-            throw new IllegalArgumentException("health indicator value must be between [0,3]");
+        // Value between [0,2]
+        if ( (healthIndicator < 0) || (healthIndicator > 2) )
+            throw new IllegalArgumentException("health indicator value must be between [0,2]");
 
         this.healthIndicator = healthIndicator;
     }

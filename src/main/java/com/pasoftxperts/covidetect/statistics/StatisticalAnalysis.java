@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
 {
-
     @Override
     public ArrayList<Double> calculateAttendanceRates(TimeStamp startTimeStamp,
                                                       TimeStamp endTimeStamp,

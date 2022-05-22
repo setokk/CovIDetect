@@ -2,9 +2,10 @@ package com.pasoftxperts.covidetect.course;
 
 import com.pasoftxperts.covidetect.professor.Professor;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Course
+public class Course implements Serializable
 {
     private String courseId;
     private String courseName;

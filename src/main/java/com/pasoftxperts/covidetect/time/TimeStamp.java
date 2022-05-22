@@ -3,6 +3,7 @@ package com.pasoftxperts.covidetect.time;
 import com.pasoftxperts.covidetect.university.Seat;
 import org.jgrapht.graph.DefaultUndirectedGraph;
 
+import java.io.Serializable;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.time.Month;
@@ -10,7 +11,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class TimeStamp
+public class TimeStamp implements Serializable
 {
     public static final String DATE_FORMAT = "EEEE, MMMM d, yyyy";
 

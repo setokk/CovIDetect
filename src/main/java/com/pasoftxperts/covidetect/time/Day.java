@@ -1,6 +1,8 @@
 package com.pasoftxperts.covidetect.time;
 
-public class Day
+import java.io.Serializable;
+
+public class Day implements Serializable
 {
     private int dayNumber;
     private HourSpan hourSpan;

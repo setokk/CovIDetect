@@ -1,3 +1,5 @@
 package com.pasoftxperts.covidetect.professor;
 
-public record Professor(String professorId, String professorName, String professorEmail) {}
+import java.io.Serializable;
+
+public record Professor(String professorId, String professorName, String professorEmail) implements Serializable {}

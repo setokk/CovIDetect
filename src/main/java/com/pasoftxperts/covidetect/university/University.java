@@ -19,4 +19,10 @@ public class University
     {
         departmentList.add(d);
     }
+
+    public String getUniversityId() { return universityId; }
+
+    public String getUniversityName() { return universityName; }
+
+    public ArrayList<Department> getDepartmentList() { return departmentList; }
 }

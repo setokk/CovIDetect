@@ -2,9 +2,10 @@ package com.pasoftxperts.covidetect.university;
 
 import com.pasoftxperts.covidetect.time.TimeStamp;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Room
+public class Room implements Serializable
 {
     private final int capacity;
     private final int seatRows;

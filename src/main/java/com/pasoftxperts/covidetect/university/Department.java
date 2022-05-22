@@ -21,4 +21,16 @@ public class Department
     {
         roomList.add(r);
     }
+
+    public String getDepartmentId() { return departmentId; }
+
+    public void setDepartmentId(String departmentId) { this.departmentId = departmentId; }
+
+    public String getDepartmentName() { return departmentName; }
+
+    public void setDepartmentName(String departmentName) { this.departmentName = departmentName; }
+
+    public ArrayList<Room> getRoomList() { return roomList; }
+
+    public int getTotalCourses() { return totalCourses; }
 }

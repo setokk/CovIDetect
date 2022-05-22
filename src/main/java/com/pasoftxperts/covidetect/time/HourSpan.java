@@ -2,7 +2,9 @@ package com.pasoftxperts.covidetect.time;
 
 import com.pasoftxperts.covidetect.course.Course;
 
-public class HourSpan
+import java.io.Serializable;
+
+public class HourSpan implements Serializable
 {
     // Hours must be between [8:00 - 22:00].
     // Lecture duration must not be greater than 3 (1 <= duration <= 3).

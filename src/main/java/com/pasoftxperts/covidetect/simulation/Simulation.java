@@ -1,5 +1,6 @@
 package com.pasoftxperts.covidetect.simulation;
 
+import com.pasoftxperts.covidetect.filewrapper.FileWrapper;
 import com.pasoftxperts.covidetect.graphanalysis.GraphNeighboursGenerator;
 import com.pasoftxperts.covidetect.student.Student;
 import com.pasoftxperts.covidetect.time.Day;
@@ -262,6 +263,8 @@ public class Simulation
                 }
             }
         }
+
+        FileWrapper.saveFilesByRoom(university.getUniversityName(), appliedInformatics.getDepartmentName(), roomList);
     }
 
     public static Room findRoomById(String roomId, ArrayList<Room> roomList)

@@ -2,7 +2,9 @@ package com.pasoftxperts.covidetect.university;
 
 import com.pasoftxperts.covidetect.student.Student;
 
-public class Seat
+import java.io.Serializable;
+
+public class Seat implements Serializable
 {
     private int seatNumber;
     private Student student;

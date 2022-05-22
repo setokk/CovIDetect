@@ -1,6 +1,8 @@
 package com.pasoftxperts.covidetect.student;
 
-public class Student
+import java.io.Serializable;
+
+public class Student implements Serializable
 {
     private String studentId;
     private int healthIndicator; // 0 == healthy. 1 == covid case. 2 == possible covid case.

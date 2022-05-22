@@ -111,15 +111,27 @@ public class RegisterGUIController implements Initializable
             return;
         }
 
+        // We use a password field (hidden) and a text field.
+        // In order to get the appropriate text, we have to check which one is visible.
+
+        String password = passwordField.getText().trim();
+        String repeatPassword = passwordRepeatField.getText().trim();
+
+        if (!passwordField.isVisible())
+        {
+            password = visiblePasswordField.getText().trim();
+            repeatPassword = visibleRepeatPasswordField.getText().trim();
+        }
+
         // Check if the password fields are empty.
-        if (passwordField.getText().trim().equals("") || passwordRepeatField.getText().trim().equals(""))
+        if (password.equals("") || repeatPassword.equals(""))
         {
             PopupWindow.display("Please provide a password.");
             return;
         }
 
         // Here, we start off by checking the password in order of importance [length - special character - upper case character]
-        if (!PasswordChecker.hasAppropriateLength(passwordField.getText().trim()))
+        if (!PasswordChecker.hasAppropriateLength(password))
         {
             PopupWindow.display("Password length has to be between " +
                     PasswordChecker.MIN_PASSWORD_LENGTH + " and " +
@@ -127,20 +139,20 @@ public class RegisterGUIController implements Initializable
             return;
         }
 
-        if (!PasswordChecker.hasSpecialCharacter(passwordField.getText().trim()))
+        if (!PasswordChecker.hasSpecialCharacter(password))
         {
             PopupWindow.display("Password requires at least one special character.");
             return;
         }
 
-        if (!PasswordChecker.hasUpperCase(passwordField.getText().trim()))
+        if (!PasswordChecker.hasUpperCase(password))
         {
             PopupWindow.display("Password must contain at least one upper case.");
             return;
         }
 
         // We are sure about the email format. Now we check if they are the same.
-        if (!passwordField.getText().equals(passwordRepeatField.getText().trim()))
+        if (!password.equals(repeatPassword))
         {
             PopupWindow.display("Passwords do not match");
             return;
@@ -181,6 +193,7 @@ public class RegisterGUIController implements Initializable
         };
 
         // Here we put all the code that validates the email and changes GUI components.
+        String finalPassword = password;
         emailVerifierTask.setOnSucceeded(e ->
         {
             loadingStage.close();
@@ -205,12 +218,14 @@ public class RegisterGUIController implements Initializable
             }
 
             // After all those validations, we can now register the admin.
-            AdministratorLog.addAdmin(new Administrator(emailField.getText().trim(), passwordField.getText().trim()));
+            AdministratorLog.addAdmin(new Administrator(emailField.getText().trim(), finalPassword));
             AdministratorLog.updateAdminLog();
 
             emailField.setText("");
             passwordField.setText("");
             passwordRepeatField.setText("");
+            visiblePasswordField.setText("");
+            visibleRepeatPasswordField.setText("");
         });
 
         Thread taskThread = new Thread(emailVerifierTask);
@@ -221,7 +236,7 @@ public class RegisterGUIController implements Initializable
         System.gc();
     }
 
-    // Shows or hides the password fields depending on if the checkbox to show or hide a password is on/off.
+    // Shows or hides the password fields depending on if the checkbox to show the password is on/off.
     @FXML
     protected void showHidePassword(ActionEvent event)
     {

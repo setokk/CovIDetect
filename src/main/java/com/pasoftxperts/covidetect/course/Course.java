@@ -9,7 +9,7 @@ public class Course
     private String courseId;
     private String courseName;
     private int semesterNum;
-    private ArrayList<Professor> professorList;
+    private Professor professor;
 
     public Course(String courseId,
                   String courseName,
@@ -26,8 +26,10 @@ public class Course
 
     public int getSemesterNum() { return semesterNum; }
 
-    public void addProfessor(Professor p)
+    public void addProfessor(Professor professor)
     {
-        professorList.add(p);
+        this.professor = professor;
     }
+
+    public Professor getProfessor() { return this.professor; }
 }

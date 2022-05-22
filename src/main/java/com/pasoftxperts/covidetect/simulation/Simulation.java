@@ -1,6 +1,6 @@
 package com.pasoftxperts.covidetect.simulation;
 
-import com.pasoftxperts.covidetect.graphanalysis.NeighboursAlgorithm;
+import com.pasoftxperts.covidetect.graphanalysis.GraphNeighboursGenerator;
 import com.pasoftxperts.covidetect.student.Student;
 import com.pasoftxperts.covidetect.time.Day;
 import com.pasoftxperts.covidetect.time.HourSpan;
@@ -24,7 +24,6 @@ public class Simulation
     public static final int NUMBER_OF_ROOMS = 9;
     public static final int START_YEAR = 2020; // Year the simulation starts
     public static final int END_YEAR = 2022; // Year the simulation ends [current year]
-    public static final Month END_MONTH = Month.MAY; // Month the simulation end for current year (see END_YEAR)
 
     // We use an arraylist for students because we are going to search for students really often.
     // If we were frequently adding/removing students, we would use a linked list.
@@ -49,11 +48,12 @@ public class Simulation
         {
             int healthIndicator = 0;
 
-            studentList.add(new Student("AI" + String.valueOf(idNumberCounter + i*8), healthIndicator));
+            studentList.add(new Student("AI" + (idNumberCounter + i*8), healthIndicator));
         }
 
         // Initialize Curriculum
         Curriculum.initializeCurriculum();
+
 
         // We now have a reference for which rooms have which HourSpans and for which days
 
@@ -70,10 +70,10 @@ public class Simulation
 
         for (int i = 0; i < NUMBER_OF_ROOMS; i++)
         {
-            roomList.add(new Room("Room " + String.valueOf(12 + i), 81, 9));
+            roomList.add(new Room("Room " + (12 + i), 81, 9));
         }
 
-        // Create a list with the months ()
+        // Create a list with the months
         ArrayList<Month> months = new ArrayList<>();
 
         months.add(Month.FEBRUARY);
@@ -139,6 +139,7 @@ public class Simulation
 
                         if (semester.equals("Fall"))
                         {
+                            // -1 means that a new semester has come
                             roomIdCounter = -1;
 
                             ArrayList<HourSpan> currentHourSpans = fallSemesterCurriculum.get(index);
@@ -233,7 +234,9 @@ public class Simulation
 
                 TimeStamp timeStamp = timeStamps.get(j);
 
-                DefaultUndirectedGraph<Seat, Integer> graph = NeighboursAlgorithm.calculateNeighboursGraph(seats, room.getSeatRows(), room.getSeatColumns());
+                DefaultUndirectedGraph<Seat, Integer> graph = GraphNeighboursGenerator.calculateNeighboursGraph(seats,
+                                                                                                                room.getSeatRows(),
+                                                                                                                room.getSeatColumns());
 
                 timeStamp.addGraph(graph);
 
@@ -322,7 +325,7 @@ public class Simulation
 
             for (int j = 0; j < cols; j++)
             {
-                Seat seat = new Seat(NeighboursAlgorithm.numberOfSeat(i, j, cols));
+                Seat seat = new Seat(GraphNeighboursGenerator.numberOfSeat(i, j, cols));
                 rowSeats.add(seat);
             }
 
@@ -330,7 +333,7 @@ public class Simulation
         }
 
         // Create a list and shuffle it to get unique random indexes for where students will be sitting
-        ArrayList<Integer> seatNumberList = new ArrayList<Integer>();
+        ArrayList<Integer> seatNumberList = new ArrayList<>();
         for (int i = 1; i <= capacity; i++)
             seatNumberList.add(i);
 
@@ -372,7 +375,7 @@ public class Simulation
                 System.out.println("End Hour: " + hourspan.getEndHour());
                 System.out.println("-------------------------------------");
                 System.out.println("-------------------------------------");
-                System.out.println("");
+                System.out.println();
             }
         }
     }

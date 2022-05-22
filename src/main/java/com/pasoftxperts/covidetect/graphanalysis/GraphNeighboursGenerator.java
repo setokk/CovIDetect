@@ -7,9 +7,9 @@ import org.jgrapht.graph.DefaultUndirectedGraph;
 
 import java.util.ArrayList;
 
-public class NeighboursAlgorithm
+public class GraphNeighboursGenerator
 {
-    // Calculates the neighbours and correctly
+    // Calculates the neighbours and returns a graph.
     public static DefaultUndirectedGraph<Seat, Integer> calculateNeighboursGraph(ArrayList<ArrayList<Seat>> seats,
                                                                           int rows,
                                                                           int cols)
@@ -239,6 +239,8 @@ public class NeighboursAlgorithm
         graph.addEdge(sourceSeat, seatTwo, 1);
         graph.addEdge(sourceSeat, seatThree, 1);
     }
+
+    /* IMPORTANT - isOccupied method returns if the student is not NULL (Handles NullPointerException).*/
 
     // Gets a possible case and checks if there even is a student sitting.
     // Updates the student's health indicator to 2 (possible case)

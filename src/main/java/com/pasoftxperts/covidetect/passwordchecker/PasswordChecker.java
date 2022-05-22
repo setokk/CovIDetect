@@ -5,7 +5,7 @@ import java.util.List;
 
 public class PasswordChecker
 {
-    public static final List<String> specialCharacters =
+    public static final List<String> SPECIAL_CHARACTERS =
             Arrays.asList("!", "@", "#", "$", "%", "^", "&", "*",
                     "(", ")", ";", ":", "'", "/", "\\", "|",
                     "{", "}", "[", "]", "-", "_", "+", "=",
@@ -16,7 +16,7 @@ public class PasswordChecker
 
     public static boolean hasSpecialCharacter(String password)
     {
-        for (String c : specialCharacters)
+        for (String c : SPECIAL_CHARACTERS)
         {
             if (password.contains(c))
                 return true;

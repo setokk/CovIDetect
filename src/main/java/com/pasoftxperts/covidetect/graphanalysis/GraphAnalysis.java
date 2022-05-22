@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class GraphAnalysis
 {
     // Calculates all possible covid cases on a specific date and room
-    public static ArrayList<Seat> calcPossibleCovidCases(Room room, TimeStamp timeStamp)
+    public static ArrayList<Seat> calcPossibleCovidCases(Room room, String date)
     {
         return null;
     }

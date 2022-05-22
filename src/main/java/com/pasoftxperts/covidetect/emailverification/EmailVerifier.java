@@ -24,10 +24,10 @@ import java.util.List;
 public class EmailVerifier
 {
     // List of academic email domains
-    public static final List<String> academicEmailList = Arrays.asList("@uom.edu.gr");
+    public static final List<String> ACADEMIC_EMAIL_LIST = Arrays.asList("@uom.edu.gr");
 
     // Api Key for email verification.
-    public static final String apiKey = "65a83ee9a9dce5af8a939d3dc2dea5cd";
+    public static final String API_KEY = "65a83ee9a9dce5af8a939d3dc2dea5cd";
 
     public static boolean isValid(String email) throws IOException
     {
@@ -43,7 +43,7 @@ public class EmailVerifier
         {
             // We say substring(1) because path here starts off / (python script does not understand it)
             process = new ProcessBuilder
-                    ("emailvalidator.exe", email, apiKey)
+                    ("emailvalidator.exe", email, API_KEY)
                     .start();
             process.waitFor();
             System.out.println();
@@ -83,7 +83,7 @@ public class EmailVerifier
 
     public static String checkAcademicEmail(String email)
     {
-        return academicEmailList.stream()
+        return ACADEMIC_EMAIL_LIST.stream()
                 .filter(e -> email.contains(e))
                 .findFirst()
                 .orElse("Not Academic");

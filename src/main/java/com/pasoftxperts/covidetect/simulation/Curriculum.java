@@ -1,9 +1,11 @@
 package com.pasoftxperts.covidetect.simulation;
 
 import com.pasoftxperts.covidetect.course.Course;
+import com.pasoftxperts.covidetect.professor.Professor;
 import com.pasoftxperts.covidetect.time.HourSpan;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class Curriculum
 {
@@ -14,6 +16,12 @@ public class Curriculum
 
     // List of courses.
     private static ArrayList<Course> courseList = new ArrayList<>();
+
+    // List of professors.
+    private static ArrayList<Professor> professorList = new ArrayList<>();
+
+    // List of names
+    private static ArrayList<String> nameList = new ArrayList<>();
 
     // A table in which we will keep track of which HourSpan belongs to which room.
     private static ArrayList<String> fallSemesterRoomIdList = new ArrayList<>();
@@ -268,6 +276,7 @@ public class Curriculum
 
     public static void createHardCodedCourses()
     {
+        // Create courses
         courseList.add(new Course("AIC21001", "Imperative Programming", 1));
         courseList.add(new Course("AIC21002", "Math Analysis", 1));
         courseList.add(new Course("AIC21003", "Linear Algebra", 1));
@@ -316,6 +325,68 @@ public class Curriculum
         courseList.add(new Course("AIC21074", "Programming Languages and Compilers", 8));
         courseList.add(new Course("AIC21075", "Calculation Theory", 8));
         courseList.add(new Course("AIC21076", "Cloud Computing", 8));
+
+        // Create Names
+        nameList.add("James");
+        nameList.add("Bob");
+        nameList.add("John");
+        nameList.add("Alex");
+        nameList.add("Eric");
+        nameList.add("Robert");
+        nameList.add("Michael");
+        nameList.add("Susan");
+        nameList.add("Rachel");
+        nameList.add("Chris");
+        nameList.add("Mary");
+        nameList.add("Stephanie");
+        nameList.add("Sophie");
+        nameList.add("Thomas");
+        nameList.add("Mark");
+        nameList.add("Donald");
+        nameList.add("Steven");
+        nameList.add("Paul");
+        nameList.add("Olivia");
+        nameList.add("Emma");
+        nameList.add("Isabella");
+        nameList.add("Elizabeth");
+        nameList.add("Chloe");
+        nameList.add("Madison");
+        nameList.add("Bruce");
+        nameList.add("Nathan");
+        nameList.add("Adam");
+        nameList.add("Walter");
+        nameList.add("Jeremy");
+        nameList.add("Harold");
+        nameList.add("Violet");
+        nameList.add("Zoe");
+        nameList.add("James");
+        nameList.add("James");
+        nameList.add("Eliana");
+        nameList.add("Alfred");
+        nameList.add("Jordan");
+        nameList.add("Madelyn");
+        nameList.add("Logan");
+        nameList.add("Gabriel");
+        nameList.add("Wayne");
+        nameList.add("Delilah");
+        nameList.add("Ruby");
+        nameList.add("Vincent");
+        nameList.add("Eugene");
+        nameList.add("Autumn");
+        nameList.add("Mason");
+        nameList.add("Philip");
+
+        // Add professors to list
+        for (int i = 0; i < courseList.size(); i++)
+        {
+            professorList.add(new Professor("ID" + String.valueOf(i + courseList.size()),
+                    "Professor " + nameList.get(i),
+                    nameList.get(i).toLowerCase() + "@uom.edu.gr"));
+        }
+
+        // Add professor to courses
+        for (int i = 0; i < courseList.size(); i++)
+            courseList.get(i).addProfessor(professorList.get(i));
     }
 
     // Find and returns a course by ID. If not found, returns a Course with ID = "Not Found".

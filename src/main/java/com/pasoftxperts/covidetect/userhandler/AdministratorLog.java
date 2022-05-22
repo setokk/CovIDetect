@@ -10,9 +10,9 @@ public class AdministratorLog implements Serializable
 
     public static ArrayList<Administrator> getAdminList(){ return adminList; }
 
-    public static void addAdmin(Administrator admin){ adminList.add(admin); } // protected?
+    public static void addAdmin(Administrator admin){ adminList.add(admin); }
 
-    public static void removeAdmin(Administrator admin){ adminList.remove(admin); } // protected?
+    public static void removeAdmin(Administrator admin){ adminList.remove(admin); }
 
     // We save the admin log file to the user directory of the jar file.
     private static String path = System.getProperty("user.dir");

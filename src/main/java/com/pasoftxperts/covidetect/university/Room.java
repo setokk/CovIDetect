@@ -7,14 +7,14 @@ import java.util.ArrayList;
 
 public class Room implements Serializable
 {
+    private String roomId;
     private final int capacity;
     private final int seatRows;
-    private String roomId;
     private ArrayList<TimeStamp> timeStampList;
 
     public Room(String roomId, int capacity, int seatRows)
     {
-        if ( (capacity <= 0) || (seatRows <=0) )
+        if ((capacity <= 0) || (seatRows <=0 ))
             throw new IllegalArgumentException("capacity and seat rows must be > 0");
 
         if (seatRows < 2)

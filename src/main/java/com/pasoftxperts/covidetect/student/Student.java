@@ -17,6 +17,11 @@ public class Student implements Serializable
         this.studentId = studentId;
     }
 
+    public Student copy()
+    {
+        return new Student(this.studentId, this.healthIndicator);
+    }
+
     public String getStudentId() { return studentId; }
 
     public int getHealthIndicator() { return healthIndicator; }

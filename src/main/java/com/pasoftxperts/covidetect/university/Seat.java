@@ -18,12 +18,6 @@ public class Seat implements Serializable
         this.seatNumber = seatNumber;
     }
 
-    public Seat(int seatNumber, Student student)
-    {
-        this.student = student;
-        this.seatNumber = seatNumber;
-    }
-
     public void occupySeat(Student student)
     {
         if (occupied)

@@ -6,8 +6,9 @@ import java.util.ArrayList;
 
 public interface CovidCaseStats
 {
-    public ArrayList<Integer> calculateCovidCases(TimeStamp startTimeStamp,
-                                             TimeStamp endTimeStamp,
-                                             String option,
-                                             ArrayList<ArrayList<TimeStamp>> roomTimeStampList);
+    public ArrayList<Integer> calculateCovidCases(String startDate,
+                                                  String endDate,
+                                                  String option,
+                                                  ArrayList<ArrayList<TimeStamp>> roomTimeStampList,
+                                                  ArrayList<String> showByElements);
 }

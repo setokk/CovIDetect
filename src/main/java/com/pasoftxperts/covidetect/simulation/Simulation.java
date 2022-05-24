@@ -132,8 +132,8 @@ public class Simulation
                 for (int day = startDay; day <= endDay; day++)
                 {
                     // We check if the day is not a Saturday nor a Sunday (No lectures)
-                    if (!TimeStamp.dayToText(year, months.get(i), day).equals("Saturday") &&
-                            !TimeStamp.dayToText(year, months.get(i), day).equals("Sunday"))
+                    if (!TimeStamp.convertDayToText(year, months.get(i), day).equals("Saturday") &&
+                            !TimeStamp.convertDayToText(year, months.get(i), day).equals("Sunday"))
                     {
                         // We get the index for the Semester Curriculum table
                         index = TimeStamp.getDayValueOfWeek(year, months.get(i), day);
@@ -235,11 +235,13 @@ public class Simulation
 
                 TimeStamp timeStamp = timeStamps.get(j);
 
+                // Calculate Neighbours
                 DefaultUndirectedGraph<Seat, Integer> graph = GraphNeighboursGenerator.calculateNeighboursGraph(seats,
                                                                                                                 room.getSeatRows(),
                                                                                                                 room.getSeatColumns());
 
-                timeStamp.addGraph(graph);
+                // Add graph to timestamp
+                timeStamp.addSeatGraph(graph);
 
                 if (i==0 && j==0)
                     printSeats(seats, room.getSeatRows(), room.getSeatColumns());
@@ -295,7 +297,7 @@ public class Simulation
         // Randomly pick attendanceNumber of students from students list
 
         // Create a list and shuffle it to get unique random indexes for students
-        ArrayList<Integer> studentIndexes = new ArrayList<Integer>();
+        ArrayList<Integer> studentIndexes = new ArrayList<>();
         for (int i = 0; i < studentList.size(); i++)
             studentIndexes.add(i);
 
@@ -305,7 +307,7 @@ public class Simulation
         {
             int index = studentIndexes.get(i);
 
-            attendingStudents.add(studentList.get(index));
+            attendingStudents.add(studentList.get(index).copy());
         }
 
         // With a certain low probability, pick a number of students that are going to be a covid case

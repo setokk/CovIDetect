@@ -6,8 +6,9 @@ import java.util.ArrayList;
 
 public interface AttendanceStats
 {
-    public ArrayList<Double> calculateAttendanceRates(TimeStamp startTimeStamp,
-                                                   TimeStamp endTimeStamp,
-                                                   String option,
-                                                   ArrayList<ArrayList<TimeStamp>> roomTimeStampList);
+    public ArrayList<Double> calculateAttendanceRates(String startDate,
+                                                      String endDate,
+                                                      String option,
+                                                      ArrayList<ArrayList<TimeStamp>> roomTimeStampList,
+                                                      ArrayList<String> showByElements);
 }

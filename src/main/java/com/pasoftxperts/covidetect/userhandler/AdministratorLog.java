@@ -58,8 +58,8 @@ public class AdministratorLog implements Serializable
     public static Administrator emailIsNotRegistered(String email)
     {
         return adminList.stream()
-                .filter(e -> e.getEmail().equals(email))
-                .findFirst()
-                .orElse(new Administrator("Not Registered", ""));
+                        .filter(e -> e.getEmail().equals(email))
+                        .findFirst()
+                        .orElse(new Administrator("Not Registered", ""));
     }
 }

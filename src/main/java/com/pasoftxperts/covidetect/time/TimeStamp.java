@@ -18,14 +18,14 @@ public class TimeStamp implements Serializable
     private int year;
     private Month month;
     private Day day;
-    private DefaultUndirectedGraph<Seat, Integer> graph;
+    private DefaultUndirectedGraph<Seat, Integer> seatGraph;
 
     public TimeStamp(int year, Month month, Day day, DefaultUndirectedGraph<Seat, Integer> graph)
     {
         this.year = year;
         this.month = month;
         this.day = day;
-        this.graph = graph;
+        this.seatGraph = graph;
     }
 
     public TimeStamp(int year, Month month, Day day)
@@ -33,30 +33,6 @@ public class TimeStamp implements Serializable
         this.year = year;
         this.month = month;
         this.day = day;
-    }
-
-    public int getYear() { return year; }
-
-    public Month getMonth() { return month; }
-
-    public Day getDay() { return day; }
-
-    public DefaultUndirectedGraph<Seat, Integer> getGraph() { return graph; }
-
-    public void addGraph(DefaultUndirectedGraph<Seat, Integer> graph) { this.graph = graph; }
-
-    @Override
-    public boolean equals(Object o)
-    {
-        if (o instanceof TimeStamp)
-        {
-            TimeStamp temp = (TimeStamp) o;
-
-            return (this.toString().equals(temp.toString()) &&
-                    this.getDay().getHourSpan().getStartHour() == temp.getDay().getHourSpan().getStartHour());
-        }
-
-        return false;
     }
 
     public String getDateToString()
@@ -74,16 +50,10 @@ public class TimeStamp implements Serializable
 
     public String getDayName()
     {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month.getValue() - 1, day.getDayNumber(), 0, 0, 0);
-
-        Date date = calendar.getTime();
-        Format f = new SimpleDateFormat("EEEE", Locale.US);
-
-        return f.format(date);
+        return convertDayToText(year, month, day.getDayNumber());
     }
 
-    public static String dayToText(int year, Month month, int dayNumber)
+    public static String convertDayToText(int year, Month month, int dayNumber)
     {
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month.getValue() - 1, dayNumber, 0, 0, 0);
@@ -96,7 +66,7 @@ public class TimeStamp implements Serializable
 
     public static int getDayValueOfWeek(int year, Month month, int dayNumber)
     {
-        switch (dayToText(year, month, dayNumber))
+        switch (convertDayToText(year, month, dayNumber))
         {
             case "Monday":
                 return 0;
@@ -122,5 +92,29 @@ public class TimeStamp implements Serializable
         Format f = new SimpleDateFormat("MMMM", Locale.US);
 
         return f.format(date);
+    }
+
+    public int getYear() { return year; }
+
+    public Month getMonth() { return month; }
+
+    public Day getDay() { return day; }
+
+    public DefaultUndirectedGraph<Seat, Integer> getSeatGraph() { return seatGraph; }
+
+    public void addSeatGraph(DefaultUndirectedGraph<Seat, Integer> graph) { this.seatGraph = graph; }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (o instanceof TimeStamp)
+        {
+            TimeStamp temp = (TimeStamp) o;
+
+            return (this.toString().equals(temp.toString()) &&
+                    this.getDay().getHourSpan().getStartHour() == temp.getDay().getHourSpan().getStartHour());
+        }
+
+        return false;
     }
 }

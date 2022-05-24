@@ -67,7 +67,6 @@ public class LoginGUIController
         }
 
         // Check if the email is present in admin log list (returns an admin)
-        AdministratorLog.readAdminLog();
         Administrator adminResult = AdministratorLog.emailIsNotRegistered(emailField.getText().trim());
 
         if (adminResult.getEmail().equals("Not Registered"))

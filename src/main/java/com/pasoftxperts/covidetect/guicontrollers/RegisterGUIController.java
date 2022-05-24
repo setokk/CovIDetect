@@ -161,7 +161,6 @@ public class RegisterGUIController implements Initializable
         // We check whether or not this email is already registered.
         // emailIsNotRegistered returns an admin with an email of "Not Registered"
         // if it does not find an admin with a particular email
-        AdministratorLog.readAdminLog();
 
         if (!AdministratorLog.emailIsNotRegistered(emailField.getText().trim())
                 .getEmail()
@@ -219,7 +218,6 @@ public class RegisterGUIController implements Initializable
 
             // After all those validations, we can now register the admin.
             AdministratorLog.addAdmin(new Administrator(emailField.getText().trim(), finalPassword));
-            AdministratorLog.updateAdminLog();
 
             emailField.setText("");
             passwordField.setText("");

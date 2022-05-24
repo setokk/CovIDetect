@@ -8,14 +8,40 @@ public class AdministratorLog implements Serializable
 {
     private static ArrayList<Administrator> adminList = new ArrayList<>();
 
-    public static ArrayList<Administrator> getAdminList(){ return adminList; }
-
-    public static void addAdmin(Administrator admin){ adminList.add(admin); }
-
-    public static void removeAdmin(Administrator admin){ adminList.remove(admin); }
-
     // We save the admin log file to the user directory of the jar file.
     private static String path = System.getProperty("user.dir");
+
+    public static void addAdmin(Administrator admin)
+    {
+        adminList.add(admin);
+
+        // Update admin log to file
+        updateAdminLog();
+    }
+
+    public static void removeAdmin(Administrator admin)
+    {
+        // Read admin log from file
+        readAdminLog();
+
+        adminList.remove(admin);
+
+        // Update admin log to file
+        updateAdminLog();
+    }
+
+    // Checks if the email is not registered. If registered, returns the admin with that email.
+    // Otherwise, it returns an admin with an email of "Not Registered"
+    public static Administrator emailIsNotRegistered(String email)
+    {
+        // Read admin log from file
+        readAdminLog();
+
+        return adminList.stream()
+                        .filter(e -> e.getEmail().equals(email))
+                        .findFirst()
+                        .orElse(new Administrator("Not Registered", ""));
+    }
 
     public static void updateAdminLog()
     {
@@ -51,15 +77,5 @@ public class AdministratorLog implements Serializable
             fileIn.close();
         }
         catch (IOException i) { return; }
-    }
-
-    // Checks if the email is not registered. If registered, returns the admin with that email.
-    // Otherwise, it returns an admin with an email of "Not Registered"
-    public static Administrator emailIsNotRegistered(String email)
-    {
-        return adminList.stream()
-                        .filter(e -> e.getEmail().equals(email))
-                        .findFirst()
-                        .orElse(new Administrator("Not Registered", ""));
     }
 }

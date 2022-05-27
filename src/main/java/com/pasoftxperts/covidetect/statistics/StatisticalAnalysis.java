@@ -1,6 +1,7 @@
 package com.pasoftxperts.covidetect.statistics;
 
 import com.pasoftxperts.covidetect.time.TimeStamp;
+import com.pasoftxperts.covidetect.university.Room;
 
 import java.util.ArrayList;
 
@@ -10,8 +11,9 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
     public ArrayList<Double> calculateAttendanceRates(String startDate,
                                                       String endDate,
                                                       String option,
-                                                      ArrayList<ArrayList<TimeStamp>> roomTimeStampList,
-                                                      ArrayList<String> showByElements)
+                                                      String statisticalMethod,
+                                                      ArrayList<String> showByElements,
+                                                      ArrayList<Room> roomList)
     {
         return null;
     }
@@ -20,8 +22,9 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
     public ArrayList<Integer> calculateCovidCases(String startDate,
                                                   String endDate,
                                                   String option,
-                                                  ArrayList<ArrayList<TimeStamp>> roomTimeStampList,
-                                                  ArrayList<String> showByElements)
+                                                  String statisticalMethod,
+                                                  ArrayList<String> showByElements,
+                                                  ArrayList<Room> roomList)
     {
         return null;
     }

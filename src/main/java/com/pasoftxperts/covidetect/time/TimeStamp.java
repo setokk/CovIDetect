@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.time.Month;
+import java.time.format.TextStyle;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -85,13 +86,7 @@ public class TimeStamp implements Serializable
 
     public String getMonthName()
     {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month.getValue() - 1, day.getDayNumber(), 0, 0, 0);
-
-        Date date = calendar.getTime();
-        Format f = new SimpleDateFormat("MMMM", Locale.US);
-
-        return f.format(date);
+        return month.getDisplayName(TextStyle.FULL, Locale.US);
     }
 
     public int getYear() { return year; }

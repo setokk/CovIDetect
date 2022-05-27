@@ -111,7 +111,7 @@ public class RegisterGUIController implements Initializable
             return;
         }
 
-        // We use a password field (hidden) and a text field.
+        // We use a password field (hidden) and a text field for the password text field (toggled by checkbox).
         // In order to get the appropriate text, we have to check which one is visible.
 
         String password = passwordField.getText().trim();

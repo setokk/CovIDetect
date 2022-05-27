@@ -10,6 +10,7 @@ module com.pasoftxperts.covidetect {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires org.jgrapht.core;
+    requires java.desktop;
 
     opens com.pasoftxperts.covidetect to javafx.fxml;
     exports com.pasoftxperts.covidetect;

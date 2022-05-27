@@ -82,8 +82,8 @@ public class GraphNeighboursGenerator
             }
 
             seats.get((seatNumber - 1) / cols).get((seatNumber - 1) % cols)
-                    .getStudent()
-                    .setHealthIndicator(1);
+                                              .getStudent()
+                                              .setHealthIndicator(1);
         }
 
         return graph;

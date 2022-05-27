@@ -1,4 +1,4 @@
-package com.pasoftxperts.covidetect.filewrapper;
+package com.pasoftxperts.covidetect.filemanager;
 
 import com.pasoftxperts.covidetect.university.Room;
 

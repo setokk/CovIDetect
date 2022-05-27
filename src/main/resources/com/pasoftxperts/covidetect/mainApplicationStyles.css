@@ -1,0 +1,42 @@
+.menu
+{
+	-fx-background-color: #3463e4;
+}
+
+.button
+{
+	-fx-background-color: #3463e4;
+	-fx-text-fill: white;
+}
+
+.button:hover
+{
+	-fx-border-color: white;
+	-fx-border-width: 0px 0px 1px 0px;
+}
+
+#logoLabel:hover
+{
+	-fx-text-fill: #323232;
+}
+
+.borderpane, .anchorpane
+{
+	-fx-background-color: white;
+}
+
+#loadHistoryButton
+{
+	-fx-text-fill: white;
+	-fx-background-color: #323232;
+	-fx-background-radius: 30;
+	-fx-border-style: solid;
+	-fx-border-color: black;
+	-fx-border-width: 2;
+	-fx-border-radius: 30;
+}
+
+#loadHistoryButton:hover
+{
+	-fx-background-color: #3463e4;
+}

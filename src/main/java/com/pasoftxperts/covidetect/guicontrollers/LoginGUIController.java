@@ -16,6 +16,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.IOException;
 
 public class LoginGUIController
@@ -85,9 +86,21 @@ public class LoginGUIController
 
         // We can now launch the main application window.
         Stage mainApplicationWindow = new Stage();
-        Scene mainScene = new Scene(FXMLLoader.load(RunApplication.class.getResource("mainApplicationGUI.fxml")), 1600, 900);
+        Scene mainScene;
+
+        // First we get the monitor resolution. (Checks default screen in case of multiple monitors)
+        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        int width = gd.getDisplayMode().getWidth();
+        int height = gd.getDisplayMode().getHeight();
+
+        // We can now check if the monitor resolution is higher that 1600x900 or less.
+        if ((width >= 1600) && (height >= 900))
+            mainScene = new Scene(FXMLLoader.load(RunApplication.class.getResource("mainApplicationGUI-1600x900.fxml")), 1600, 900);
+        else
+            mainScene = new Scene(FXMLLoader.load(RunApplication.class.getResource("mainApplicationGUI-1280x800.fxml")), 1280, 800);
 
         mainApplicationWindow.setTitle("CovIDetect© by PasoftXperts");
+        mainApplicationWindow.setResizable(false);
         mainApplicationWindow.getIcons().add(new Image(getClass().getResourceAsStream("/com/pasoftxperts/covidetect/icons/covidDetectWindowIcon.png")));
         mainApplicationWindow.setScene(mainScene);
 

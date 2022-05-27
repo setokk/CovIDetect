@@ -30,8 +30,8 @@ public class AdministratorLog implements Serializable
         updateAdminLog();
     }
 
-    // Checks if the email is not registered. If registered, returns the admin with that email.
-    // Otherwise, it returns an admin with an email of "Not Registered"
+    // Checks if the email is not registered. If registered, returns false.
+    // Otherwise, returns true
     public static Administrator emailIsNotRegistered(String email)
     {
         // Read admin log from file

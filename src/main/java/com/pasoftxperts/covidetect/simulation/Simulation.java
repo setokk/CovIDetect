@@ -1,6 +1,6 @@
 package com.pasoftxperts.covidetect.simulation;
 
-import com.pasoftxperts.covidetect.filewrapper.FileWrapper;
+import com.pasoftxperts.covidetect.filemanager.FileWrapper;
 import com.pasoftxperts.covidetect.graphanalysis.GraphNeighboursGenerator;
 import com.pasoftxperts.covidetect.student.Student;
 import com.pasoftxperts.covidetect.time.Day;
@@ -303,13 +303,6 @@ public class Simulation
 
         Collections.shuffle(studentIndexes);
 
-        for (int i = 0; i < attendanceNumber; i++)
-        {
-            int index = studentIndexes.get(i);
-
-            attendingStudents.add(studentList.get(index).copy());
-        }
-
         // With a certain low probability, pick a number of students that are going to be a covid case
         // from studentList
         double probability = 0.05;
@@ -318,6 +311,13 @@ public class Simulation
         {
             if (random.nextFloat() < probability)
                 studentList.get(i).setHealthIndicator(1);
+        }
+
+        for (int i = 0; i < attendanceNumber; i++)
+        {
+            int index = studentIndexes.get(i);
+
+            attendingStudents.add(studentList.get(index).copy());
         }
 
         // Create 2D Seat ArrayList

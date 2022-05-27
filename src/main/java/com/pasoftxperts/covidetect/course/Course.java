@@ -12,9 +12,7 @@ public class Course implements Serializable
     private int semesterNum;
     private Professor professor;
 
-    public Course(String courseId,
-                  String courseName,
-                  int semesterNum)
+    public Course(String courseId, String courseName, int semesterNum)
     {
         this.courseId = courseId;
         this.courseName = courseName;

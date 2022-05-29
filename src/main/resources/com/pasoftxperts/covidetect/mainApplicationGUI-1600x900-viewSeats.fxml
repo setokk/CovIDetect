@@ -2,6 +2,8 @@
 
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.Reflection?>
 <?import javafx.scene.image.Image?>
@@ -106,7 +108,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
       </GridPane>
-      <Label layoutX="697.0" layoutY="292.0" text="No Room Selected" textFill="#323232">
+      <Label fx:id="roomLabel" alignment="CENTER" layoutX="747.0" layoutY="275.0" text="No Room&#10;Selected" textAlignment="CENTER" textFill="#323232">
          <font>
             <Font name="Corbel Light" size="29.0" />
          </font>
@@ -116,5 +118,27 @@
             <Image url="@icons/doubleDoor.png" />
          </image>
       </ImageView>
+      <AnchorPane layoutX="53.0" layoutY="337.0" prefHeight="527.0" prefWidth="388.0" style="-fx-background-color: #323232;" styleClass="date-picker" stylesheets="@mainApplicationStyles-viewSeats.css">
+         <children>
+            <Label layoutX="139.0" layoutY="229.0" prefHeight="23.0" prefWidth="135.0" text="Choose a date" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="20.0" />
+               </font>
+            </Label>
+            <DatePicker fx:id="datePicker" editable="false" layoutX="106.0" layoutY="270.0" prefHeight="20.0" prefWidth="189.0" styleClass="date-picker" stylesheets="@mainApplicationStyles-viewSeats.css" />
+            <Label layoutX="151.0" layoutY="85.0" prefHeight="23.0" prefWidth="135.0" text="Select room" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="20.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="roomComboBox" layoutX="106.0" layoutY="129.0" prefHeight="33.0" prefWidth="190.0" promptText="No Room Selected" stylesheets="@mainApplicationStyles-viewSeats.css" />
+            <Label layoutX="125.0" layoutY="368.0" prefHeight="23.0" prefWidth="149.0" text="Choose HourSpan" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="20.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="hourSpanComboBox" layoutX="99.0" layoutY="411.0" prefHeight="33.0" prefWidth="190.0" promptText="No HourSpan Selected" stylesheets="@mainApplicationStyles-viewSeats.css" />
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

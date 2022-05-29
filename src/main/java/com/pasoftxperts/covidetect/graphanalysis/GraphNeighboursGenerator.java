@@ -15,7 +15,7 @@ public class GraphNeighboursGenerator
                                                                                  int cols)
     {
         // First, we create an Undirected Graph to populate
-        DefaultUndirectedGraph<Seat, Integer> graph = new DefaultUndirectedGraph<Seat, Integer>(Integer.class);
+        DefaultUndirectedGraph<Seat, Integer> graph = new DefaultUndirectedGraph<>(Integer.class);
         populateGraph(graph, seats, rows, cols);
 
         // Create Covid Cases Seats List
@@ -24,9 +24,12 @@ public class GraphNeighboursGenerator
         // We need them so that we don't lose information on who is a covid case later
         saveCovidCases(covidCasesSeats, seats, rows, cols);
 
+
+        Seat covidCase;
+
         for (int k = 0; k < covidCasesSeats.size(); k++)
         {
-            Seat covidCase = covidCasesSeats.get(k);
+            covidCase = covidCasesSeats.get(k);
 
             int i = (covidCase.getSeatNumber() - 1) / cols;
             int j = (covidCase.getSeatNumber() - 1) % cols;
@@ -68,6 +71,7 @@ public class GraphNeighboursGenerator
 
         ArrayList<Seat> seatsInGraph = new ArrayList<>(graph.vertexSet());
 
+        
         // We turn the falsely probable positive cases to 1 again
         for (int i = 0; i < covidCasesSeats.size(); i++)
         {
@@ -101,16 +105,18 @@ public class GraphNeighboursGenerator
                                       int rows,
                                       int cols)
     {
+        Seat seat;
+
         for (int i = 0; i < rows; i++)
         {
             for (int j = 0; j < cols; j++)
             {
                 // We add the number of seat (1, 2, 3 ,4, 5 ,6 ,7, ..., 20 in this case)
-                Seat seat = seats.get(i).get(j);
+                seat = seats.get(i).get(j);
 
                 if (seat.isOccupied() && isCovidCase(seat.getStudent()))
                 {
-                    covidCases.add(seats.get(i).get(j));
+                    covidCases.add(seat);
                 }
             }
         }
@@ -219,9 +225,11 @@ public class GraphNeighboursGenerator
                                      int rows,
                                      int cols)
     {
+        ArrayList<Seat> currSeats;
+
         for (int i = 0; i < rows; i++)
         {
-            ArrayList<Seat> currSeats = seats.get(i);
+            currSeats = seats.get(i);
 
             for (int j = 0; j < cols; j++)
                 graph.addVertex(currSeats.get(j));

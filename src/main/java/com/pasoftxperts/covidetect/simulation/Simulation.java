@@ -238,16 +238,16 @@ public class Simulation
 
             for (int j = 0; j < timeStamps.size(); j++)
             {
-                if (dayCounter == 5)
+                if (dayCounter >= 5)
                 {
                     dayCounter = 0;
 
                     // Reset health indicators
                     for (int k = 0; k < studentList.size(); k++)
                         studentList.get(k).setHealthIndicator(0);
-
-                    seats = populateWithStudents(studentList, room.getSeatRows(), room.getSeatColumns());
                 }
+
+                seats = populateWithStudents(studentList, room.getSeatRows(), room.getSeatColumns());
 
                 // Calculate Neighbours
                 graph = GraphNeighboursGenerator.calculateNeighboursGraph(seats,
@@ -257,16 +257,26 @@ public class Simulation
                 // Add graph to timestamp
                 timeStamps.get(j).addSeatGraph(SerializationUtils.clone(graph));
 
+                int thisDay = timeStamps.get(j).getDay().getDayNumber();
+
                 if (prevDay == 0) // First time in loop
                 {
-                    prevDay = timeStamps.get(j).getDay().getDayNumber();
+                    prevDay = thisDay;
                 }
                 else
                 {
-                    if (prevDay < timeStamps.get(j).getDay().getDayNumber())
+                    if (prevDay < thisDay)
                     {
-                        prevDay = timeStamps.get(j).getDay().getDayNumber();
-                        dayCounter++;
+                        dayCounter += thisDay - prevDay;
+                        prevDay = thisDay;
+                    }
+                    else if (prevDay > thisDay)
+                    {
+                        Month thisMonth = timeStamps.get(j).getMonth();
+                        int thisYear = timeStamps.get(j).getYear();
+
+                        dayCounter += thisMonth.length((thisYear%4==0) || (thisYear%400==0)) - prevDay + thisDay;
+                        prevDay = thisDay;
                     }
                 }
             }

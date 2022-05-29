@@ -6,7 +6,7 @@ public class Main
 {
     public static void main(String[] args)
     {
-        Simulation.runSimulation();
+        /*Simulation.runSimulation();*/
         RunApplication.main(args);
     }
 

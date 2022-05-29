@@ -162,16 +162,16 @@ public class Curriculum
                                         /* MONDAY - SPRING SEMESTER */
         currentHourSpanList = new ArrayList<>();
 
-        currentHourSpanList.add(new HourSpan(8, 11, findCourseById("AIC21001")));
+        currentHourSpanList.add(new HourSpan(8, 11, findCourseById("AIC21011")));
         springSemesterRoomIdList.add("Room 12");
 
-        currentHourSpanList.add(new HourSpan(13, 14, findCourseById("AIC21021")));
+        currentHourSpanList.add(new HourSpan(13, 14, findCourseById("AIC21031")));
         springSemesterRoomIdList.add("Room 11");
 
-        currentHourSpanList.add(new HourSpan(16, 18, findCourseById("AIC21041")));
+        currentHourSpanList.add(new HourSpan(16, 18, findCourseById("AIC21051")));
         springSemesterRoomIdList.add("Room 15");
 
-        currentHourSpanList.add(new HourSpan(16, 18, findCourseById("AIC21061")));
+        currentHourSpanList.add(new HourSpan(16, 18, findCourseById("AIC21071")));
         springSemesterRoomIdList.add("Room 13");
 
         // We add the day.
@@ -181,16 +181,16 @@ public class Curriculum
                                         /* TUESDAY - SPRING SEMESTER */
         currentHourSpanList = new ArrayList<>();
 
-        currentHourSpanList.add(new HourSpan(10, 13, findCourseById("AIC21002")));
+        currentHourSpanList.add(new HourSpan(10, 13, findCourseById("AIC21012")));
         springSemesterRoomIdList.add("Room 17");
 
-        currentHourSpanList.add(new HourSpan(12, 13, findCourseById("AIC21022")));
+        currentHourSpanList.add(new HourSpan(12, 13, findCourseById("AIC21032")));
         springSemesterRoomIdList.add("Room 18");
 
-        currentHourSpanList.add(new HourSpan(20, 22, findCourseById("AIC21042")));
+        currentHourSpanList.add(new HourSpan(20, 22, findCourseById("AIC21052")));
         springSemesterRoomIdList.add("Room 12");
 
-        currentHourSpanList.add(new HourSpan(15, 16, findCourseById("AIC21062")));
+        currentHourSpanList.add(new HourSpan(15, 16, findCourseById("AIC21072")));
         springSemesterRoomIdList.add("Room 15");
 
         // We add the day.
@@ -200,19 +200,19 @@ public class Curriculum
                                         /* WEDNESDAY - SPRING SEMESTER */
         currentHourSpanList = new ArrayList<>();
 
-        currentHourSpanList.add(new HourSpan(9, 12, findCourseById("AIC21003")));
+        currentHourSpanList.add(new HourSpan(9, 12, findCourseById("AIC21013")));
         springSemesterRoomIdList.add("Room 16");
 
-        currentHourSpanList.add(new HourSpan(9, 12, findCourseById("AIC21004")));
+        currentHourSpanList.add(new HourSpan(9, 12, findCourseById("AIC21014")));
         springSemesterRoomIdList.add("Room 12");
 
-        currentHourSpanList.add(new HourSpan(16, 18, findCourseById("AIC21023")));
+        currentHourSpanList.add(new HourSpan(16, 18, findCourseById("AIC21033")));
         springSemesterRoomIdList.add("Room 14");
 
-        currentHourSpanList.add(new HourSpan(20, 22, findCourseById("AIC21043")));
+        currentHourSpanList.add(new HourSpan(20, 22, findCourseById("AIC21053")));
         springSemesterRoomIdList.add("Room 20");
 
-        currentHourSpanList.add(new HourSpan(13, 14, findCourseById("AIC21063")));
+        currentHourSpanList.add(new HourSpan(13, 14, findCourseById("AIC21073")));
         springSemesterRoomIdList.add("Room 13");
 
         // We add the day.
@@ -222,19 +222,19 @@ public class Curriculum
                                         /* THURSDAY - SPRING SEMESTER */
         currentHourSpanList = new ArrayList<>();
 
-        currentHourSpanList.add(new HourSpan(9, 12, findCourseById("AIC21005")));
+        currentHourSpanList.add(new HourSpan(9, 12, findCourseById("AIC21015")));
         springSemesterRoomIdList.add("Room 13");
 
-        currentHourSpanList.add(new HourSpan(19, 20, findCourseById("AIC21006")));
+        currentHourSpanList.add(new HourSpan(19, 20, findCourseById("AIC21016")));
         springSemesterRoomIdList.add("Room 12");
 
-        currentHourSpanList.add(new HourSpan(16, 18, findCourseById("AIC21024")));
+        currentHourSpanList.add(new HourSpan(16, 18, findCourseById("AIC21034")));
         springSemesterRoomIdList.add("Room 18");
 
-        currentHourSpanList.add(new HourSpan(13, 15, findCourseById("AIC21044")));
+        currentHourSpanList.add(new HourSpan(13, 15, findCourseById("AIC21054")));
         springSemesterRoomIdList.add("Room 15");
 
-        currentHourSpanList.add(new HourSpan(10, 11, findCourseById("AIC21064")));
+        currentHourSpanList.add(new HourSpan(10, 11, findCourseById("AIC21074")));
         springSemesterRoomIdList.add("Room 16");
 
         // We add the day.
@@ -244,22 +244,22 @@ public class Curriculum
                                             /* FRIDAY - SPRING SEMESTER */
         currentHourSpanList = new ArrayList<>();
 
-        currentHourSpanList.add(new HourSpan(16, 18, findCourseById("AIC21025")));
+        currentHourSpanList.add(new HourSpan(16, 18, findCourseById("AIC21035")));
         springSemesterRoomIdList.add("Room 18");
 
-        currentHourSpanList.add(new HourSpan(13, 15, findCourseById("AIC21045")));
+        currentHourSpanList.add(new HourSpan(13, 15, findCourseById("AIC21055")));
         springSemesterRoomIdList.add("Room 15");
 
-        currentHourSpanList.add(new HourSpan(10, 11, findCourseById("AIC21065")));
+        currentHourSpanList.add(new HourSpan(10, 11, findCourseById("AIC21075")));
         springSemesterRoomIdList.add("Room 12");
 
-        currentHourSpanList.add(new HourSpan(11, 13, findCourseById("AIC21026")));
+        currentHourSpanList.add(new HourSpan(11, 13, findCourseById("AIC21036")));
         springSemesterRoomIdList.add("Room 18");
 
-        currentHourSpanList.add(new HourSpan(13, 15, findCourseById("AIC21046")));
+        currentHourSpanList.add(new HourSpan(13, 15, findCourseById("AIC21056")));
         springSemesterRoomIdList.add("Room 17");
 
-        currentHourSpanList.add(new HourSpan(10, 11, findCourseById("AIC21066")));
+        currentHourSpanList.add(new HourSpan(10, 11, findCourseById("AIC21076")));
         springSemesterRoomIdList.add("Room 16");
 
         // We add the day.

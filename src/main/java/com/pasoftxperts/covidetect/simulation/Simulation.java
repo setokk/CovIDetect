@@ -318,7 +318,7 @@ public class Simulation
 
         // With a certain low probability, pick a number of students that are going to be a covid case
         // from studentList
-        double probability = 0.05;
+        double probability = 0.025;
 
         for (int i = 0; i < studentList.size(); i++)
         {

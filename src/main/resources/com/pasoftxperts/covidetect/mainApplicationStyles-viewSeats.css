@@ -77,3 +77,8 @@
 	-fx-background-color: white;
 	-fx-text-fill: #323232;
 }
+
+.caseLabel:hover
+{
+	-fx-text-fill: #3463e4;
+}

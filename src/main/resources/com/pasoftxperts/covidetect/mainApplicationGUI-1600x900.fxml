@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" stylesheets="@mainApplicationStyles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pasoftxperts.covidetect.guicontrollers.MainApplicationController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" style="-fx-background-color: white;" stylesheets="@mainApplicationStyles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pasoftxperts.covidetect.guicontrollers.MainApplicationController">
    <children>
       <AnchorPane prefHeight="53.0" prefWidth="1603.0" styleClass="menu">
          <children>
@@ -27,7 +27,7 @@
                   <Image url="@icons/seatVisualizationIcon.png" />
                </image>
             </ImageView>
-            <Button id="seatButton" fx:id="viewSeatButton" layoutX="379.0" layoutY="8.0" mnemonicParsing="false" onAction="#openSeatsView" prefHeight="35.0" prefWidth="165.0" stylesheets="@mainApplicationStyles.css" text="Class Visualization" textFill="WHITE">
+            <Button id="seatButton" fx:id="viewSeatButton" layoutX="379.0" layoutY="8.0" mnemonicParsing="false" onAction="#openSeatsView" prefHeight="35.0" prefWidth="172.0" stylesheets="@mainApplicationStyles.css" text="Room Visualization" textFill="WHITE">
                <font>
                   <Font name="Corbel Light" size="19.0" />
                </font>
@@ -63,7 +63,7 @@
             </ImageView>
          </children>
       </AnchorPane>
-      <BorderPane fx:id="mainBorderPane" layoutX="-7.0" layoutY="279.0" prefHeight="619.0" prefWidth="1606.0">
+      <BorderPane fx:id="mainBorderPane" layoutX="-7.0" layoutY="279.0" prefHeight="619.0" prefWidth="1606.0" style="-fx-background-color: white;">
          <bottom>
             <AnchorPane prefHeight="55.0" prefWidth="1606.0" BorderPane.alignment="CENTER">
                <children>

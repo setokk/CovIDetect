@@ -47,7 +47,6 @@ public class EmailVerifier
                     ("emailvalidator.exe", email, API_KEY)
                     .start();
             process.waitFor();
-            System.out.println();
         }
         catch (IOException|InterruptedException e)
         {

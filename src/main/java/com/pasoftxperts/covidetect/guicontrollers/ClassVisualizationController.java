@@ -1,6 +1,7 @@
 package com.pasoftxperts.covidetect.guicontrollers;
 
 import com.pasoftxperts.covidetect.RunApplication;
+import com.pasoftxperts.covidetect.course.Course;
 import com.pasoftxperts.covidetect.filemanager.ObjectListReader;
 import com.pasoftxperts.covidetect.filemanager.ObjectReader;
 import com.pasoftxperts.covidetect.graphanalysis.GraphNeighboursGenerator;
@@ -80,6 +81,9 @@ public class ClassVisualizationController implements Initializable
     @FXML
     private Label roomLabel;
 
+    @FXML
+    private Label courseLabel;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
@@ -133,6 +137,9 @@ public class ClassVisualizationController implements Initializable
             {
                 datePicker.setValue(null);
                 hourSpanComboBox.setValue(null);
+                hourSpanComboBox.setItems(null);
+
+                courseLabel.setText("");
 
                 // Initiliaze seats
                 for (int i = 0; i < DEFAULT_ROOM_CAPACITY; i++)
@@ -157,6 +164,7 @@ public class ClassVisualizationController implements Initializable
             public void changed(ObservableValue<? extends LocalDate> observable, LocalDate oldValue, LocalDate newValue)
             {
                 hourSpanComboBox.setValue(null);
+                hourSpanComboBox.setItems(null);
 
                 // Initiliaze seats
                 for (int i = 0; i < DEFAULT_ROOM_CAPACITY; i++)
@@ -164,6 +172,8 @@ public class ClassVisualizationController implements Initializable
 
                 if (roomName == null)
                     return;
+
+                courseLabel.setText("");
 
                 LocalDate date = datePicker.getValue();
                 String dateToString;
@@ -221,6 +231,9 @@ public class ClassVisualizationController implements Initializable
                     if (hourSpanNames.get(i).equals(hourSpanValue))
                         timeStamp = timeStampList.get(i);
                 }
+
+                Course course = timeStamp.getDay().getHourSpan().getCourse();
+                courseLabel.setText(course.getCourseName() + " (" + course.getCourseId() + ")\nSemester: " + course.getSemesterNum());
 
                 // Update seats according to graph
                 DefaultUndirectedGraph<Seat, Integer> seatGraph = timeStamp.getSeatGraph();

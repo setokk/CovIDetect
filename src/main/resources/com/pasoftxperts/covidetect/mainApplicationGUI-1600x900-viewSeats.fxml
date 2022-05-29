@@ -5,7 +5,6 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.effect.Reflection?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -14,7 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" stylesheets="@mainApplicationStyles-viewSeats.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pasoftxperts.covidetect.guicontrollers.ClassVisualizationController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" style="-fx-background-color: white;" stylesheets="@mainApplicationStyles-viewSeats.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pasoftxperts.covidetect.guicontrollers.ClassVisualizationController">
    <children>
       <AnchorPane prefHeight="53.0" prefWidth="1603.0" styleClass="menu">
          <children>
@@ -31,7 +30,7 @@
                   <Image url="@icons/seatVisualizationIconHoverWhite.png" />
                </image>
             </ImageView>
-            <Button id="seatButton" fx:id="viewSeatButton" layoutX="379.0" layoutY="8.0" mnemonicParsing="false" onAction="#openSeatsView" prefHeight="35.0" prefWidth="165.0" stylesheets="@mainApplicationStyles-viewSeats.css" text="Class Visualization" textFill="#e9ff1c" underline="true">
+            <Button id="seatButton" fx:id="viewSeatButton" layoutX="390.0" layoutY="8.0" mnemonicParsing="false" onAction="#openSeatsView" prefHeight="35.0" prefWidth="172.0" stylesheets="@mainApplicationStyles-viewSeats.css" text="Room Visualization" textFill="#e9ff1c">
                <font>
                   <Font name="Corbel Light" size="19.0" />
                </font>
@@ -67,17 +66,14 @@
             </ImageView>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="-4.0" layoutY="53.0" prefHeight="149.0" prefWidth="1604.0" style="-fx-background-color: #323232;">
+      <AnchorPane layoutX="-4.0" layoutY="53.0" prefHeight="149.0" prefWidth="1604.0" style="-fx-background-color: #3463e4;">
          <children>
-            <Label layoutX="706.0" layoutY="39.0" prefHeight="32.0" prefWidth="237.0" text="Class Visualization" textFill="WHITE" underline="true">
+            <Label layoutX="696.0" layoutY="20.0" prefHeight="40.0" prefWidth="255.0" text="Class Visualization" textFill="WHITE">
                <font>
-                  <Font name="Corbel Light" size="27.0" />
+                  <Font name="Corbel Light" size="34.0" />
                </font>
-               <effect>
-                  <Reflection fraction="0.73" topOpacity="0.21" />
-               </effect>
             </Label>
-            <ImageView fitHeight="62.0" fitWidth="75.0" layoutX="774.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="60.0" fitWidth="62.0" layoutX="787.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@icons/amphitheater.png" />
                </image>
@@ -118,26 +114,80 @@
             <Image url="@icons/doubleDoor.png" />
          </image>
       </ImageView>
-      <AnchorPane layoutX="53.0" layoutY="337.0" prefHeight="527.0" prefWidth="388.0" style="-fx-background-color: #323232;" styleClass="date-picker" stylesheets="@mainApplicationStyles-viewSeats.css">
+      <AnchorPane layoutX="53.0" layoutY="337.0" prefHeight="527.0" prefWidth="388.0" style="-fx-background-color: #3463e4;" styleClass="date-picker" stylesheets="@mainApplicationStyles-viewSeats.css">
          <children>
             <Label layoutX="139.0" layoutY="229.0" prefHeight="23.0" prefWidth="135.0" text="Choose a date" textFill="WHITE">
                <font>
                   <Font name="Corbel Light" size="20.0" />
                </font>
             </Label>
-            <DatePicker fx:id="datePicker" editable="false" layoutX="106.0" layoutY="270.0" prefHeight="20.0" prefWidth="189.0" styleClass="date-picker" stylesheets="@mainApplicationStyles-viewSeats.css" />
+            <DatePicker fx:id="datePicker" editable="false" layoutX="105.0" layoutY="270.0" prefHeight="29.0" prefWidth="190.0" styleClass="date-picker" stylesheets="@mainApplicationStyles-viewSeats.css" />
             <Label layoutX="151.0" layoutY="85.0" prefHeight="23.0" prefWidth="135.0" text="Select room" textFill="WHITE">
                <font>
                   <Font name="Corbel Light" size="20.0" />
                </font>
             </Label>
-            <ComboBox fx:id="roomComboBox" layoutX="106.0" layoutY="129.0" prefHeight="33.0" prefWidth="190.0" promptText="No Room Selected" stylesheets="@mainApplicationStyles-viewSeats.css" />
+            <ComboBox fx:id="roomComboBox" layoutX="106.0" layoutY="129.0" prefHeight="33.0" prefWidth="190.0" promptText="No Room Selected" style="-fx-background-color: white;" stylesheets="@mainApplicationStyles-viewSeats.css" />
             <Label layoutX="125.0" layoutY="368.0" prefHeight="23.0" prefWidth="149.0" text="Choose HourSpan" textFill="WHITE">
                <font>
                   <Font name="Corbel Light" size="20.0" />
                </font>
             </Label>
-            <ComboBox fx:id="hourSpanComboBox" layoutX="99.0" layoutY="411.0" prefHeight="33.0" prefWidth="190.0" promptText="No HourSpan Selected" stylesheets="@mainApplicationStyles-viewSeats.css" />
+            <ComboBox fx:id="hourSpanComboBox" layoutX="99.0" layoutY="411.0" prefHeight="33.0" prefWidth="190.0" promptText="No HourSpan Selected" style="-fx-background-color: white;" stylesheets="@mainApplicationStyles-viewSeats.css" />
+         </children>
+      </AnchorPane>
+      <ImageView fitHeight="29.0" fitWidth="18.0" layoutX="1346.0" layoutY="227.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@icons/covidSeat.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="1370.0" layoutY="231.0" prefHeight="21.0" prefWidth="83.0" styleClass="caseLabel" text="Covid Case">
+         <font>
+            <Font name="Corbel Light" size="14.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="29.0" fitWidth="18.0" layoutX="1346.0" layoutY="261.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@icons/possibleCaseSeat.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="1370.0" layoutY="265.0" prefHeight="21.0" prefWidth="83.0" styleClass="caseLabel" text="Possible Case">
+         <font>
+            <Font name="Corbel Light" size="14.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="29.0" fitWidth="18.0" layoutX="1471.0" layoutY="227.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@icons/takenSeat.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="1495.0" layoutY="231.0" prefHeight="21.0" prefWidth="83.0" styleClass="caseLabel" text="Taken Seat">
+         <font>
+            <Font name="Corbel Light" size="14.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="29.0" fitWidth="18.0" layoutX="1471.0" layoutY="261.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@icons/freeSeat.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="1495.0" layoutY="265.0" prefHeight="21.0" prefWidth="83.0" styleClass="caseLabel" text="Free Seat">
+         <font>
+            <Font name="Corbel Light" size="14.0" />
+         </font>
+      </Label>
+      <AnchorPane layoutX="53.0" layoutY="229.0" prefHeight="92.0" prefWidth="388.0" style="-fx-background-color: #323232;">
+         <children>
+            <Label layoutX="161.0" layoutY="14.0" prefHeight="23.0" prefWidth="67.0" text="Course:" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="courseLabel" layoutX="14.0" layoutY="42.0" prefHeight="22.0" prefWidth="364.0" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="15.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </children>

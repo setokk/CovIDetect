@@ -11,6 +11,7 @@ module com.pasoftxperts.covidetect {
     requires eu.hansolo.tilesfx;
     requires org.jgrapht.core;
     requires java.desktop;
+    requires org.apache.commons.lang3;
 
     opens com.pasoftxperts.covidetect to javafx.fxml;
     exports com.pasoftxperts.covidetect;

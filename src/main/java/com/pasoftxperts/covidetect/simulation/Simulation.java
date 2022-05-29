@@ -10,6 +10,7 @@ import com.pasoftxperts.covidetect.university.Department;
 import com.pasoftxperts.covidetect.university.Room;
 import com.pasoftxperts.covidetect.university.Seat;
 import com.pasoftxperts.covidetect.university.University;
+import org.apache.commons.lang3.SerializationUtils;
 import org.jgrapht.graph.DefaultUndirectedGraph;
 
 import java.time.Month;
@@ -29,6 +30,18 @@ public class Simulation
     // We use an arraylist for students because we are going to search for students really often.
     // If we were frequently adding/removing students, we would use a linked list.
     private static ArrayList<Student> studentList = new ArrayList<>();
+
+    // List of attending students
+    private static ArrayList<Student> attendingStudents = new ArrayList<>();
+
+    // Seats of the current room
+    private static ArrayList<ArrayList<Seat>> seats;
+
+    // Create 2D Seat ArrayList
+    private static ArrayList<ArrayList<Seat>> roomSeats = new ArrayList<>();
+
+    // Seat graph
+    private static DefaultUndirectedGraph<Seat, Integer> graph;
 
     public static void runSimulation()
     {
@@ -54,7 +67,6 @@ public class Simulation
 
         // Initialize Curriculum
         Curriculum.initializeCurriculum();
-
 
         // We now have a reference for which rooms have which HourSpans and for which days
 
@@ -208,14 +220,14 @@ public class Simulation
 
         // We've populated the rooms with the appropriate TimeStamps based on the Curriculum
         // What's left is creating the graphs for each room and passing students through
+        Room room;
+        ArrayList<TimeStamp> timeStamps;
+
         for (int i = 0; i < roomList.size(); i++)
         {
-            Room room = roomList.get(i);
+            room = roomList.get(i);
 
-            ArrayList<TimeStamp> timeStamps = room.getTimeStampList();
-
-            // Seats of the current room
-            ArrayList<ArrayList<Seat>> seats = new ArrayList<>();
+            timeStamps = room.getTimeStampList();
 
             // Counter to keep track of how many days pass so that the health indicator status changes
             // Typically, it will be 5 days
@@ -230,36 +242,30 @@ public class Simulation
                 {
                     dayCounter = 0;
 
+                    // Reset health indicators
+                    for (int k = 0; k < studentList.size(); k++)
+                        studentList.get(k).setHealthIndicator(0);
+
                     seats = populateWithStudents(studentList, room.getSeatRows(), room.getSeatColumns());
                 }
 
-                TimeStamp timeStamp = timeStamps.get(j);
-
                 // Calculate Neighbours
-                DefaultUndirectedGraph<Seat, Integer> graph = GraphNeighboursGenerator.calculateNeighboursGraph(seats,
-                                                                                                                room.getSeatRows(),
-                                                                                                                room.getSeatColumns());
+                graph = GraphNeighboursGenerator.calculateNeighboursGraph(seats,
+                                                                          room.getSeatRows(),
+                                                                          room.getSeatColumns());
 
                 // Add graph to timestamp
-                timeStamp.addSeatGraph(graph);
-
-                if (i==0 && j==0)
-                    printSeats(seats, room.getSeatRows(), room.getSeatColumns());
+                timeStamps.get(j).addSeatGraph(SerializationUtils.clone(graph));
 
                 if (prevDay == 0) // First time in loop
                 {
-                    prevDay = timeStamp.getDay().getDayNumber();
+                    prevDay = timeStamps.get(j).getDay().getDayNumber();
                 }
                 else
                 {
-                    if (prevDay < timeStamp.getDay().getDayNumber())
+                    if (prevDay < timeStamps.get(j).getDay().getDayNumber())
                     {
-                        prevDay = timeStamp.getDay().getDayNumber();
-
-                        // Reset health indicators
-                        for (int k = 0; k < studentList.size(); k++)
-                            studentList.get(k).setHealthIndicator(0);
-
+                        prevDay = timeStamps.get(j).getDay().getDayNumber();
                         dayCounter++;
                     }
                 }
@@ -291,9 +297,6 @@ public class Simulation
         // Randomly determine how many students will attend a course in a TimeStamp (date)
         int attendanceNumber = random.nextInt(upperBound - lowBound) + lowBound;
 
-        // List of attending students
-        ArrayList<Student> attendingStudents = new ArrayList<>();
-
         // Randomly pick attendanceNumber of students from students list
 
         // Create a list and shuffle it to get unique random indexes for students
@@ -317,43 +320,41 @@ public class Simulation
         {
             int index = studentIndexes.get(i);
 
-            attendingStudents.add(studentList.get(index).copy());
+            attendingStudents.add(SerializationUtils.clone(studentList.get(index)));
         }
 
-        // Create 2D Seat ArrayList
-        ArrayList<ArrayList<Seat>> roomSeats = new ArrayList<>();
-
         // Create and add seats to list
+        roomSeats = new ArrayList<>();
+
         for (int i = 0; i < rows; i++)
         {
             ArrayList<Seat> rowSeats = new ArrayList<>();
 
             for (int j = 0; j < cols; j++)
             {
-                Seat seat = new Seat(GraphNeighboursGenerator.numberOfSeat(i, j, cols));
-                rowSeats.add(seat);
+                rowSeats.add(new Seat(GraphNeighboursGenerator.numberOfSeat(i, j, cols)));
             }
 
-            roomSeats.add(rowSeats);
+            roomSeats.add(SerializationUtils.clone(rowSeats));
         }
 
         // Create a list and shuffle it to get unique random indexes for where students will be sitting
         ArrayList<Integer> seatNumberList = new ArrayList<>();
-        for (int i = 1; i <= capacity; i++)
-            seatNumberList.add(i);
+        for (int i = 0; i < capacity; i++)
+            seatNumberList.add(i + 1);
 
         Collections.shuffle(seatNumberList);
 
         // We now add the attending students to random seats
         for (int i = 0; i < attendanceNumber; i++)
         {
-            int seatNumber = seatNumberList.get(i + 1);
+            int seatNumber = seatNumberList.get(i);
 
             int row = ((seatNumber - 1) / cols);
             int col = ((seatNumber - 1) % cols);
 
             // Add Student
-            roomSeats.get(row).get(col).occupySeat(attendingStudents.get(i));
+            roomSeats.get(row).get(col).occupySeat(SerializationUtils.clone(attendingStudents.get(i)));
         }
 
         return roomSeats;
@@ -404,5 +405,6 @@ public class Simulation
             }
             System.out.println(" ");
         }
+        System.out.println(" ");
     }
 }

@@ -106,10 +106,10 @@ public class TimeStamp implements Serializable
         {
             TimeStamp temp = (TimeStamp) o;
 
-            return (this.toString().equals(temp.toString()) &&
-                    this.getDay().getHourSpan().getStartHour() == temp.getDay().getHourSpan().getStartHour());
+            return (this.toString().equals(temp.toString()));
         }
 
         return false;
     }
+
 }

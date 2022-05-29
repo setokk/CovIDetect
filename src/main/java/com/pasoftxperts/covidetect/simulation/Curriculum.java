@@ -136,7 +136,7 @@ public class Curriculum
         currentHourSpanList.add(new HourSpan(10, 11, findCourseById("AIC21065")));
         fallSemesterRoomIdList.add("Room 12");
 
-        currentHourSpanList.add(new HourSpan(16, 18, findCourseById("AIC21026")));
+        currentHourSpanList.add(new HourSpan(11, 13, findCourseById("AIC21026")));
         fallSemesterRoomIdList.add("Room 18");
 
         currentHourSpanList.add(new HourSpan(13, 15, findCourseById("AIC21046")));
@@ -253,7 +253,7 @@ public class Curriculum
         currentHourSpanList.add(new HourSpan(10, 11, findCourseById("AIC21065")));
         springSemesterRoomIdList.add("Room 12");
 
-        currentHourSpanList.add(new HourSpan(16, 18, findCourseById("AIC21026")));
+        currentHourSpanList.add(new HourSpan(11, 13, findCourseById("AIC21026")));
         springSemesterRoomIdList.add("Room 18");
 
         currentHourSpanList.add(new HourSpan(13, 15, findCourseById("AIC21046")));

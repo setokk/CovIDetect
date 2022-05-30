@@ -82,3 +82,21 @@
 {
 	-fx-text-fill: #3463e4;
 }
+
+.combo-box .list-cell:hover, .combo-box-popup .list-cell:focused
+{
+	-fx-background-color: #323232;
+	-fx-text-fill: white;
+}
+
+.date-picker .cell:hover
+{
+	-fx-background-color: #323232;
+	-fx-text-fill: white;
+}
+
+.date-picker .button
+{
+	-fx-background-color: #323232;
+	-fx-text-fill: white;
+}

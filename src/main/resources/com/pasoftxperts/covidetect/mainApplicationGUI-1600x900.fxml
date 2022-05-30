@@ -35,7 +35,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button id="seatButton" fx:id="updateCovidStatusButton" layoutX="772.0" layoutY="8.0" mnemonicParsing="false" onAction="#openSeatsView" prefHeight="9.0" prefWidth="199.0" stylesheets="@mainApplicationStyles.css" text="Update Covid Status" textFill="WHITE">
+            <Button id="seatButton" fx:id="updateCovidStatusButton" layoutX="772.0" layoutY="8.0" mnemonicParsing="false" onAction="#openUpdateCovidCase" prefHeight="9.0" prefWidth="199.0" stylesheets="@mainApplicationStyles.css" text="Update Covid Status" textFill="WHITE">
                <font>
                   <Font name="Corbel Light" size="19.0" />
                </font>
@@ -48,7 +48,7 @@
                   <Image url="@icons/updateIcon.png" />
                </image>
             </ImageView>
-            <Button id="seatButton" fx:id="statisticsButton" layoutX="1193.0" layoutY="9.0" mnemonicParsing="false" onAction="#openSeatsView" prefHeight="35.0" prefWidth="172.0" stylesheets="@mainApplicationStyles.css" text="Statistical Analysis" textFill="WHITE">
+            <Button id="seatButton" fx:id="statisticsButton" layoutX="1193.0" layoutY="9.0" mnemonicParsing="false" onAction="#openStatistics" prefHeight="35.0" prefWidth="172.0" stylesheets="@mainApplicationStyles.css" text="Statistical Analysis" textFill="WHITE">
                <font>
                   <Font name="Corbel Light" size="19.0" />
                </font>

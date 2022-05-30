@@ -13,6 +13,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="jgrapht.core" level="project" />
     <orderEntry type="library" exported="" name="jgrapht.io" level="project" />
+    <orderEntry type="library" exported="" name="apache.commons.lang3" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:17.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:win:17.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:17.0.1" level="project" />
@@ -43,7 +44,6 @@
     <orderEntry type="library" name="Maven: org.jgrapht:jgrapht-io:1.5.1" level="project" />
     <orderEntry type="library" name="Maven: org.antlr:antlr4-runtime:4.8-1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-text:1.8" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.8.1" level="project" />
-    <orderEntry type="library" name="apache.commons.lang3" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.12.0" level="project" />
   </component>
 </module>

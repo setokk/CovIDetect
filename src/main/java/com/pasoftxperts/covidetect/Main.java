@@ -9,5 +9,4 @@ public class Main
         /*Simulation.runSimulation();*/
         RunApplication.main(args);
     }
-
 }

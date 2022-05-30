@@ -28,13 +28,20 @@ public class MainApplicationController implements Initializable
     private Button statisticsButton;
 
     @FXML
-    private Button updateCovidCaseButton;
+    private Button updateCovidStatusButton;
 
     @FXML
     private Button viewSeatButton;
 
     @FXML
     private ImageView seatsIcon;
+
+    public static final String path = System.getProperty("user.dir") + "/university of macedonia/applied informatics/";
+
+    // We need the width and height for other classes
+    public static double width;
+
+    public static double height;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
@@ -47,18 +54,70 @@ public class MainApplicationController implements Initializable
     }
 
     @FXML
-    protected void openStatistics(ActionEvent event)
+    protected void openStatistics(ActionEvent event) throws IOException
     {
+        String resourceName;
 
+        Stage window = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
+
+        width = window.getWidth();
+        height = window.getHeight();
+
+        System.out.println(MainApplicationController.width + ", " + MainApplicationController.height);
+
+        if ((width >= 1600) && (height >= 900))
+        {
+            resourceName = "mainApplicationGUI-1600x900-statistics.fxml";
+            width = 1600;
+            height = 900;
+        }
+        else
+        {
+            resourceName = "mainApplicationGUI-1000x600-statistics.fxml";
+            width = 1000;
+            height = 600;
+        }
+
+        Parent visualizationParent = FXMLLoader.load(RunApplication.class.getResource(resourceName));
+        Scene visualizationScene = new Scene(visualizationParent, width, height);
+
+        window.setScene(visualizationScene);
+        window.setTitle("Statistical Analysis - CovIDetect©");
+
+        // Deallocate memory
+        visualizationParent = null;
+        visualizationScene = null;
+        System.gc();
+
+        window.show();
     }
 
     @FXML
     protected void openSeatsView(ActionEvent event) throws IOException
     {
-        Parent visualizationParent = FXMLLoader.load(RunApplication.class.getResource("mainApplicationGUI-1600x900-viewSeats.fxml"));
-        Scene visualizationScene = new Scene(visualizationParent, 1600, 900);
+        String resourceName;
 
         Stage window = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
+
+        width = window.getWidth();
+        height = window.getHeight();
+
+        if ((width >= 1600) && (height >= 900))
+        {
+            resourceName = "mainApplicationGUI-1600x900-viewSeats.fxml";
+            width = 1600;
+            height = 900;
+        }
+        else
+        {
+            resourceName = "mainApplicationGUI-1000x600-viewSeats.fxml";
+            width = 1000;
+            height = 600;
+        }
+
+        Parent visualizationParent = FXMLLoader.load(RunApplication.class.getResource(resourceName));
+        Scene visualizationScene = new Scene(visualizationParent, width, height);
+
         window.setScene(visualizationScene);
         window.setTitle("Class Visualization - CovIDetect©");
 

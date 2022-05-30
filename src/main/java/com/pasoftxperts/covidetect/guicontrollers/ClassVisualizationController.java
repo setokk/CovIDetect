@@ -15,7 +15,11 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -25,8 +29,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import javafx.stage.Stage;
 import org.jgrapht.graph.DefaultUndirectedGraph;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -61,7 +67,7 @@ public class ClassVisualizationController implements Initializable
     private Button statisticsButton;
 
     @FXML
-    private Button updateCovidCaseButton;
+    private Button updateCovidStatusButton;
 
     @FXML
     private Button viewSeatButton;
@@ -87,12 +93,18 @@ public class ClassVisualizationController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        int maxWidth = 50; // Max seat icon width
+        int maxHeight = 78; // Max seat icon height
+
+        int widthRatio = (int) (MainApplicationController.width / 64); // Ratio to scale seat width depending on resolution
+        int heightRatio = maxHeight - (maxWidth - widthRatio); // Ratio to scale seat height depending on resolution
+
         // Initialize room seats
         for (int i = 0; i < DEFAULT_ROOM_CAPACITY; i++)
         {
             seatList.add(new ImageView(new Image(RunApplication.class.getResourceAsStream("/com/pasoftxperts/covidetect/icons/freeSeat.png"))));
-            seatList.get(i).setFitWidth(25);
-            seatList.get(i).setFitHeight(47);
+            seatList.get(i).setFitWidth(widthRatio);
+            seatList.get(i).setFitHeight(heightRatio);
         }
 
         int defaultColumns = DEFAULT_ROOM_CAPACITY / DEFAULT_SEAT_ROWS;
@@ -117,17 +129,23 @@ public class ClassVisualizationController implements Initializable
             seatsGridPane.getRowConstraints().add(rc);
         }
 
-        seatsGridPane.setPrefHeight(400);
-        seatsGridPane.setPrefWidth(400);
+        if ((MainApplicationController.width >= 1600) && (MainApplicationController.height >= 900))
+        {
+            seatsGridPane.setPrefHeight(400);
+            seatsGridPane.setPrefWidth(400);
+        }
+        else
+        {
+            seatsGridPane.setPrefHeight(270);
+            seatsGridPane.setPrefWidth(300);
+        }
 
-        // Set path
-        String path = System.getProperty("user.dir") + "/university of macedonia/applied informatics/";
-
-        // Set datepicker as not editable
+        // Set date picker as not editable
         datePicker.setEditable(false);
 
         // Add listeners (room combo box and date picker)
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(TimeStamp.DATE_FORMAT, Locale.US);
+
 
         // ROOM COMBO LISTENER
         roomComboBox.valueProperty().addListener(new ChangeListener()
@@ -153,10 +171,11 @@ public class ClassVisualizationController implements Initializable
                 roomLabel.setText(roomName);
 
                 // Open .ser file for specific room
-                objectReader = new ObjectReader(path + roomName + ".ser");
+                objectReader = new ObjectReader(MainApplicationController.path + roomName + ".ser");
                 objectReader.start();
             }
         });
+
 
         // DATE PICKER LISTENER
         datePicker.valueProperty().addListener(new ChangeListener<LocalDate>() {
@@ -213,6 +232,7 @@ public class ClassVisualizationController implements Initializable
             }
         });
 
+
         // HOURSPAN COMBO BOX LISTENER
         hourSpanComboBox.valueProperty().addListener(new ChangeListener() {
             @Override
@@ -233,7 +253,7 @@ public class ClassVisualizationController implements Initializable
                 }
 
                 Course course = timeStamp.getDay().getHourSpan().getCourse();
-                courseLabel.setText(course.getCourseName() + " (" + course.getCourseId() + ")\nSemester: " + course.getSemesterNum());
+                courseLabel.setText(course.getCourseName() + " (" + course.getCourseId() + ")");
 
                 // Update seats according to graph
                 DefaultUndirectedGraph<Seat, Integer> seatGraph = timeStamp.getSeatGraph();
@@ -262,7 +282,7 @@ public class ClassVisualizationController implements Initializable
         });
 
         // Read room names
-        ArrayList<Object> objectList = ObjectListReader.readObjectListFile(path + "roomNames.ser");
+        ArrayList<Object> objectList = ObjectListReader.readObjectListFile(MainApplicationController.path + "roomNames.ser");
 
         List<String> roomNames = objectList.stream()
                 .map(object -> Objects.toString(object, null))
@@ -273,9 +293,29 @@ public class ClassVisualizationController implements Initializable
     }
 
     @FXML
-    protected void openStatistics(ActionEvent event)
+    protected void openStatistics(ActionEvent event) throws IOException
     {
+        String resourceName;
 
+        Stage window = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
+
+        if ((MainApplicationController.width >= 1600) && (MainApplicationController.height >= 900))
+            resourceName = "mainApplicationGUI-1600x900-statistics.fxml";
+        else
+            resourceName = "mainApplicationGUI-1000x600-statistics.fxml";
+
+        Parent visualizationParent = FXMLLoader.load(RunApplication.class.getResource(resourceName));
+        Scene visualizationScene = new Scene(visualizationParent, MainApplicationController.width, MainApplicationController.height);
+
+        window.setScene(visualizationScene);
+        window.setTitle("Statistical Analysis - CovIDetect©");
+
+        // Deallocate memory
+        visualizationParent = null;
+        visualizationScene = null;
+        System.gc();
+
+        window.show();
     }
 
     @FXML

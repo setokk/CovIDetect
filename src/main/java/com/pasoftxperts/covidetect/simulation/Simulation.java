@@ -216,7 +216,8 @@ public class Simulation
             }
         }
 
-        printRoomTimeStamps(roomList);
+        // We need to randomly pick students to turn to covid cases
+        Random random = new Random(System.currentTimeMillis());
 
         // We've populated the rooms with the appropriate TimeStamps based on the Curriculum
         // What's left is creating the graphs for each room and passing students through
@@ -245,6 +246,16 @@ public class Simulation
                     // Reset health indicators
                     for (int k = 0; k < studentList.size(); k++)
                         studentList.get(k).setHealthIndicator(0);
+
+                    // With a certain low probability, pick a number of students that are going to be a covid case
+                    // from studentList
+                    double probability = 0.025;
+
+                    for (int k = 0; k < studentList.size(); k++)
+                    {
+                        if (random.nextFloat() < probability)
+                            studentList.get(k).setHealthIndicator(1);
+                    }
                 }
 
                 seats = populateWithStudents(studentList, room.getSeatRows(), room.getSeatColumns());
@@ -315,16 +326,6 @@ public class Simulation
             studentIndexes.add(i);
 
         Collections.shuffle(studentIndexes);
-
-        // With a certain low probability, pick a number of students that are going to be a covid case
-        // from studentList
-        double probability = 0.025;
-
-        for (int i = 0; i < studentList.size(); i++)
-        {
-            if (random.nextFloat() < probability)
-                studentList.get(i).setHealthIndicator(1);
-        }
 
         for (int i = 0; i < attendanceNumber; i++)
         {

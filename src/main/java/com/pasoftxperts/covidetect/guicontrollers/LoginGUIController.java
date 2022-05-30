@@ -97,7 +97,7 @@ public class LoginGUIController
         if ((width >= 1600) && (height >= 900))
             mainScene = new Scene(FXMLLoader.load(RunApplication.class.getResource("mainApplicationGUI-1600x900.fxml")), 1600, 900);
         else
-            mainScene = new Scene(FXMLLoader.load(RunApplication.class.getResource("mainApplicationGUI-1280x800.fxml")), 1280, 800);
+            mainScene = new Scene(FXMLLoader.load(RunApplication.class.getResource("mainApplicationGUI-1000x600.fxml")), 1000, 600);
 
         mainApplicationWindow.setTitle("CovIDetect© by PasoftXperts");
         mainApplicationWindow.setResizable(false);

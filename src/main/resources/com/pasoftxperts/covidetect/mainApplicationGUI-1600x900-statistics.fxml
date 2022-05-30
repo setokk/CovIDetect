@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" style="-fx-background-color: white;" stylesheets="@mainApplicationStyles-statistics.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pasoftxperts.covidetect.guicontrollers.StatisticsController">
+   <children>
+      <AnchorPane prefHeight="53.0" prefWidth="1603.0" styleClass="menu" stylesheets="@mainApplicationStyles-statistics.css">
+         <children>
+            <Label id="logoLabel" layoutX="17.0" layoutY="10.0" prefHeight="31.0" prefWidth="161.0" stylesheets="@mainApplicationStyles.css" text="   CovIDetect" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="25.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
+            </Label>
+            <ImageView fx:id="seatsIcon" fitHeight="26.0" fitWidth="44.0" layoutX="346.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/seatVisualizationIcon.png" />
+               </image>
+            </ImageView>
+            <Button id="seatButton" fx:id="viewSeatButton" layoutX="379.0" layoutY="8.0" mnemonicParsing="false" onAction="#openSeatsView" prefHeight="35.0" prefWidth="172.0" stylesheets="@mainApplicationStyles.css" text="Room Visualization" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="19.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button id="seatButton" fx:id="updateCovidStatusButton" layoutX="772.0" layoutY="8.0" mnemonicParsing="false" onAction="#openUpdateCovidCase" prefHeight="9.0" prefWidth="199.0" stylesheets="@mainApplicationStyles.css" text="Update Covid Status" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="19.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <ImageView fitHeight="18.0" fitWidth="22.0" layoutX="754.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/updateIcon.png" />
+               </image>
+            </ImageView>
+            <Button id="seatButton" fx:id="statisticsButton" layoutX="1193.0" layoutY="9.0" mnemonicParsing="false" onAction="#openStatistics" prefHeight="35.0" prefWidth="172.0" stylesheets="@mainApplicationStyles-statistics.css" text="Statistical Analysis" textFill="#f6ff00">
+               <font>
+                  <Font name="Corbel Light" size="19.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="1166.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/statisticsIconHover.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutY="50.0" prefHeight="166.0" prefWidth="1601.0" style="-fx-background-color: #3463e4;">
+         <children>
+            <Label layoutX="702.0" layoutY="33.0" text="Statistical Analysis" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="31.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="71.0" fitWidth="77.0" layoutX="777.0" layoutY="73.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/statisticsChart.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="50.0" layoutY="246.0" prefHeight="624.0" prefWidth="466.0" style="-fx-background-color: #3463e4;">
+         <children>
+            <Label layoutX="82.0" layoutY="107.0" text="From:" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="25.0" />
+               </font>
+            </Label>
+            <Label layoutX="332.0" layoutY="106.0" text="To:" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="25.0" />
+               </font>
+            </Label>
+            <DatePicker fx:id="startDatePicker" editable="false" layoutX="40.0" layoutY="143.0" prefHeight="29.0" prefWidth="149.0" promptText="Start Date" />
+            <DatePicker fx:id="endDatePicker" editable="false" layoutX="277.0" layoutY="143.0" prefHeight="29.0" prefWidth="149.0" promptText="End Date" />
+            <Label layoutX="194.0" layoutY="229.0" text="Show by:" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="25.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="showByComboBox" layoutX="148.0" layoutY="270.0" prefHeight="25.0" prefWidth="178.0" promptText="Choose X Axis" />
+            <Label layoutX="166.0" layoutY="361.0" prefHeight="31.0" prefWidth="158.0" text="Data Category:" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="25.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="dataCategoryComboBox" layoutX="148.0" layoutY="398.0" prefHeight="25.0" prefWidth="178.0" promptText="Choose Category" />
+            <Label layoutX="127.0" layoutY="463.0" prefHeight="76.0" prefWidth="237.0" text="Additional Statistical&#10;Methods:" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="25.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="methodsComboBox" layoutX="144.0" layoutY="546.0" prefHeight="25.0" prefWidth="178.0" promptText="Choose Method" />
+            <Label layoutX="209.0" layoutY="14.0" prefHeight="31.0" prefWidth="73.0" text="Room:" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="26.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="roomComboBox" layoutX="172.0" layoutY="55.0" prefHeight="25.0" prefWidth="134.0" promptText="Select a Room" />
+         </children>
+      </AnchorPane>
+      <LineChart layoutX="558.0" layoutY="384.0" prefHeight="499.0" prefWidth="988.0">
+        <xAxis>
+          <CategoryAxis side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis side="LEFT" />
+        </yAxis>
+      </LineChart>
+   </children>
+</AnchorPane>

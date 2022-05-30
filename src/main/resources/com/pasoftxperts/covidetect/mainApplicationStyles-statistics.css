@@ -1,0 +1,102 @@
+.menu
+{
+	-fx-background-color: #3463e4;
+}
+
+.button
+{
+	-fx-background-color: #3463e4;
+}
+
+.button:hover
+{
+	-fx-border-color: white;
+	-fx-border-width: 0px 0px 1px 0px;
+}
+
+#logoLabel:hover
+{
+	-fx-text-fill: #323232;
+}
+
+.borderpane, .anchorpane
+{
+	-fx-background-color: white;
+}
+
+#loadHistoryButton
+{
+	-fx-text-fill: white;
+	-fx-background-color: #323232;
+	-fx-background-radius: 30;
+	-fx-border-style: solid;
+	-fx-border-color: black;
+	-fx-border-width: 2;
+	-fx-border-radius: 30;
+}
+
+#loadHistoryButton:hover
+{
+	-fx-background-color: #3463e4;
+}
+
+.date-picker
+{
+    -fx-background-color:linear-gradient(#323232,#DDDDDD);
+}
+
+.date-picker > .text-field
+{
+	-fx-font-family: "Corbel Light";
+	-fx-font-size: 12pt;
+}
+
+.date-picker:focused > .text-field,
+.date-picker > .text-field:focused 
+{
+    -fx-background-color:
+        -fx-control-inner-background,
+        -fx-faint-focus-color,
+        linear-gradient(from 0px 0px to 0px 5px, derive(-fx-control-inner-background, -9%), -fx-control-inner-background);
+    -fx-background-insets: 1 0 1 1, 1 0 1 1, 3 2 3 3;
+    -fx-background-radius: 2 0 0 2, 1 0 0 1, 0;
+}
+
+#proceedButton
+{
+	-fx-background-color: #323232;
+	-fx-text-fill: white;
+	-fx-background-radius: 30;
+	-fx-border-style: solid;
+	-fx-border-color: white;
+	-fx-border-width: 2;
+}
+
+#proceedButton:hover
+{
+	-fx-background-color: white;
+	-fx-text-fill: #323232;
+}
+
+.caseLabel:hover
+{
+	-fx-text-fill: #3463e4;
+}
+
+.combo-box .list-cell:hover, .combo-box-popup .list-cell:focused
+{
+	-fx-background-color: #323232;
+	-fx-text-fill: white;
+}
+
+.date-picker .cell:hover
+{
+	-fx-background-color: #323232;
+	-fx-text-fill: white;
+}
+
+.date-picker .button
+{
+	-fx-background-color: #323232;
+	-fx-text-fill: white;
+}

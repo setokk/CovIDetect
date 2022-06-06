@@ -9,8 +9,8 @@ public interface AttendanceStats
 {
     public ArrayList<Double> calculateAttendanceRates(String startDate,
                                                       String endDate,
-                                                      String option,
-                                                      String statisticalMethod,
+                                                      ArrayList<Double> minMaxAverage,
+                                                      String showByOption,
                                                       ArrayList<String> showByElements,
                                                       ArrayList<Room> roomList);
 }

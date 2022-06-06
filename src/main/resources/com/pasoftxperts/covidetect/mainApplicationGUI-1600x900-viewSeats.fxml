@@ -104,7 +104,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
       </GridPane>
-      <Label fx:id="roomLabel" alignment="CENTER" layoutX="747.0" layoutY="275.0" text="No Room&#10;Selected" textAlignment="CENTER" textFill="#323232">
+      <Label fx:id="roomLabel" alignment="CENTER" layoutX="747.0" layoutY="265.0" text="No Room&#10;Selected" textAlignment="CENTER" textFill="#323232">
          <font>
             <Font name="Corbel Light" size="29.0" />
          </font>
@@ -186,6 +186,40 @@
             <Label fx:id="courseLabel" layoutX="14.0" layoutY="42.0" prefHeight="22.0" prefWidth="364.0" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font name="Corbel Light" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="dateLabel" layoutX="12.0" layoutY="64.0" prefHeight="21.0" prefWidth="364.0" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="15.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="1271.0" layoutY="337.0" prefHeight="480.0" prefWidth="289.0" style="-fx-background-color: #323232;">
+         <children>
+            <Label fx:id="totalStudents" layoutX="14.0" layoutY="101.0" prefHeight="33.0" prefWidth="237.0" styleClass="generalLabel" text="Total Students: " textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="68.0" layoutY="27.0" prefHeight="33.0" prefWidth="199.0" text="General Room Info" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="21.0" />
+               </font>
+            </Label>
+            <Label fx:id="covidCases" layoutX="14.0" layoutY="142.0" prefHeight="33.0" prefWidth="237.0" styleClass="generalLabel" text="Covid Cases: " textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="possibleCases" layoutX="14.0" layoutY="185.0" prefHeight="33.0" prefWidth="237.0" styleClass="generalLabel" text="Possible Cases: " textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="freeSeats" layoutX="14.0" layoutY="224.0" prefHeight="33.0" prefWidth="237.0" styleClass="generalLabel" text="Free Seats: " textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="18.0" />
                </font>
             </Label>
          </children>

@@ -7,10 +7,10 @@ import java.util.ArrayList;
 
 public interface CovidCaseStats
 {
-    public ArrayList<Integer> calculateCovidCases(String startDate,
+    public ArrayList<Double> calculateCovidCases(String startDate,
                                                   String endDate,
-                                                  String option,
-                                                  String statisticalMethod,
+                                                  ArrayList<Double> minMaxAverage,
+                                                  String showByOption,
                                                   ArrayList<String> showByElements,
                                                   ArrayList<Room> roomList);
 }

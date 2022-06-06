@@ -66,7 +66,7 @@
             </ImageView>
          </children>
       </AnchorPane>
-      <AnchorPane layoutY="50.0" prefHeight="166.0" prefWidth="1601.0" style="-fx-background-color: #3463e4;">
+      <AnchorPane layoutY="50.0" prefHeight="156.0" prefWidth="1601.0" style="-fx-background-color: #3463e4;">
          <children>
             <Label layoutX="702.0" layoutY="33.0" text="Statistical Analysis" textFill="WHITE">
                <font>
@@ -80,53 +80,80 @@
             </ImageView>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="50.0" layoutY="246.0" prefHeight="624.0" prefWidth="466.0" style="-fx-background-color: #3463e4;">
+      <AnchorPane layoutX="50.0" layoutY="232.0" prefHeight="650.0" prefWidth="466.0" style="-fx-background-color: #3463e4;">
          <children>
-            <Label layoutX="82.0" layoutY="107.0" text="From:" textFill="WHITE">
+            <Label layoutX="82.0" layoutY="123.0" text="From:" textFill="WHITE">
                <font>
                   <Font name="Corbel Light" size="25.0" />
                </font>
             </Label>
-            <Label layoutX="332.0" layoutY="106.0" text="To:" textFill="WHITE">
+            <Label layoutX="332.0" layoutY="122.0" text="To:" textFill="WHITE">
                <font>
                   <Font name="Corbel Light" size="25.0" />
                </font>
             </Label>
-            <DatePicker fx:id="startDatePicker" editable="false" layoutX="40.0" layoutY="143.0" prefHeight="29.0" prefWidth="149.0" promptText="Start Date" />
-            <DatePicker fx:id="endDatePicker" editable="false" layoutX="277.0" layoutY="143.0" prefHeight="29.0" prefWidth="149.0" promptText="End Date" />
+            <DatePicker fx:id="startDatePicker" editable="false" layoutX="40.0" layoutY="159.0" prefHeight="29.0" prefWidth="149.0" promptText="Start Date" />
+            <DatePicker fx:id="endDatePicker" editable="false" layoutX="277.0" layoutY="159.0" prefHeight="29.0" prefWidth="149.0" promptText="End Date" />
             <Label layoutX="194.0" layoutY="229.0" text="Show by:" textFill="WHITE">
                <font>
                   <Font name="Corbel Light" size="25.0" />
                </font>
             </Label>
-            <ComboBox fx:id="showByComboBox" layoutX="148.0" layoutY="270.0" prefHeight="25.0" prefWidth="178.0" promptText="Choose X Axis" />
-            <Label layoutX="166.0" layoutY="361.0" prefHeight="31.0" prefWidth="158.0" text="Data Category:" textFill="WHITE">
+            <ComboBox fx:id="showByComboBox" layoutX="148.0" layoutY="270.0" prefHeight="25.0" prefWidth="178.0" promptText="Choose X Axis" style="-fx-background-color: white;" />
+            <Label layoutX="158.0" layoutY="352.0" prefHeight="31.0" prefWidth="158.0" text="Data Category:" textFill="WHITE">
                <font>
                   <Font name="Corbel Light" size="25.0" />
                </font>
             </Label>
-            <ComboBox fx:id="dataCategoryComboBox" layoutX="148.0" layoutY="398.0" prefHeight="25.0" prefWidth="178.0" promptText="Choose Category" />
+            <ComboBox fx:id="dataCategoryComboBox" layoutX="148.0" layoutY="397.0" prefHeight="25.0" prefWidth="178.0" promptText="Choose Category" style="-fx-background-color: white;" />
             <Label layoutX="127.0" layoutY="463.0" prefHeight="76.0" prefWidth="237.0" text="Additional Statistical&#10;Methods:" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font name="Corbel Light" size="25.0" />
                </font>
             </Label>
-            <ComboBox fx:id="methodsComboBox" layoutX="144.0" layoutY="546.0" prefHeight="25.0" prefWidth="178.0" promptText="Choose Method" />
-            <Label layoutX="209.0" layoutY="14.0" prefHeight="31.0" prefWidth="73.0" text="Room:" textFill="WHITE">
+            <ComboBox fx:id="methodsComboBox" layoutX="144.0" layoutY="546.0" prefHeight="25.0" prefWidth="178.0" promptText="Choose Method" style="-fx-background-color: white;" />
+            <Label layoutX="210.0" layoutY="33.0" prefHeight="31.0" prefWidth="73.0" text="Room:" textFill="WHITE">
                <font>
                   <Font name="Corbel Light" size="26.0" />
                </font>
             </Label>
-            <ComboBox fx:id="roomComboBox" layoutX="172.0" layoutY="55.0" prefHeight="25.0" prefWidth="134.0" promptText="Select a Room" />
+            <ComboBox fx:id="roomComboBox" layoutX="150.0" layoutY="74.0" prefHeight="25.0" prefWidth="178.0" promptText="Select a Room" style="-fx-background-color: white;" />
+            <Button id="proceedButton" fx:id="proceedButton" layoutX="147.0" layoutY="599.0" mnemonicParsing="false" onAction="#calculateStatistics" prefHeight="35.0" prefWidth="172.0" stylesheets="@mainApplicationStyles.css" text="Proceed" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="19.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
          </children>
       </AnchorPane>
-      <LineChart layoutX="558.0" layoutY="384.0" prefHeight="499.0" prefWidth="988.0">
+      <LineChart fx:id="lineChart" animated="false" layoutX="518.0" layoutY="325.0" prefHeight="564.0" prefWidth="1068.0">
         <xAxis>
           <CategoryAxis side="BOTTOM" />
         </xAxis>
         <yAxis>
-          <NumberAxis side="LEFT" />
+          <NumberAxis prefHeight="444.0" prefWidth="28.0" side="LEFT" />
         </yAxis>
       </LineChart>
+      <AnchorPane layoutX="1326.0" layoutY="217.0" prefHeight="71.0" prefWidth="260.0" style="-fx-background-color: #323232;">
+         <children>
+            <Label fx:id="minField" layoutX="21.0" layoutY="14.0" text="Min:" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="19.0" />
+               </font>
+            </Label>
+            <Label fx:id="maxField" layoutX="100.0" layoutY="14.0" text="Max:" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="19.0" />
+               </font>
+            </Label>
+            <Label fx:id="averageField" layoutX="172.0" layoutY="14.0" text="Average:" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="19.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

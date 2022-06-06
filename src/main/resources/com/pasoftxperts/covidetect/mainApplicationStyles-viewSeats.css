@@ -78,7 +78,7 @@
 	-fx-text-fill: #323232;
 }
 
-.caseLabel:hover
+.caseLabel:hover, .generalLabel:hover
 {
 	-fx-text-fill: #3463e4;
 }

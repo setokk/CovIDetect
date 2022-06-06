@@ -63,8 +63,6 @@ public class MainApplicationController implements Initializable
         width = window.getWidth();
         height = window.getHeight();
 
-        System.out.println(MainApplicationController.width + ", " + MainApplicationController.height);
-
         if ((width >= 1600) && (height >= 900))
         {
             resourceName = "mainApplicationGUI-1600x900-statistics.fxml";
@@ -119,7 +117,7 @@ public class MainApplicationController implements Initializable
         Scene visualizationScene = new Scene(visualizationParent, width, height);
 
         window.setScene(visualizationScene);
-        window.setTitle("Class Visualization - CovIDetect©");
+        window.setTitle("Room Visualization - CovIDetect©");
 
         // Deallocate memory
         visualizationParent = null;

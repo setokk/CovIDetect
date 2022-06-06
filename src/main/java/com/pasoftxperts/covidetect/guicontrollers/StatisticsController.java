@@ -4,9 +4,9 @@ import com.pasoftxperts.covidetect.RunApplication;
 import com.pasoftxperts.covidetect.filemanager.ObjectListReader;
 import com.pasoftxperts.covidetect.filemanager.ObjectReader;
 import com.pasoftxperts.covidetect.guicontrollers.popupwindow.PopupWindow;
+import com.pasoftxperts.covidetect.statistics.StatisticalAnalysis;
 import com.pasoftxperts.covidetect.time.TimeStamp;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import com.pasoftxperts.covidetect.university.Room;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,13 +15,17 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -56,6 +60,23 @@ public class StatisticsController implements Initializable
     @FXML
     private ComboBox methodsComboBox;
 
+    @FXML
+    private Button proceedButton;
+
+    @FXML
+    private LineChart<String, Number> lineChart;
+
+    @FXML
+    private Label minField;
+
+    @FXML
+    private Label maxField;
+
+    @FXML
+    private Label averageField;
+
+    private XYChart.Series<String, Number> series;
+
     // Selected room name from room combo box list
     private String selectedRoom = null;
 
@@ -65,18 +86,74 @@ public class StatisticsController implements Initializable
     // List of ObjectReaders (All Rooms)
     private List<ObjectReader> objectReaderList = new ArrayList<>();
 
+    // Start Date LocalDate
+    private LocalDate startDate = null;
+
     // Start Date String
     private String startDateString = null;
 
     // End Date String
     private String endDateString = null;
 
-    // End Date LocalDate
-    private LocalDate startDate = null;
+    // List for Show By ComboBox
+    private List<String> showByOptions = new ArrayList<>();
+
+    // Selected Show By Value
+    private String selectedShowByOption = null;
+
+    // List for Data Category ComboBox
+    private List<String> dataCategoryOptions = new ArrayList<>();
+
+    // Selected Data Category Value
+    private String selectedDataCategory = null;
+
+    // List for Statistical Methods ComboBox
+    private List<String> statisticalMethodOptions = new ArrayList<>();
+
+    // Selected Statistical Method Value
+    private String selectedStatisticalMethod = null;
+
+    // Show By Values (Line Chart X Axis)
+    private ArrayList<String> showByElements = new ArrayList<>();
+
+    // We use a list with a capacity of 1 so that changes made to it can be returned.
+    private ArrayList<Double> statisticalMethod = new ArrayList<>(1);
+
+    // Min, Max, Average
+    private ArrayList<Double> minMaxAverage = new ArrayList<>(3);
+
+    // Rooms List to apply statistical analysis to
+    private ArrayList<Room> rooms;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        // Add Show By Options List to its ComboBox
+        showByOptions.add("Yearly");
+        showByOptions.add("Monthly");
+        showByOptions.add("Weekly");
+        showByOptions.add("By Day");
+        showByOptions.add("Hourly");
+        showByOptions.add("By Professor");
+
+        showByComboBox.setItems(FXCollections.observableList(showByOptions));
+
+
+        // Add Data Category Options List to its ComboBox
+        dataCategoryOptions.add("Attendance Stats");
+        dataCategoryOptions.add("Covid Cases Stats");
+
+        dataCategoryComboBox.setItems(FXCollections.observableList(dataCategoryOptions));
+
+
+        // Add Data Category Options List to its ComboBox
+        statisticalMethodOptions.add("Average");
+        statisticalMethodOptions.add("Max");
+        statisticalMethodOptions.add("Min");
+
+        methodsComboBox.setItems(FXCollections.observableList(statisticalMethodOptions));
+
+
         // Make date pickers not editable
         startDatePicker.setEditable(false);
         endDatePicker.setEditable(false);
@@ -98,100 +175,220 @@ public class StatisticsController implements Initializable
 
         // ADD LISTENERS
         // ROOM COMBO BOX LISTENER
-        roomComboBox.valueProperty().addListener(new ChangeListener()
+        roomComboBox.valueProperty().addListener((observableValue, o, t1) ->
         {
-            @Override
-            public void changed(ObservableValue observableValue, Object o, Object t1)
+            // Set date picker selected values to null
+            startDatePicker.setValue(null);
+            endDatePicker.setValue(null);
+            endDateString = null;
+            startDate = null;
+
+            if (roomComboBox.getValue() == null)
+                return;
+
+            selectedRoom = (String) roomComboBox.getValue();
+
+            objectReaderList = new ArrayList<>();
+
+            minField.setText("Min:");
+            maxField.setText("Max:");
+            averageField.setText("Average:");
+
+            if (selectedRoom.equals("All Rooms"))
             {
-                // Set date picker selected values to null
-                startDatePicker.setValue(null);
-                endDatePicker.setValue(null);
+                objectReader = null;
 
-                if (roomComboBox.getValue() == null)
-                    return;
-
-                selectedRoom = (String) roomComboBox.getValue();
-
-                objectReaderList = new ArrayList<>();
-
-                if (selectedRoom.equals("All Rooms"))
+                for (String name : roomNames)
                 {
-                    for (String name : roomNames)
+                    if (!name.equals("All Rooms"))
                     {
-                        if (!name.equals("All Rooms"))
-                        {
-                            objectReaderList.add(new ObjectReader(MainApplicationController.path + name + ".ser"));
-                            objectReaderList.get(objectReaderList.size() - 1).start();
-                        }
+                        objectReaderList.add(new ObjectReader(MainApplicationController.path + name + ".ser"));
+                        objectReaderList.get(objectReaderList.size() - 1).start();
                     }
                 }
-                else
-                {
-                    objectReader = new ObjectReader(MainApplicationController.path + selectedRoom + ".ser");
-                    objectReader.start();
-                }
+            }
+            else
+            {
+                objectReader = new ObjectReader(MainApplicationController.path + selectedRoom + ".ser");
+                objectReader.start();
             }
         });
 
 
         // START DATE LISTENER
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(TimeStamp.DATE_FORMAT, Locale.US);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM,d,yyyy", Locale.US);
 
-        startDatePicker.valueProperty().addListener(new ChangeListener<LocalDate>()
+        startDatePicker.valueProperty().addListener((observableValue, localDate, t1) ->
         {
-            @Override
-            public void changed(ObservableValue<? extends LocalDate> observableValue, LocalDate localDate, LocalDate t1)
+            if (startDatePicker.getValue() == null)
+                return;
+
+            startDate = startDatePicker.getValue();
+
+            // Check if Start Date is before End Date
+            if ((endDatePicker.getValue() != null) && (startDate.isAfter(endDatePicker.getValue())))
             {
-                if (startDatePicker.getValue() == null)
-                    return;
+                startDatePicker.setValue(null);
 
-                LocalDate startDate = startDatePicker.getValue();
-
-                startDateString = formatter.format(startDate);
+                try {
+                    PopupWindow.display("Start Date can't be after End Date");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+
+            startDateString = formatter.format(startDate);
         });
 
 
         // END DATE LISTENER
-        endDatePicker.valueProperty().addListener(new ChangeListener<LocalDate>()
+        endDatePicker.valueProperty().addListener((observableValue, localDate, t1) ->
         {
-            @Override
-            public void changed(ObservableValue<? extends LocalDate> observableValue, LocalDate localDate, LocalDate t1)
+            if (endDatePicker.getValue() == null)
+                return;
+
+            LocalDate endDate = endDatePicker.getValue();
+
+            endDateString = formatter.format(endDate);
+
+            if (startDateString == null)
+                return;
+
+            if (endDate.isBefore(startDate))
             {
-                if (endDatePicker.getValue() == null)
-                    return;
-
-                LocalDate endDate = endDatePicker.getValue();
-
-                endDateString = formatter.format(endDate);
-
-                if (startDateString == null)
-                    return;
-
-                if (endDate.isBefore(startDate))
+                try
                 {
-                    try
-                    {
-                        PopupWindow.display("End Date can't be before Start Date");
-                        endDatePicker.setValue(null);
-                    } catch (IOException e)
-                    {
-                        e.printStackTrace();
-                    }
+                    PopupWindow.display("End Date can't be before Start Date");
+                    endDatePicker.setValue(null);
+                } catch (IOException e)
+                {
+                    e.printStackTrace();
                 }
             }
         });
 
 
-        // SHOW BY COMBOBOX LISTENER
-        showByComboBox.valueProperty().addListener(new ChangeListener()
+        // SHOW BY COMBO BOX LISTENER
+        showByComboBox.valueProperty().addListener((observableValue, o, t1) ->
         {
-            @Override
-            public void changed(ObservableValue observableValue, Object o, Object t1)
-            {
+            if (showByComboBox.getValue() == null)
+                return;
 
-            }
+            selectedShowByOption = (String) showByComboBox.getValue();
         });
+
+
+        // DATA CATEGORY COMBO BOX LISTENER
+        dataCategoryComboBox.valueProperty().addListener((observableValue, o, t1) ->
+        {
+            if (dataCategoryComboBox.getValue() == null)
+                return;
+
+            selectedDataCategory = (String) dataCategoryComboBox.getValue();
+        });
+
+
+        // STATISTICAL METHODS COMBO BOX
+        methodsComboBox.valueProperty().addListener((observableValue, o, t1) ->
+        {
+            if (methodsComboBox.getValue() == null)
+                return;
+
+            selectedStatisticalMethod = (String) methodsComboBox.getValue();
+        });
+    }
+
+    @FXML
+    protected void calculateStatistics()
+    {
+        // First check if there is any empty field left
+        if ((selectedRoom == null)
+                || (selectedDataCategory == null)
+                || (selectedShowByOption == null)
+                || (startDateString == null)
+                || (endDateString == null))
+            return;
+
+        rooms = new ArrayList<>();
+
+        if (!selectedRoom.equals("All Rooms")) // Means that the user selected only one room
+        {
+            rooms.add((Room) objectReader.getResult());
+        }
+        else
+        {
+            for (ObjectReader reader : objectReaderList)
+                rooms.add((Room) reader.getResult());
+        }
+
+        lineChart.getData().clear();
+        lineChart.setTitle(selectedDataCategory);
+        series = new XYChart.Series<String, Number>();
+
+
+        minMaxAverage = new ArrayList<>(3);
+
+        showByElements = new ArrayList<>();
+
+        ArrayList<Double> yAxisData;
+        StatisticalAnalysis statisticalAnalysis = new StatisticalAnalysis();
+
+        // If we want to show Attendance Rates, we want to multiply the rates by 100
+        // If we want to show Covid Cases, we don't want to multiply it by anything
+        int percentageFactor;
+
+        // Takes the "%" value if we want to show [Min,Max,Average] in Attendance Stats
+        // Takes "" value if we want to show [Min,Max,Average] in Covid Cases
+        String percentSymbol;
+
+        if (selectedDataCategory.equals("Attendance Stats"))
+        {
+            yAxisData = statisticalAnalysis.calculateAttendanceRates(startDateString,
+                    endDateString,
+                    minMaxAverage,
+                    selectedShowByOption,
+                    showByElements,
+                    rooms);
+
+            percentageFactor = 100;
+            percentSymbol = "%";
+        }
+        else
+        {
+            yAxisData = statisticalAnalysis.calculateCovidCases(startDateString,
+                    endDateString,
+                    minMaxAverage,
+                    selectedShowByOption,
+                    showByElements,
+                    rooms);
+
+            percentageFactor = 1;
+            percentSymbol = "";
+        }
+
+            for (int i = 0; i < yAxisData.size(); i++)
+                series.getData().add(new XYChart.Data<String, Number>(showByElements.get(i), yAxisData.get(i) * percentageFactor));
+
+            lineChart.getData().add(series);
+
+            // Remove the decimals
+            DecimalFormat decimalFormat = new DecimalFormat(".");
+            decimalFormat.setGroupingUsed(false);
+            decimalFormat.setDecimalSeparatorAlwaysShown(false);
+
+            minField.setText("Min:\n" + decimalFormat.format(minMaxAverage.get(0) * percentageFactor) + percentSymbol);
+            maxField.setText("Max:\n" + decimalFormat.format(minMaxAverage.get(1) * percentageFactor) + percentSymbol);
+            averageField.setText("Average:\n" + decimalFormat.format(minMaxAverage.get(2) * percentageFactor) + percentSymbol);
+
+            if (minMaxAverage.get(1) == -1)
+            {
+                minField.setText("Min:\n0");
+                maxField.setText("Max:\n0");
+            }
+
+            // Deallocate memory
+            rooms = null;
+            System.gc();
     }
 
     @FXML

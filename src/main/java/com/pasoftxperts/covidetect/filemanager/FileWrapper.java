@@ -1,11 +1,9 @@
 package com.pasoftxperts.covidetect.filemanager;
 
 import com.pasoftxperts.covidetect.university.Room;
+import org.apache.commons.lang3.SerializationUtils;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.ArrayList;
 
 public class FileWrapper
@@ -58,5 +56,30 @@ public class FileWrapper
         }
         catch (IOException e) { return; }
 
+    }
+
+    public static void saveProfessorNames(String universityName, String departmentName, ArrayList<String> professorNames)
+    {
+        ArrayList<String> names = SerializationUtils.clone(professorNames);
+
+        for (int i = 0; i < names.size(); i++)
+            names.set(i, "Professor " + names.get(i));
+
+        String finalPath = path + "/" + universityName + "/" + departmentName + "/" + "professors";
+
+        new File(finalPath).mkdirs();
+
+        try
+        {
+            FileOutputStream fileOut = new FileOutputStream(finalPath + "/professorNames.ser");
+            ObjectOutputStream objOut = new ObjectOutputStream(fileOut);
+
+            // Write object ArrayList
+            objOut.writeObject(names);
+
+            objOut.close();
+            fileOut.close();
+        }
+        catch (IOException e) { return; }
     }
 }

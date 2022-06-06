@@ -8,6 +8,7 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.time.Month;
 import java.time.format.TextStyle;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -21,19 +22,51 @@ public class TimeStamp implements Serializable
     private Day day;
     private DefaultUndirectedGraph<Seat, Integer> seatGraph;
 
-    public TimeStamp(int year, Month month, Day day, DefaultUndirectedGraph<Seat, Integer> graph)
-    {
-        this.year = year;
-        this.month = month;
-        this.day = day;
-        this.seatGraph = graph;
-    }
-
     public TimeStamp(int year, Month month, Day day)
     {
         this.year = year;
         this.month = month;
         this.day = day;
+    }
+
+    // Convert a date with format "MMMM,d,yyyy" to a TimeStamp object
+    public TimeStamp(String date)
+    {
+        // Format MUST be "MMMM,d,yyyy"
+
+        int startIndex = 0;
+        int endIndex;
+
+        ArrayList<String> dateSubstrings = new ArrayList<>(3);
+
+        ArrayList<String> monthNames = new ArrayList<>(12);
+
+        monthNames.add("January");
+        monthNames.add("February");
+        monthNames.add("March");
+        monthNames.add("April");
+        monthNames.add("May");
+        monthNames.add("June");
+        monthNames.add("July");
+        monthNames.add("August");
+        monthNames.add("September");
+        monthNames.add("October");
+        monthNames.add("November");
+        monthNames.add("December");
+
+        for (int i = 0; i < date.length(); i++)
+        {
+            if (date.charAt(i) == ',')
+            {
+                endIndex = i;
+                dateSubstrings.add(date.substring(startIndex, endIndex));
+                startIndex = endIndex + 1;
+            }
+        }
+
+        this.month = Month.of(monthNames.indexOf(dateSubstrings.get(0)) + 1);
+        this.day = new Day(Integer.parseInt(dateSubstrings.get(1)));
+        this.year = Integer.parseInt(date.substring(startIndex, date.length()));
     }
 
     public String getDateToString()
@@ -84,10 +117,7 @@ public class TimeStamp implements Serializable
         }
     }
 
-    public String getMonthName()
-    {
-        return month.getDisplayName(TextStyle.FULL, Locale.US);
-    }
+    public String getMonthName() { return month.getDisplayName(TextStyle.FULL, Locale.US); }
 
     public int getYear() { return year; }
 
@@ -110,6 +140,30 @@ public class TimeStamp implements Serializable
         }
 
         return false;
+    }
+
+    public boolean isBefore(TimeStamp other)
+    {
+        return ((this.getYear() < other.getYear())
+
+                || ((this.getYear() == other.getYear())
+                && (this.getMonth().getValue() < other.getMonth().getValue()))
+
+                || ((this.getYear() == other.getYear())
+                && (this.getMonth().getValue() == other.getMonth().getValue())
+                && (this.getDay().getDayNumber() < other.getDay().getDayNumber())));
+    }
+
+    public boolean isAfter(TimeStamp other)
+    {
+        return ((this.getYear() > other.getYear())
+
+                || ((this.getYear() == other.getYear())
+                && (this.getMonth().getValue() > other.getMonth().getValue()))
+
+                || ((this.getYear() == other.getYear())
+                && (this.getMonth().getValue() == other.getMonth().getValue())
+                && (this.getDay().getDayNumber() > other.getDay().getDayNumber())));
     }
 
 }

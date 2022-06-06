@@ -293,7 +293,10 @@ public class Simulation
             }
         }
 
+
         FileWrapper.saveFilesByRoom(university.getUniversityName(), appliedInformatics.getDepartmentName(), roomList);
+
+        FileWrapper.saveProfessorNames(university.getUniversityName(), appliedInformatics.getDepartmentName(), Curriculum.getProfessorNameList());
     }
 
     public static Room findRoomById(String roomId, ArrayList<Room> roomList)

@@ -5,13 +5,15 @@ import com.pasoftxperts.covidetect.course.Course;
 import com.pasoftxperts.covidetect.filemanager.ObjectListReader;
 import com.pasoftxperts.covidetect.filemanager.ObjectReader;
 import com.pasoftxperts.covidetect.graphanalysis.GraphNeighboursGenerator;
+import com.pasoftxperts.covidetect.counters.CovidCasesCounter;
+import com.pasoftxperts.covidetect.counters.FreeSeatsCounter;
+import com.pasoftxperts.covidetect.counters.PossibleCasesCounter;
+import com.pasoftxperts.covidetect.counters.StudentCounter;
 import com.pasoftxperts.covidetect.student.Student;
 import com.pasoftxperts.covidetect.time.HourSpan;
 import com.pasoftxperts.covidetect.time.TimeStamp;
 import com.pasoftxperts.covidetect.university.Room;
 import com.pasoftxperts.covidetect.university.Seat;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -90,6 +92,24 @@ public class ClassVisualizationController implements Initializable
     @FXML
     private Label courseLabel;
 
+    // General Room Info
+    @FXML
+    private Label totalStudents;
+
+    @FXML
+    private Label covidCases;
+
+    @FXML
+    private Label possibleCases;
+
+    @FXML
+    private Label freeSeats;
+
+    @FXML
+    private Label dateLabel;
+
+    private Room room;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
@@ -148,137 +168,148 @@ public class ClassVisualizationController implements Initializable
 
 
         // ROOM COMBO LISTENER
-        roomComboBox.valueProperty().addListener(new ChangeListener()
+        roomComboBox.valueProperty().addListener((observableValue, o, t1) ->
         {
-            @Override
-            public void changed(ObservableValue observableValue, Object o, Object t1)
-            {
-                datePicker.setValue(null);
-                hourSpanComboBox.setValue(null);
-                hourSpanComboBox.setItems(null);
+            datePicker.setValue(null);
+            dateLabel.setText("");
+            hourSpanComboBox.setValue(null);
+            hourSpanComboBox.setItems(null);
 
-                courseLabel.setText("");
+            // Clear General Room Info
+            totalStudents.setText("Total Students:");
+            covidCases.setText("Covid Cases:");
+            possibleCases.setText("Possible Cases:");
+            freeSeats.setText("Free Seats:");
 
-                // Initiliaze seats
-                for (int i = 0; i < DEFAULT_ROOM_CAPACITY; i++)
-                    seatList.get(i).setImage(new Image(RunApplication.class.getResourceAsStream("/com/pasoftxperts/covidetect/icons/freeSeat.png")));
+            courseLabel.setText("");
 
-                roomName = (String) roomComboBox.getValue();
+            // Initiαlize seats
+            for (int i = 0; i < DEFAULT_ROOM_CAPACITY; i++)
+                seatList.get(i).setImage(new Image(RunApplication.class.getResourceAsStream("/com/pasoftxperts/covidetect/icons/freeSeat.png")));
 
-                if (roomName == null)
-                    return;
+            roomName = (String) roomComboBox.getValue();
 
-                roomLabel.setText(roomName);
+            if (roomName == null)
+                return;
 
-                // Open .ser file for specific room
-                objectReader = new ObjectReader(MainApplicationController.path + roomName + ".ser");
-                objectReader.start();
-            }
+            roomLabel.setText(roomName);
+
+            // Open .ser file for specific room
+            objectReader = new ObjectReader(MainApplicationController.path + roomName + ".ser");
+            objectReader.start();
         });
 
 
         // DATE PICKER LISTENER
-        datePicker.valueProperty().addListener(new ChangeListener<LocalDate>() {
-            @Override
-            public void changed(ObservableValue<? extends LocalDate> observable, LocalDate oldValue, LocalDate newValue)
+        datePicker.valueProperty().addListener((observable, oldValue, newValue) ->
+        {
+            dateLabel.setText("");
+            hourSpanComboBox.setValue(null);
+            hourSpanComboBox.setItems(null);
+
+            // Clear General Room Info
+            totalStudents.setText("Total Students:");
+            covidCases.setText("Covid Cases:");
+            possibleCases.setText("Possible Cases:");
+            freeSeats.setText("Free Seats:");
+
+            // Initiαlize seats
+            for (int i = 0; i < DEFAULT_ROOM_CAPACITY; i++)
+                seatList.get(i).setImage(new Image(RunApplication.class.getResourceAsStream("/com/pasoftxperts/covidetect/icons/freeSeat.png")));
+
+            if (roomName == null)
+                return;
+
+            courseLabel.setText("");
+
+            LocalDate date = datePicker.getValue();
+            String dateToString;
+
+            if (date != null)
+                dateToString = formatter.format(date);
+            else
+                return;
+
+            // We now search all hourspans for this specific date
+            List<HourSpan> hourSpanList = new ArrayList<>();
+
+            if (objectReader.getResult() == null)
+                return;
+
+            room = (Room) objectReader.getResult();
+            timeStampList = new ArrayList<>();
+
+            for (TimeStamp timeStamp : room.getTimeStampList())
             {
-                hourSpanComboBox.setValue(null);
-                hourSpanComboBox.setItems(null);
-
-                // Initiliaze seats
-                for (int i = 0; i < DEFAULT_ROOM_CAPACITY; i++)
-                    seatList.get(i).setImage(new Image(RunApplication.class.getResourceAsStream("/com/pasoftxperts/covidetect/icons/freeSeat.png")));
-
-                if (roomName == null)
-                    return;
-
-                courseLabel.setText("");
-
-                LocalDate date = datePicker.getValue();
-                String dateToString;
-
-                if (date != null)
-                    dateToString = formatter.format(date);
-                else
-                    return;
-
-                // We now search all hourspans for this specific date
-                List<HourSpan> hourSpanList = new ArrayList<>();
-
-                if (objectReader.getResult() == null)
-                    return;
-
-                Room room = (Room) objectReader.getResult();
-                timeStampList = new ArrayList<>();
-
-                for (TimeStamp timeStamp : room.getTimeStampList())
+                if (timeStamp.getDateToString().equals(dateToString))
                 {
-                    if (timeStamp.getDateToString().equals(dateToString))
-                    {
-                        timeStampList.add(timeStamp);
-                        hourSpanList.add(timeStamp.getDay().getHourSpan());
-                    }
+                    timeStampList.add(timeStamp);
+                    hourSpanList.add(timeStamp.getDay().getHourSpan());
                 }
-
-                // List of hourspan strings
-                hourSpanNames = new ArrayList<>();
-
-                for (HourSpan hourSpan : hourSpanList)
-                {
-                    hourSpanNames.add(hourSpan.getStartHour() + ":00 - " + hourSpan.getEndHour() + ":00");
-                }
-
-                hourSpanComboBox.setItems(FXCollections.observableList(hourSpanNames));
             }
+
+            // List of hour span strings
+            hourSpanNames = new ArrayList<>();
+
+            for (HourSpan hourSpan : hourSpanList)
+            {
+                hourSpanNames.add(hourSpan.getStartHour() + ":00 - " + hourSpan.getEndHour() + ":00");
+            }
+
+            hourSpanComboBox.setItems(FXCollections.observableList(hourSpanNames));
         });
 
 
         // HOURSPAN COMBO BOX LISTENER
-        hourSpanComboBox.valueProperty().addListener(new ChangeListener() {
-            @Override
-            public void changed(ObservableValue observableValue, Object o, Object t1)
+        hourSpanComboBox.valueProperty().addListener((observableValue, o, t1) ->
+        {
+            String hourSpanValue = (String) hourSpanComboBox.getValue();
+
+            if (hourSpanValue == null)
+                return;
+
+            // Parallel lists. (same index)
+            TimeStamp timeStamp = null;
+
+            for (int i = 0; i < hourSpanNames.size(); i++)
             {
-                String hourSpanValue = (String) hourSpanComboBox.getValue();
+                if (hourSpanNames.get(i).equals(hourSpanValue))
+                    timeStamp = timeStampList.get(i);
+            }
 
-                if (hourSpanValue == null)
-                    return;
+            Course course = timeStamp.getDay().getHourSpan().getCourse();
+            courseLabel.setText(course.getCourseName() + " (" + course.getCourseId() + ")");
 
-                // Parallel lists. (same index)
-                TimeStamp timeStamp = null;
+            // Update seats according to graph
+            DefaultUndirectedGraph<Seat, Integer> seatGraph = timeStamp.getSeatGraph();
 
-                for (int i = 0; i < hourSpanNames.size(); i++)
+            List<Seat> seats = new ArrayList<>(seatGraph.vertexSet());
+
+            for (int i = 0; i < seats.size(); i++)
+            {
+                Seat seat = seats.get(i);
+
+                Student student = seat.getStudent();
+
+                if (seats.get(i).isOccupied())
                 {
-                    if (hourSpanNames.get(i).equals(hourSpanValue))
-                        timeStamp = timeStampList.get(i);
-                }
+                    int index = seat.getSeatNumber() - 1;
 
-                Course course = timeStamp.getDay().getHourSpan().getCourse();
-                courseLabel.setText(course.getCourseName() + " (" + course.getCourseId() + ")");
-
-                // Update seats according to graph
-                DefaultUndirectedGraph<Seat, Integer> seatGraph = timeStamp.getSeatGraph();
-
-                List<Seat> seats = new ArrayList<>(seatGraph.vertexSet());
-
-                for (int i = 0; i < seats.size(); i++)
-                {
-                    Seat seat = seats.get(i);
-
-                    Student student = seat.getStudent();
-
-                    if (seats.get(i).isOccupied())
-                    {
-                        int index = seat.getSeatNumber() - 1;
-
-                        if (student.getHealthIndicator() == 0)
-                            seatList.get(index).setImage(new Image(RunApplication.class.getResourceAsStream("/com/pasoftxperts/covidetect/icons/takenSeat.png")));
-                        else if (student.getHealthIndicator() == 1)
-                            seatList.get(index).setImage(new Image(RunApplication.class.getResourceAsStream("/com/pasoftxperts/covidetect/icons/covidSeat.png")));
-                        else if (student.getHealthIndicator() == 2)
-                            seatList.get(index).setImage(new Image(RunApplication.class.getResourceAsStream("/com/pasoftxperts/covidetect/icons/possibleCaseSeat.png")));
-                    }
+                    if (student.getHealthIndicator() == 0)
+                        seatList.get(index).setImage(new Image(RunApplication.class.getResourceAsStream("/com/pasoftxperts/covidetect/icons/takenSeat.png")));
+                    else if (student.getHealthIndicator() == 1)
+                        seatList.get(index).setImage(new Image(RunApplication.class.getResourceAsStream("/com/pasoftxperts/covidetect/icons/covidSeat.png")));
+                    else if (student.getHealthIndicator() == 2)
+                        seatList.get(index).setImage(new Image(RunApplication.class.getResourceAsStream("/com/pasoftxperts/covidetect/icons/possibleCaseSeat.png")));
                 }
             }
+
+            dateLabel.setText(timeStamp.getDateToString());
+
+            totalStudents.setText("Total Students: " + StudentCounter.countStudents(seatGraph));
+            covidCases.setText("Covid Cases: " + CovidCasesCounter.countCovidCases(seatGraph));
+            possibleCases.setText("Possible Cases: " + PossibleCasesCounter.countPossibleCases(seatGraph));
+            freeSeats.setText("Free Seats: " + FreeSeatsCounter.countFreeSeats(seatGraph));
         });
 
         // Read room names

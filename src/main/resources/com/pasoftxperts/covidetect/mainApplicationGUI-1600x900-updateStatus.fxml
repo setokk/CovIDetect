@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" style="-fx-background-color: white;" stylesheets="@mainApplicationStyles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pasoftxperts.covidetect.guicontrollers.UpdateCovidStatusController">
+   <children>
+      <AnchorPane prefHeight="53.0" prefWidth="1603.0" styleClass="menu">
+         <children>
+            <Label id="logoLabel" fx:id="homeButton" layoutX="17.0" layoutY="10.0" onMouseClicked="#openHomePage" prefHeight="31.0" prefWidth="161.0" stylesheets="@mainApplicationStyles.css" text="   CovIDetect" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="25.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Label>
+            <ImageView fx:id="seatsIcon" fitHeight="26.0" fitWidth="44.0" layoutX="346.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/seatVisualizationIcon.png" />
+               </image>
+            </ImageView>
+            <Button id="seatButton" fx:id="viewSeatButton" layoutX="379.0" layoutY="8.0" mnemonicParsing="false" onAction="#openSeatsView" prefHeight="35.0" prefWidth="172.0" stylesheets="@mainApplicationStyles.css" text="Room Visualization" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="19.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button id="seatButton" fx:id="updateCovidStatusButton" layoutX="772.0" layoutY="8.0" mnemonicParsing="false" onAction="#openUpdateCovidCase" prefHeight="9.0" prefWidth="199.0" style="-fx-text-fill: yellow;" stylesheets="@mainApplicationStyles.css" text="Update Covid Status" textFill="#f1ff30">
+               <font>
+                  <Font name="Corbel Light" size="19.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <ImageView fitHeight="18.0" fitWidth="22.0" layoutX="754.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/updateIconHover.png" />
+               </image>
+            </ImageView>
+            <Button id="seatButton" fx:id="statisticsButton" layoutX="1193.0" layoutY="9.0" mnemonicParsing="false" onAction="#openStatistics" prefHeight="35.0" prefWidth="172.0" stylesheets="@mainApplicationStyles.css" text="Statistical Analysis" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="19.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="1166.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/statisticsIcon.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="274.0" layoutY="289.0" prefHeight="506.0" prefWidth="1056.0" style="-fx-background-color: #323232;">
+         <children>
+            <Label layoutX="35.0" layoutY="24.0" prefHeight="40.0" prefWidth="304.0" styleClass="general-label" stylesheets="@mainApplicationStyles-updateStatus.css" text="Edupass API Status: Offline" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="22.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="29.0" fitWidth="30.0" layoutX="273.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/redDot.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="lastUpdatedLabel" layoutX="738.0" layoutY="24.0" prefHeight="40.0" prefWidth="304.0" styleClass="general-label" stylesheets="@mainApplicationStyles-updateStatus.css" text="Last Updated: " textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="22.0" />
+               </font>
+            </Label>
+            <Label layoutX="262.0" layoutY="174.0" prefHeight="40.0" prefWidth="172.0" text="Insert Student's ID:" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="19.0" />
+               </font>
+            </Label>
+            <Label layoutX="653.0" layoutY="174.0" prefHeight="40.0" prefWidth="95.0" text="Pick Date:" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="19.0" />
+               </font>
+            </Label>
+            <TextField fx:id="studentField" layoutX="259.0" layoutY="222.0" prefHeight="31.0" prefWidth="148.0" style="-fx-background-color: white; -fx-text-fill: #323232;" />
+            <DatePicker fx:id="datePicker" layoutX="618.0" layoutY="222.0" prefHeight="7.0" prefWidth="148.0" style="-fx-background-color: white;" stylesheets="@mainApplicationStyles-updateStatus.css" />
+            <Label fx:id="statusLabel" layoutX="436.0" layoutY="238.0" prefHeight="62.0" prefWidth="184.0" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="16.0" />
+               </font>
+            </Label>
+            <Button id="proceedButton" fx:id="updateButton" layoutX="469.0" layoutY="318.0" mnemonicParsing="false" onAction="#updateCovidStatus" prefHeight="29.0" prefWidth="102.0" stylesheets="@mainApplicationStyles-updateStatus.css" text="Update">
+               <font>
+                  <Font name="Corbel Light" size="14.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="-1.0" layoutY="53.0" prefHeight="119.0" prefWidth="1603.0" style="-fx-background-color: #3463e4;">
+         <children>
+            <Label layoutX="592.0" layoutY="14.0" prefHeight="40.0" prefWidth="419.0" text="Update Student's Covid Status" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="34.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="77.0" fitWidth="88.0" layoutX="763.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/studentIcon.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

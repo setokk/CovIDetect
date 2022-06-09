@@ -81,10 +81,6 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
         for (int i = 0; i < showByElements.size(); i++)
             attendanceRates.add(0.0);
 
-        // Initialize Min and Max
-        minMaxAverage.add(0,1000000.0);
-        minMaxAverage.add(1, -1.0);
-
         // Initialize Show by Counter
         for (int i = 0; i < showByElements.size(); i++)
             showByCounter.add(0);
@@ -142,12 +138,6 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
                         // Increment
                         showByCounter.set(index, showByCounter.get(index) + 1);
 
-                        if (attendance < minMaxAverage.get(0))
-                            minMaxAverage.set(0, attendance);
-
-                        if (attendance > minMaxAverage.get(1))
-                            minMaxAverage.set(1, attendance);
-
                     }
                 }
             }
@@ -187,12 +177,6 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
                         // Increment
                         showByCounter.set(index, showByCounter.get(index) + 1);
 
-                        if (attendance < minMaxAverage.get(0))
-                            minMaxAverage.set(0, attendance);
-
-                        if (attendance > minMaxAverage.get(1))
-                            minMaxAverage.set(1, attendance);
-
                     }
                 }
             }
@@ -219,7 +203,11 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
 
         }
 
-        // Calculate the average
+        // Initialize Min and Max
+        minMaxAverage.add(0,1000000.0);
+        minMaxAverage.add(1, -1.0);
+
+        // Calculate the average, min and max
         double average = 0;
 
         for (int i = 0; i < attendanceRates.size(); i++)
@@ -228,6 +216,13 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
                 attendanceRates.set(i, 0.0);
             else
                 attendanceRates.set(i, attendanceRates.get(i) / showByCounter.get(i));
+
+
+            if (attendanceRates.get(i) < minMaxAverage.get(0))
+                minMaxAverage.set(0, attendanceRates.get(i));
+
+            if (attendanceRates.get(i) > minMaxAverage.get(1))
+                minMaxAverage.set(1, attendanceRates.get(i));
 
             average += attendanceRates.get(i) / attendanceRates.size();
         }
@@ -301,10 +296,6 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
         for (int i = 0; i < showByElements.size(); i++)
             covidCases.add(0.0);
 
-        // Initialize Min and Max
-        minMaxAverage.add(0,1000000.0);
-        minMaxAverage.add(1, -1.0);
-
         // Start TimeStamp that indicates where to start searching for statistical results
         TimeStamp startTimeStamp = new TimeStamp(startDate);
 
@@ -354,12 +345,6 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
 
                         covidCases.set(index, covidCases.get(index) + totalCases);
 
-                        if (totalCases < minMaxAverage.get(0))
-                            minMaxAverage.set(0, totalCases);
-
-                        if (totalCases > minMaxAverage.get(1))
-                            minMaxAverage.set(1, totalCases);
-
                     }
                 }
             }
@@ -394,12 +379,6 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
 
                         covidCases.set(index, covidCases.get(index) + totalCases);
 
-                        if (totalCases < minMaxAverage.get(0))
-                            minMaxAverage.set(0, totalCases);
-
-                        if (totalCases > minMaxAverage.get(1))
-                            minMaxAverage.set(1, totalCases);
-
                     }
                 }
             }
@@ -425,14 +404,22 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
 
         }
 
-        // Calculate the average
+        // Initialize Min and Max
+        minMaxAverage.add(0,1000000.0);
+        minMaxAverage.add(1, -1.0);
+
+        // Calculate the average, min and max
         double average = 0;
 
         for (int i = 0; i < covidCases.size(); i++)
         {
-            covidCases.set(i, covidCases.get(i));
-
             average += covidCases.get(i) / covidCases.size();
+
+            if (covidCases.get(i) < minMaxAverage.get(0))
+                minMaxAverage.set(0, covidCases.get(i));
+
+            if (covidCases.get(i) > minMaxAverage.get(1))
+                minMaxAverage.set(1, covidCases.get(i));
         }
 
         minMaxAverage.add(2, average);

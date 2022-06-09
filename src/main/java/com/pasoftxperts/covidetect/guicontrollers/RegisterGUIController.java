@@ -79,6 +79,7 @@ public class RegisterGUIController implements Initializable
     protected void openLoginPage(MouseEvent event) throws IOException
     {
         Parent loginParent = FXMLLoader.load(RunApplication.class.getResource("loginGUI.fxml"));
+
         Scene loginScene = new Scene(loginParent, 600, 500);
 
         Stage window = (Stage) ( (Node) event.getSource() ).getScene().getWindow();

@@ -249,7 +249,7 @@ public class Simulation
 
                     // With a certain low probability, pick a number of students that are going to be a covid case
                     // from studentList
-                    double probability = 0.025;
+                    double probability = 0.040;
 
                     for (int k = 0; k < studentList.size(); k++)
                     {
@@ -295,6 +295,7 @@ public class Simulation
 
 
         FileWrapper.saveFilesByRoom(university.getUniversityName(), appliedInformatics.getDepartmentName(), roomList);
+        FileWrapper.saveRoomNames(university.getUniversityName(), appliedInformatics.getDepartmentName());
 
         FileWrapper.saveProfessorNames(university.getUniversityName(), appliedInformatics.getDepartmentName(), Curriculum.getProfessorNameList());
     }

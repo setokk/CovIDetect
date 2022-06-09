@@ -17,12 +17,12 @@
    <children>
       <AnchorPane prefHeight="53.0" prefWidth="1603.0" styleClass="menu">
          <children>
-            <Label id="logoLabel" layoutX="17.0" layoutY="10.0" prefHeight="31.0" prefWidth="161.0" stylesheets="@mainApplicationStyles.css" text="   CovIDetect" textFill="WHITE">
+            <Label id="logoLabel" fx:id="homeButton" layoutX="17.0" layoutY="10.0" onMouseClicked="#openHomePage" prefHeight="31.0" prefWidth="161.0" stylesheets="@mainApplicationStyles.css" text="   CovIDetect" textFill="WHITE">
                <font>
                   <Font name="Corbel Light" size="25.0" />
                </font>
                <cursor>
-                  <Cursor fx:constant="DEFAULT" />
+                  <Cursor fx:constant="HAND" />
                </cursor>
             </Label>
             <ImageView fx:id="seatsIcon" fitHeight="26.0" fitWidth="44.0" layoutX="346.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
@@ -38,7 +38,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button id="seatButton" fx:id="updateCovidStatusButton" layoutX="772.0" layoutY="8.0" mnemonicParsing="false" onAction="#openSeatsView" prefHeight="9.0" prefWidth="199.0" stylesheets="@mainApplicationStyles.css" text="Update Covid Status" textFill="WHITE">
+            <Button id="seatButton" fx:id="updateCovidStatusButton" layoutX="772.0" layoutY="8.0" mnemonicParsing="false" onAction="#openUpdateCovidCase" prefHeight="9.0" prefWidth="199.0" stylesheets="@mainApplicationStyles.css" text="Update Covid Status" textFill="WHITE">
                <font>
                   <Font name="Corbel Light" size="19.0" />
                </font>
@@ -224,5 +224,13 @@
             </Label>
          </children>
       </AnchorPane>
+      <Button id="proceedButton" fx:id="studentListButton" layoutX="1351.0" layoutY="848.0" mnemonicParsing="false" onAction="#showStudentList" prefHeight="23.0" prefWidth="129.0" text="Students' ID List" textFill="WHITE">
+         <font>
+            <Font name="Corbel Light" size="15.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="CROSSHAIR" />
+         </cursor>
+      </Button>
    </children>
 </AnchorPane>

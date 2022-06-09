@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class FileWrapper
 {
     public static final String path = System.getProperty("user.dir");
+    private static ArrayList<String> roomNames;
 
     // Saves input files that it takes from server or simulation
     public static void saveFilesByRoom(String universityName, String departmentName, ArrayList<Room> roomList)
@@ -17,7 +18,7 @@ public class FileWrapper
         String finalPath = path + "/" + universityName.toLowerCase() + "/" + departmentName.toLowerCase();
 
         //  Room name list (needed for list catalogs)
-        ArrayList<String> roomNames = new ArrayList<>();
+        roomNames = new ArrayList<>();
 
         new File(finalPath).mkdirs();
 
@@ -42,6 +43,16 @@ public class FileWrapper
             catch (IOException e) { return; }
         }
 
+    }
+
+    // Saves Room Names so that they can be used in a combo box etc.
+    public static void saveRoomNames(String universityName, String departmentName)
+    {
+        String finalPath = path + "/" + universityName.toLowerCase() + "/" + departmentName.toLowerCase();
+
+        if (roomNames == null)
+            return;
+
         // Save room name list to a .ser file
         try
         {
@@ -55,7 +66,6 @@ public class FileWrapper
             fileOut.close();
         }
         catch (IOException e) { return; }
-
     }
 
     public static void saveProfessorNames(String universityName, String departmentName, ArrayList<String> professorNames)

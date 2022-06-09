@@ -42,7 +42,6 @@ public class EmailVerifier
 
         try
         {
-            // We say substring(1) because path here starts off / (python script does not understand it)
             process = new ProcessBuilder
                     ("emailvalidator.exe", email, API_KEY)
                     .start();
@@ -50,7 +49,6 @@ public class EmailVerifier
         }
         catch (IOException|InterruptedException e)
         {
-            // Retry again
             e.printStackTrace();
         }
 
@@ -84,9 +82,9 @@ public class EmailVerifier
     public static String checkAcademicEmail(String email)
     {
         return ACADEMIC_EMAIL_LIST.stream()
-                .filter(e -> email.contains(e))
-                .findFirst()
-                .orElse("Not Academic");
+                                   .filter(e -> email.contains(e))
+                                   .findFirst()
+                                   .orElse("Not Academic");
     }
 }
 

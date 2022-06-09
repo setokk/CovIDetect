@@ -17,12 +17,12 @@
    <children>
       <AnchorPane prefHeight="53.0" prefWidth="1603.0" styleClass="menu" stylesheets="@mainApplicationStyles-statistics.css">
          <children>
-            <Label id="logoLabel" layoutX="17.0" layoutY="10.0" prefHeight="31.0" prefWidth="161.0" stylesheets="@mainApplicationStyles.css" text="   CovIDetect" textFill="WHITE">
+            <Label id="logoLabel" fx:id="homeButton" layoutX="17.0" layoutY="10.0" onMouseClicked="#openHomePage" prefHeight="31.0" prefWidth="161.0" stylesheets="@mainApplicationStyles.css" text="   CovIDetect" textFill="WHITE">
                <font>
                   <Font name="Corbel Light" size="25.0" />
                </font>
                <cursor>
-                  <Cursor fx:constant="DEFAULT" />
+                  <Cursor fx:constant="HAND" />
                </cursor>
             </Label>
             <ImageView fx:id="seatsIcon" fitHeight="26.0" fitWidth="44.0" layoutX="346.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">

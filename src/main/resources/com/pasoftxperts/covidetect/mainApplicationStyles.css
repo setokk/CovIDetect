@@ -40,3 +40,9 @@
 {
 	-fx-background-color: #3463e4;
 }
+
+#logoutLabel:hover
+{
+	-fx-underline: true;
+	-fx-text-fill: blue;
+}

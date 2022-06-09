@@ -136,7 +136,7 @@ public class TimeStamp implements Serializable
         {
             TimeStamp temp = (TimeStamp) o;
 
-            return (this.toString().equals(temp.toString()));
+            return (this.getDateToString().equals(temp.getDateToString()));
         }
 
         return false;

@@ -40,4 +40,15 @@ public class Seat implements Serializable
     public Student getStudent() { return student; }
 
     public boolean isOccupied() { return occupied; }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (!(o instanceof Seat))
+            return false;
+
+        Seat otherSeat = (Seat) o;
+
+        return (this.getSeatNumber() == otherSeat.getSeatNumber());
+    }
 }

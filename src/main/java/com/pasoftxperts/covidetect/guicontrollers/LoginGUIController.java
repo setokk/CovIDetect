@@ -2,24 +2,30 @@ package com.pasoftxperts.covidetect.guicontrollers;
 
 import com.pasoftxperts.covidetect.RunApplication;
 import com.pasoftxperts.covidetect.guicontrollers.popupwindow.PopupWindow;
+import com.pasoftxperts.covidetect.loginsession.LoginSession;
 import com.pasoftxperts.covidetect.userhandler.Administrator;
 import com.pasoftxperts.covidetect.userhandler.AdministratorLog;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.awt.*;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class LoginGUIController
+public class LoginGUIController implements Initializable
 {
     public static Administrator adminSession;
 
@@ -31,6 +37,22 @@ public class LoginGUIController
 
     @FXML
     private TextField passwordField;
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle)
+    {
+        Platform.runLater(() ->
+        {
+            Scene scene = loginButton.getScene();
+
+            scene.setOnKeyPressed((keyEvent ->
+            {
+                if (keyEvent.getCode() == KeyCode.ENTER)
+                    loginButton.fire();
+            }));
+        });
+    }
+
 
     // This method switches from the login/any other page, to the register page
     @FXML
@@ -83,6 +105,9 @@ public class LoginGUIController
             PopupWindow.display("Password is incorrect.");
             return;
         }
+
+        // Create a login session
+        LoginSession.setEmail(emailField.getText().trim());
 
         // We can now launch the main application window.
         Stage mainApplicationWindow = new Stage();

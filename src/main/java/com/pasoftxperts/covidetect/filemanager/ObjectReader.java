@@ -4,10 +4,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
+/* This class is used to read a single .ser file as a Thread */
 public class ObjectReader extends Thread
 {
-    private String path;
-    private Object result;
+    private String path; // Path to read file at
+    private Object result; // Result of the file
 
     public ObjectReader(String path)
     {

@@ -4,7 +4,6 @@ import com.pasoftxperts.covidetect.RunApplication;
 import com.pasoftxperts.covidetect.course.Course;
 import com.pasoftxperts.covidetect.filemanager.ObjectListReader;
 import com.pasoftxperts.covidetect.filemanager.ObjectReader;
-import com.pasoftxperts.covidetect.graphanalysis.GraphNeighboursGenerator;
 import com.pasoftxperts.covidetect.counters.CovidCasesCounter;
 import com.pasoftxperts.covidetect.counters.FreeSeatsCounter;
 import com.pasoftxperts.covidetect.counters.PossibleCasesCounter;
@@ -28,6 +27,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -41,26 +41,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.pasoftxperts.covidetect.graphanalysis.GraphNeighboursGenerator.numberOfSeat;
+
 public class ClassVisualizationController implements Initializable
 {
     public final static int DEFAULT_ROOM_CAPACITY = 81;
 
     public final static int DEFAULT_SEAT_ROWS = 9;
-
-    // Seat list for grid pane
-    private ArrayList<ImageView> seatList = new ArrayList<>();
-
-    // File reader for rooms
-    private ObjectReader objectReader = null;
-
-    // Selected Room name in combobox
-    private String roomName = null;
-
-    // Selected timestamp list (same date can have more than 1 hourspan)
-    private List<TimeStamp> timeStampList = null;
-
-    // List of hourspan names
-    private List<String> hourSpanNames = null;
 
     @FXML
     private GridPane seatsGridPane;
@@ -73,6 +60,9 @@ public class ClassVisualizationController implements Initializable
 
     @FXML
     private Button viewSeatButton;
+
+    @FXML
+    private Label homeButton;
 
     @FXML
     private DatePicker datePicker;
@@ -108,6 +98,31 @@ public class ClassVisualizationController implements Initializable
     @FXML
     private Label dateLabel;
 
+    @FXML
+    private Button studentListButton;
+
+    // Student ID List Window
+    private Stage studentListWindow;
+
+    // Seat list for grid pane
+    private ArrayList<ImageView> seatList = new ArrayList<>();
+
+    // File reader for rooms
+    private ObjectReader objectReader = null;
+
+    // Selected Room name in combobox
+    private String roomName = null;
+
+    // Selected timestamp list (same date can have more than 1 hourspan)
+    private List<TimeStamp> timeStampList = null;
+
+    // List of hourspan names
+    private List<String> hourSpanNames = null;
+
+    // Seat list from graph set
+    public static List<Seat> seats = null;
+
+    // Selected Room
     private Room room;
 
     @Override
@@ -122,24 +137,25 @@ public class ClassVisualizationController implements Initializable
         // Initialize room seats
         for (int i = 0; i < DEFAULT_ROOM_CAPACITY; i++)
         {
-            seatList.add(new ImageView(new Image(RunApplication.class.getResourceAsStream("/com/pasoftxperts/covidetect/icons/freeSeat.png"))));
+            ImageView imageView = new ImageView(new Image(RunApplication.class.getResourceAsStream("/com/pasoftxperts/covidetect/icons/freeSeat.png")));
+            seatList.add(imageView);
             seatList.get(i).setFitWidth(widthRatio);
             seatList.get(i).setFitHeight(heightRatio);
         }
 
-        int defaultColumns = DEFAULT_ROOM_CAPACITY / DEFAULT_SEAT_ROWS;
+        int DEFAULT_COLUMNS = DEFAULT_ROOM_CAPACITY / DEFAULT_SEAT_ROWS;
 
         RowConstraints rc = new RowConstraints();
         rc.setPercentHeight(1.0 / DEFAULT_SEAT_ROWS);
 
         ColumnConstraints cc = new ColumnConstraints();
-        cc.setPercentWidth(1.0 / defaultColumns);
+        cc.setPercentWidth(1.0 / DEFAULT_COLUMNS);
 
         for (int i = 0; i < DEFAULT_SEAT_ROWS; i++)
         {
-            for (int j = 0; j < defaultColumns; j++)
+            for (int j = 0; j < DEFAULT_COLUMNS; j++)
             {
-                int seatImageIndex = GraphNeighboursGenerator.numberOfSeat(i, j, DEFAULT_ROOM_CAPACITY / DEFAULT_SEAT_ROWS) - 1;
+                int seatImageIndex = numberOfSeat(i, j, DEFAULT_ROOM_CAPACITY / DEFAULT_SEAT_ROWS) - 1;
 
                 seatsGridPane.add(seatList.get(seatImageIndex), i, j, 1, 1);
 
@@ -170,6 +186,9 @@ public class ClassVisualizationController implements Initializable
         // ROOM COMBO LISTENER
         roomComboBox.valueProperty().addListener((observableValue, o, t1) ->
         {
+            if (studentListWindow != null)
+                studentListWindow.hide();
+
             datePicker.setValue(null);
             dateLabel.setText("");
             hourSpanComboBox.setValue(null);
@@ -203,6 +222,9 @@ public class ClassVisualizationController implements Initializable
         // DATE PICKER LISTENER
         datePicker.valueProperty().addListener((observable, oldValue, newValue) ->
         {
+            if (studentListWindow != null)
+                studentListWindow.hide();
+
             dateLabel.setText("");
             hourSpanComboBox.setValue(null);
             hourSpanComboBox.setItems(null);
@@ -268,6 +290,10 @@ public class ClassVisualizationController implements Initializable
             if (hourSpanValue == null)
                 return;
 
+            if (studentListWindow != null)
+                studentListWindow.hide();
+
+
             // Parallel lists. (same index)
             TimeStamp timeStamp = null;
 
@@ -283,7 +309,7 @@ public class ClassVisualizationController implements Initializable
             // Update seats according to graph
             DefaultUndirectedGraph<Seat, Integer> seatGraph = timeStamp.getSeatGraph();
 
-            List<Seat> seats = new ArrayList<>(seatGraph.vertexSet());
+           seats = new ArrayList<>(seatGraph.vertexSet());
 
             for (int i = 0; i < seats.size(); i++)
             {
@@ -321,6 +347,34 @@ public class ClassVisualizationController implements Initializable
 
         // Initialize room combo box
         roomComboBox.setItems(FXCollections.observableList(roomNames));
+
+        // Deallocate Memory
+        objectList = null;
+        roomNames = null;
+        System.gc();
+    }
+
+    @FXML
+    protected void showStudentList(ActionEvent event) throws IOException
+    {
+        // No visualization is selected
+        if (hourSpanComboBox.getValue() == null)
+            return;
+
+        // Window is already opened
+        if (studentListWindow != null)
+            return;
+
+        studentListWindow = new Stage();
+
+        Parent parent = FXMLLoader.load(RunApplication.class.getResource("studentListWindow.fxml"));
+        Scene studentListScene = new Scene(parent, 600, 370);
+
+        studentListWindow.setScene(studentListScene);
+        studentListWindow.setTitle("Student ID List");
+        studentListWindow.getIcons().add(new Image(getClass().getResourceAsStream("/com/pasoftxperts/covidetect/icons/covidDetectWindowIcon.png")));
+        studentListWindow.setResizable(false);
+        studentListWindow.show();
     }
 
     @FXML
@@ -344,6 +398,8 @@ public class ClassVisualizationController implements Initializable
         // Deallocate memory
         visualizationParent = null;
         visualizationScene = null;
+        room = null;
+        seatList = null;
         System.gc();
 
         window.show();
@@ -356,8 +412,58 @@ public class ClassVisualizationController implements Initializable
     }
 
     @FXML
-    protected void openUpdateCovidCase(ActionEvent event)
+    protected void openHomePage(MouseEvent event) throws IOException
     {
+        String resourceName;
 
+        Stage window = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
+
+        if ((MainApplicationController.width >= 1600) && (MainApplicationController.height >= 900))
+            resourceName = "mainApplicationGUI-1600x900.fxml";
+        else
+            resourceName = "mainApplicationGUI-1000x600.fxml";
+
+        Parent visualizationParent = FXMLLoader.load(RunApplication.class.getResource(resourceName));
+        Scene visualizationScene = new Scene(visualizationParent, MainApplicationController.width, MainApplicationController.height);
+
+        window.setScene(visualizationScene);
+        window.setTitle("CovIDetect© by PasoftXperts");
+
+        // Deallocate memory
+        visualizationParent = null;
+        visualizationScene = null;
+        room = null;
+        seatList = null;
+        System.gc();
+
+        window.show();
+    }
+
+    @FXML
+    protected void openUpdateCovidCase(ActionEvent event) throws IOException
+    {
+        String resourceName;
+
+        Stage window = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
+
+        if ((MainApplicationController.width >= 1600) && (MainApplicationController.height >= 900))
+            resourceName = "mainApplicationGUI-1600x900-updateStatus.fxml";
+        else
+            resourceName = "mainApplicationGUI-1000x600-updateStatus.fxml";
+
+        Parent visualizationParent = FXMLLoader.load(RunApplication.class.getResource(resourceName));
+        Scene visualizationScene = new Scene(visualizationParent, MainApplicationController.width, MainApplicationController.height);
+
+        window.setScene(visualizationScene);
+        window.setTitle("Update Student's Covid Status - CovIDetect©");
+
+        // Deallocate memory
+        visualizationParent = null;
+        visualizationScene = null;
+        room = null;
+        seatList = null;
+        System.gc();
+
+        window.show();
     }
 }

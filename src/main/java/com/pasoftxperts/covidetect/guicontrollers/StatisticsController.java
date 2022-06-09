@@ -3,12 +3,17 @@ package com.pasoftxperts.covidetect.guicontrollers;
 import com.pasoftxperts.covidetect.RunApplication;
 import com.pasoftxperts.covidetect.filemanager.ObjectListReader;
 import com.pasoftxperts.covidetect.filemanager.ObjectReader;
+import com.pasoftxperts.covidetect.filemanager.ObjectTaskReader;
 import com.pasoftxperts.covidetect.guicontrollers.popupwindow.PopupWindow;
 import com.pasoftxperts.covidetect.statistics.StatisticalAnalysis;
 import com.pasoftxperts.covidetect.time.TimeStamp;
 import com.pasoftxperts.covidetect.university.Room;
 import javafx.collections.FXCollections;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -21,6 +26,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -41,6 +47,9 @@ public class StatisticsController implements Initializable
 
     @FXML
     private Button viewSeatButton;
+
+    @FXML
+    private Label homeButton;
 
     @FXML
     private ComboBox roomComboBox;
@@ -84,7 +93,7 @@ public class StatisticsController implements Initializable
     private ObjectReader objectReader = null;
 
     // List of ObjectReaders (All Rooms)
-    private List<ObjectReader> objectReaderList = new ArrayList<>();
+    private List<ObjectTaskReader> objectReaderList = new ArrayList<>();
 
     // Start Date LocalDate
     private LocalDate startDate = null;
@@ -172,6 +181,9 @@ public class StatisticsController implements Initializable
         // Initialize room combo box
         roomComboBox.setItems(FXCollections.observableList(roomNames));
 
+        // Deallocate memory
+        objectList = null;
+        System.gc();
 
         // ADD LISTENERS
         // ROOM COMBO BOX LISTENER
@@ -198,14 +210,39 @@ public class StatisticsController implements Initializable
             {
                 objectReader = null;
 
+                // Start thread for read each room object file (.ser) with JavaFX Task Concurrency
                 for (String name : roomNames)
                 {
                     if (!name.equals("All Rooms"))
                     {
-                        objectReaderList.add(new ObjectReader(MainApplicationController.path + name + ".ser"));
-                        objectReaderList.get(objectReaderList.size() - 1).start();
+                        objectReaderList.add(new ObjectTaskReader(MainApplicationController.path + name + ".ser"));
                     }
                 }
+
+                Service readFiles = new Service()
+                {
+                    @Override
+                    protected Task createTask()
+                    {
+                        return new Task<Void>()
+                        {
+                            @Override
+                            protected Void call() throws Exception
+                            {
+                                for (int i = 0; i < objectReaderList.size(); i++)
+                                {
+                                    objectReaderList.get(i).readObjectFile();
+                                }
+
+                                return null;
+                            }
+                        };
+                    }
+                };
+
+                readFiles.setOnSucceeded((e) -> {});
+
+                readFiles.start();
             }
             else
             {
@@ -317,7 +354,7 @@ public class StatisticsController implements Initializable
         }
         else
         {
-            for (ObjectReader reader : objectReaderList)
+            for (ObjectTaskReader reader : objectReaderList)
                 rooms.add((Room) reader.getResult());
         }
 
@@ -418,14 +455,63 @@ public class StatisticsController implements Initializable
         // Deallocate memory
         visualizationParent = null;
         visualizationScene = null;
+        rooms = null;
         System.gc();
 
         window.show();
     }
 
     @FXML
-    protected void openUpdateCovidCase(ActionEvent event)
+    protected void openHomePage(MouseEvent event) throws IOException
     {
+        String resourceName;
 
+        Stage window = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
+
+        if ((MainApplicationController.width >= 1600) && (MainApplicationController.height >= 900))
+            resourceName = "mainApplicationGUI-1600x900.fxml";
+        else
+            resourceName = "mainApplicationGUI-1000x600.fxml";
+
+        Parent visualizationParent = FXMLLoader.load(RunApplication.class.getResource(resourceName));
+        Scene visualizationScene = new Scene(visualizationParent, MainApplicationController.width, MainApplicationController.height);
+
+        window.setScene(visualizationScene);
+        window.setTitle("CovIDetect© by PasoftXperts");
+
+        // Deallocate memory
+        visualizationParent = null;
+        visualizationScene = null;
+        rooms = null;
+        System.gc();
+
+        window.show();
+    }
+
+    @FXML
+    protected void openUpdateCovidCase(ActionEvent event) throws IOException
+    {
+        String resourceName;
+
+        Stage window = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
+
+        if ((MainApplicationController.width >= 1600) && (MainApplicationController.height >= 900))
+            resourceName = "mainApplicationGUI-1600x900-updateStatus.fxml";
+        else
+            resourceName = "mainApplicationGUI-1000x600-updateStatus.fxml";
+
+        Parent visualizationParent = FXMLLoader.load(RunApplication.class.getResource(resourceName));
+        Scene visualizationScene = new Scene(visualizationParent, MainApplicationController.width, MainApplicationController.height);
+
+        window.setScene(visualizationScene);
+        window.setTitle("Update Student's Covid Status - CovIDetect©");
+
+        // Deallocate memory
+        visualizationParent = null;
+        visualizationScene = null;
+        rooms = null;
+        System.gc();
+
+        window.show();
     }
 }

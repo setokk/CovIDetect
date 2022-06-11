@@ -2,7 +2,7 @@ package com.pasoftxperts.covidetect.guicontrollers;
 
 import com.pasoftxperts.covidetect.RunApplication;
 import com.pasoftxperts.covidetect.course.Course;
-import com.pasoftxperts.covidetect.filemanager.ObjectListReader;
+import com.pasoftxperts.covidetect.filemanager.ListObjectReader;
 import com.pasoftxperts.covidetect.filemanager.ObjectReader;
 import com.pasoftxperts.covidetect.counters.CovidCasesCounter;
 import com.pasoftxperts.covidetect.counters.FreeSeatsCounter;
@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
 
 import static com.pasoftxperts.covidetect.graphanalysis.GraphNeighboursGenerator.numberOfSeat;
 
-public class ClassVisualizationController implements Initializable
+public class RoomVisualizationController implements Initializable
 {
     public final static int DEFAULT_ROOM_CAPACITY = 81;
 
@@ -82,6 +82,9 @@ public class ClassVisualizationController implements Initializable
     @FXML
     private Label courseLabel;
 
+    @FXML
+    private Label dateLabel;
+
     // General Room Info
     @FXML
     private Label totalStudents;
@@ -96,10 +99,8 @@ public class ClassVisualizationController implements Initializable
     private Label freeSeats;
 
     @FXML
-    private Label dateLabel;
-
-    @FXML
     private Button studentListButton;
+
 
     // Student ID List Window
     private Stage studentListWindow;
@@ -339,7 +340,7 @@ public class ClassVisualizationController implements Initializable
         });
 
         // Read room names
-        ArrayList<Object> objectList = ObjectListReader.readObjectListFile(MainApplicationController.path + "roomNames.ser");
+        ArrayList<Object> objectList = ListObjectReader.readObjectListFile(MainApplicationController.path + "roomNames.ser");
 
         List<String> roomNames = objectList.stream()
                 .map(object -> Objects.toString(object, null))
@@ -348,12 +349,12 @@ public class ClassVisualizationController implements Initializable
         // Initialize room combo box
         roomComboBox.setItems(FXCollections.observableList(roomNames));
 
-        // Deallocate Memory
-        objectList = null;
-        roomNames = null;
-        System.gc();
     }
 
+
+    //
+    // Method that shows a small student ID list window of the current room
+    //
     @FXML
     protected void showStudentList(ActionEvent event) throws IOException
     {
@@ -366,6 +367,9 @@ public class ClassVisualizationController implements Initializable
             return;
 
         studentListWindow = new Stage();
+
+        // Make it null again so that we can open it again only once at a time
+        studentListWindow.setOnCloseRequest(windowEvent -> studentListWindow = null);
 
         Parent parent = FXMLLoader.load(RunApplication.class.getResource("studentListWindow.fxml"));
         Scene studentListScene = new Scene(parent, 600, 370);
@@ -390,17 +394,13 @@ public class ClassVisualizationController implements Initializable
             resourceName = "mainApplicationGUI-1000x600-statistics.fxml";
 
         Parent visualizationParent = FXMLLoader.load(RunApplication.class.getResource(resourceName));
-        Scene visualizationScene = new Scene(visualizationParent, MainApplicationController.width, MainApplicationController.height);
+        window.getScene().setRoot(visualizationParent);
 
-        window.setScene(visualizationScene);
         window.setTitle("Statistical Analysis - CovIDetect©");
 
-        // Deallocate memory
-        visualizationParent = null;
-        visualizationScene = null;
+        // Reset fields
         room = null;
         seatList = null;
-        System.gc();
 
         window.show();
     }
@@ -424,17 +424,13 @@ public class ClassVisualizationController implements Initializable
             resourceName = "mainApplicationGUI-1000x600.fxml";
 
         Parent visualizationParent = FXMLLoader.load(RunApplication.class.getResource(resourceName));
-        Scene visualizationScene = new Scene(visualizationParent, MainApplicationController.width, MainApplicationController.height);
+        window.getScene().setRoot(visualizationParent);
 
-        window.setScene(visualizationScene);
         window.setTitle("CovIDetect© by PasoftXperts");
 
-        // Deallocate memory
-        visualizationParent = null;
-        visualizationScene = null;
+        // Reset Fields
         room = null;
         seatList = null;
-        System.gc();
 
         window.show();
     }
@@ -452,17 +448,13 @@ public class ClassVisualizationController implements Initializable
             resourceName = "mainApplicationGUI-1000x600-updateStatus.fxml";
 
         Parent visualizationParent = FXMLLoader.load(RunApplication.class.getResource(resourceName));
-        Scene visualizationScene = new Scene(visualizationParent, MainApplicationController.width, MainApplicationController.height);
+        window.getScene().setRoot(visualizationParent);
 
-        window.setScene(visualizationScene);
         window.setTitle("Update Student's Covid Status - CovIDetect©");
 
-        // Deallocate memory
-        visualizationParent = null;
-        visualizationScene = null;
+        // Reset Fields
         room = null;
         seatList = null;
-        System.gc();
 
         window.show();
     }

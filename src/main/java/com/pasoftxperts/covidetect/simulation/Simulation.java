@@ -298,6 +298,23 @@ public class Simulation
         FileWrapper.saveRoomNames(university.getUniversityName(), appliedInformatics.getDepartmentName());
 
         FileWrapper.saveProfessorNames(university.getUniversityName(), appliedInformatics.getDepartmentName(), Curriculum.getProfessorNameList());
+
+        //
+        // Deallocate memory
+        // (Even though it is a bad practice, we have to be assured that the gc tries to garbage collect again what's possibly left
+        // so that we can reduce the GUI memory usage to the most that we can)
+        //
+        room = null;
+        roomList = null;
+        studentList = null;
+        fallSemesterCurriculum = null;
+        fallSemesterRoomIdList = null;
+        springSemesterCurriculum = null;
+        springSemesterRoomIdList = null;
+        timeStamps = null;
+        roomSeats = null;
+        graph = null;
+        System.gc();
     }
 
     public static Room findRoomById(String roomId, ArrayList<Room> roomList)
@@ -373,53 +390,5 @@ public class Simulation
         }
 
         return roomSeats;
-    }
-
-    public static void printRoomTimeStamps(ArrayList<Room> roomList)
-    {
-        for (int i = 0; i < NUMBER_OF_ROOMS; i++)
-        {
-            System.out.println("-------------------------------------");
-            System.out.println("Room " + roomList.get(i).getRoomId());
-
-            ArrayList<TimeStamp> timeStamps = roomList.get(i).getTimeStampList();
-
-            for (int j = 0; j < timeStamps.size(); j++)
-            {
-                System.out.println(timeStamps.size());
-                HourSpan hourspan = timeStamps.get(j).getDay().getHourSpan();
-
-                System.out.println("Date: " + timeStamps.get(j).getDateToString());
-                System.out.println("Course: " + hourspan.getCourse().getCourseName() + ", ID = " + hourspan.getCourse().getCourseId());
-                System.out.println("Semester: " + hourspan.getCourse().getSemesterNum());
-                System.out.println("Start Hour: " + hourspan.getStartHour());
-                System.out.println("End Hour: " + hourspan.getEndHour());
-                System.out.println("-------------------------------------");
-                System.out.println("-------------------------------------");
-                System.out.println();
-            }
-        }
-    }
-
-    public static void printSeats(ArrayList<ArrayList<Seat>> roomSeats, int rows, int cols)
-    {
-        for (int i = 0; i < rows; i++)
-        {
-            for (int j = 0; j < cols; j++)
-            {
-                if (roomSeats.get(i).get(j).isOccupied())
-                {
-                    System.out.print(roomSeats.get(i).get(j)
-                            .getStudent()
-                            .getHealthIndicator() + " ");
-                }
-                else
-                {
-                    System.out.print(5 + " ");
-                }
-            }
-            System.out.println(" ");
-        }
-        System.out.println(" ");
     }
 }

@@ -86,11 +86,6 @@ public class RegisterGUIController implements Initializable
         window.setScene(loginScene);
         window.setTitle("CovIDetect Login");
 
-        // Deallocate memory
-        loginParent = null;
-        loginScene = null;
-        System.gc();
-
         window.show();
     }
 
@@ -229,10 +224,6 @@ public class RegisterGUIController implements Initializable
 
         Thread taskThread = new Thread(emailVerifierTask);
         taskThread.start();
-
-        // Deallocate memory
-        loadingScene = null;
-        System.gc();
     }
 
     // Shows or hides the password fields depending on if the checkbox to show the password is on/off.

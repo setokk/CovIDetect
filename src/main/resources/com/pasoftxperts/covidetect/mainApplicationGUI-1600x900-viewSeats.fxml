@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" style="-fx-background-color: white;" stylesheets="@mainApplicationStyles-viewSeats.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pasoftxperts.covidetect.guicontrollers.ClassVisualizationController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" style="-fx-background-color: white;" stylesheets="@mainApplicationStyles-viewSeats.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pasoftxperts.covidetect.guicontrollers.RoomVisualizationController">
    <children>
       <AnchorPane prefHeight="53.0" prefWidth="1603.0" styleClass="menu">
          <children>
@@ -66,14 +66,14 @@
             </ImageView>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="-4.0" layoutY="53.0" prefHeight="149.0" prefWidth="1604.0" style="-fx-background-color: #3463e4;">
+      <AnchorPane layoutX="-4.0" layoutY="53.0" prefHeight="140.0" prefWidth="1604.0" style="-fx-background-color: #323232;">
          <children>
-            <Label layoutX="696.0" layoutY="20.0" prefHeight="40.0" prefWidth="255.0" text="Class Visualization" textFill="WHITE">
+            <Label layoutX="684.0" layoutY="20.0" prefHeight="40.0" prefWidth="267.0" text="Room Visualization" textFill="WHITE">
                <font>
                   <Font name="Corbel Light" size="34.0" />
                </font>
             </Label>
-            <ImageView fitHeight="60.0" fitWidth="62.0" layoutX="787.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="60.0" fitWidth="62.0" layoutX="787.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@icons/amphitheater.png" />
                </image>
@@ -232,5 +232,10 @@
             <Cursor fx:constant="CROSSHAIR" />
          </cursor>
       </Button>
+      <Label id="historyLabel" layoutX="1531.0" layoutY="842.0" prefHeight="45.0" prefWidth="54.0" style="-fx-text-fill: #323232;" text="v.0.5">
+         <font>
+            <Font name="Corbel Light" size="23.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

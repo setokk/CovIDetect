@@ -35,11 +35,5 @@ public class PopupWindow
         popupWindow.setScene(scene);
         popupWindow.showAndWait();
 
-        // Deallocate memory
-        popupWindow = null;
-        scene = null;
-        errorLabel = null;
-        pane = null;
-        System.gc();
     }
 }

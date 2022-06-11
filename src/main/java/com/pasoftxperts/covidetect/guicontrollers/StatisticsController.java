@@ -1,25 +1,24 @@
 package com.pasoftxperts.covidetect.guicontrollers;
 
 import com.pasoftxperts.covidetect.RunApplication;
-import com.pasoftxperts.covidetect.filemanager.ObjectListReader;
+import com.pasoftxperts.covidetect.filemanager.ListObjectReader;
 import com.pasoftxperts.covidetect.filemanager.ObjectReader;
-import com.pasoftxperts.covidetect.filemanager.ObjectTaskReader;
+import com.pasoftxperts.covidetect.filemanager.TaskObjectReader;
 import com.pasoftxperts.covidetect.guicontrollers.popupwindow.PopupWindow;
+import com.pasoftxperts.covidetect.history.HistoryManager;
+import com.pasoftxperts.covidetect.history.StatisticsValues;
 import com.pasoftxperts.covidetect.statistics.StatisticalAnalysis;
-import com.pasoftxperts.covidetect.time.TimeStamp;
 import com.pasoftxperts.covidetect.university.Room;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
@@ -84,6 +83,9 @@ public class StatisticsController implements Initializable
     @FXML
     private Label averageField;
 
+    @FXML
+    private Label statMethodLabel;
+
     private XYChart.Series<String, Number> series;
 
     // Selected room name from room combo box list
@@ -93,10 +95,13 @@ public class StatisticsController implements Initializable
     private ObjectReader objectReader = null;
 
     // List of ObjectReaders (All Rooms)
-    private List<ObjectTaskReader> objectReaderList = new ArrayList<>();
+    private List<TaskObjectReader> objectReaderList = new ArrayList<>();
 
     // Start Date LocalDate
     private LocalDate startDate = null;
+
+    // End Date LocalDate
+    private LocalDate endDate = null;
 
     // Start Date String
     private String startDateString = null;
@@ -156,9 +161,7 @@ public class StatisticsController implements Initializable
 
 
         // Add Data Category Options List to its ComboBox
-        statisticalMethodOptions.add("Average");
-        statisticalMethodOptions.add("Max");
-        statisticalMethodOptions.add("Min");
+        statisticalMethodOptions.add("Standard Deviation");
 
         methodsComboBox.setItems(FXCollections.observableList(statisticalMethodOptions));
 
@@ -167,8 +170,9 @@ public class StatisticsController implements Initializable
         startDatePicker.setEditable(false);
         endDatePicker.setEditable(false);
 
+
         // Read room names
-        ArrayList<Object> objectList = ObjectListReader.readObjectListFile(MainApplicationController.path + "roomNames.ser");
+        ArrayList<Object> objectList = ListObjectReader.readObjectListFile(MainApplicationController.path + "roomNames.ser");
 
         List<String> roomNames = objectList.stream()
                 .map(object -> Objects.toString(object, null))
@@ -181,12 +185,10 @@ public class StatisticsController implements Initializable
         // Initialize room combo box
         roomComboBox.setItems(FXCollections.observableList(roomNames));
 
-        // Deallocate memory
-        objectList = null;
-        System.gc();
 
-        // ADD LISTENERS
+        //
         // ROOM COMBO BOX LISTENER
+        //
         roomComboBox.valueProperty().addListener((observableValue, o, t1) ->
         {
             // Set date picker selected values to null
@@ -210,49 +212,61 @@ public class StatisticsController implements Initializable
             {
                 objectReader = null;
 
-                // Start thread for read each room object file (.ser) with JavaFX Task Concurrency
+                //
+                // Load all rooms
+                //
                 for (String name : roomNames)
                 {
                     if (!name.equals("All Rooms"))
                     {
-                        objectReaderList.add(new ObjectTaskReader(MainApplicationController.path + name + ".ser"));
+                        objectReaderList.add(new TaskObjectReader(MainApplicationController.path + name + ".ser"));
                     }
                 }
 
-                Service readFiles = new Service()
+
+                //
+                // Start services for loading each room object file (.ser) with JavaFX Task Concurrency
+                //
+                for (int i = 0; i < objectReaderList.size(); i++)
                 {
-                    @Override
-                    protected Task createTask()
+                    int finalI = i;
+
+                    Service readFiles = new Service()
                     {
-                        return new Task<Void>()
+                        @Override
+                        protected Task createTask()
                         {
-                            @Override
-                            protected Void call() throws Exception
+                            return new Task<Void>()
                             {
-                                for (int i = 0; i < objectReaderList.size(); i++)
+                                @Override
+                                protected Void call() throws Exception
                                 {
-                                    objectReaderList.get(i).readObjectFile();
+                                    objectReaderList.get(finalI).readObjectFile();
+
+                                    return null;
                                 }
+                            };
+                        }
+                    };
 
-                                return null;
-                            }
-                        };
-                    }
-                };
+                    readFiles.setOnSucceeded((e) -> {});
 
-                readFiles.setOnSucceeded((e) -> {});
+                    readFiles.start();
+                }
 
-                readFiles.start();
             }
             else
             {
+                // Load only one object
                 objectReader = new ObjectReader(MainApplicationController.path + selectedRoom + ".ser");
                 objectReader.start();
             }
         });
 
 
+        //
         // START DATE LISTENER
+        //
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM,d,yyyy", Locale.US);
 
         startDatePicker.valueProperty().addListener((observableValue, localDate, t1) ->
@@ -262,15 +276,18 @@ public class StatisticsController implements Initializable
 
             startDate = startDatePicker.getValue();
 
-            // Check if Start Date is before End Date
+            // Check if Start Date is after End Date
             if ((endDatePicker.getValue() != null) && (startDate.isAfter(endDatePicker.getValue())))
             {
                 startDatePicker.setValue(null);
 
-                try {
+                try
+                {
                     PopupWindow.display("Start Date can't be after End Date");
-                } catch (IOException e) {
-                    e.printStackTrace();
+                }
+                catch (IOException e)
+                {
+
                 }
             }
 
@@ -278,13 +295,15 @@ public class StatisticsController implements Initializable
         });
 
 
+        //
         // END DATE LISTENER
+        //
         endDatePicker.valueProperty().addListener((observableValue, localDate, t1) ->
         {
             if (endDatePicker.getValue() == null)
                 return;
 
-            LocalDate endDate = endDatePicker.getValue();
+            endDate = endDatePicker.getValue();
 
             endDateString = formatter.format(endDate);
 
@@ -305,7 +324,9 @@ public class StatisticsController implements Initializable
         });
 
 
+        //
         // SHOW BY COMBO BOX LISTENER
+        //
         showByComboBox.valueProperty().addListener((observableValue, o, t1) ->
         {
             if (showByComboBox.getValue() == null)
@@ -315,7 +336,9 @@ public class StatisticsController implements Initializable
         });
 
 
+        //
         // DATA CATEGORY COMBO BOX LISTENER
+        //
         dataCategoryComboBox.valueProperty().addListener((observableValue, o, t1) ->
         {
             if (dataCategoryComboBox.getValue() == null)
@@ -332,9 +355,82 @@ public class StatisticsController implements Initializable
                 return;
 
             selectedStatisticalMethod = (String) methodsComboBox.getValue();
+
+        });
+
+
+
+        //
+        // We check if we have loaded this page from the history option or not in main application home page
+        // (We use Platform.runLater() method because it has to run as soon as the fields have been initialized)
+        //
+        Platform.runLater(() ->
+        {
+            // True, if we have selected an option from the history list
+            if (HistoryManager.isSelectedHistoryStatus())
+            {
+                StatisticsValues statisticsValues = (StatisticsValues) HistoryManager.readHistory(MainApplicationController.selectedHistoryOption);
+                roomComboBox.setValue(statisticsValues.getSelectedRoom());
+                roomComboBox.fireEvent(new ActionEvent()); // To load the rooms
+
+                startDatePicker.setValue(statisticsValues.getStartDate());
+                endDatePicker.setValue(statisticsValues.getEndDate());
+                showByComboBox.setValue(statisticsValues.getShowByOption());
+                dataCategoryComboBox.setValue(statisticsValues.getSelectedDataCategory());
+                methodsComboBox.setValue(statisticsValues.getSelectedStatisticalMethod());
+                minField.setText(statisticsValues.getMinField());
+                maxField.setText(statisticsValues.getMaxField());
+                averageField.setText(statisticsValues.getAverageField());
+                statMethodLabel.setText(statisticsValues.getStatMethodLabel());
+
+
+                // Populate LineChart
+                showByElements = statisticsValues.getShowByElements();
+                ArrayList<Double> yAxis = statisticsValues.getyAxis();
+
+                int percentageFactor;
+                String seriesName;
+
+                if (statisticsValues.getSelectedDataCategory().equals("Attendance Stats"))
+                {
+                    percentageFactor = 100;
+                    seriesName = "Attendance Rates";
+                }
+                else
+                {
+                    percentageFactor = 1;
+                    seriesName = "Number of Covid Cases";
+                }
+
+                lineChart.getData().clear();
+                lineChart.setTitle(selectedDataCategory);
+                series = new XYChart.Series<String, Number>();
+                series.setName(seriesName);
+
+                for (int i = 0; i < yAxis.size(); i++)
+                    series.getData().add(new XYChart.Data<String, Number>(showByElements.get(i), yAxis.get(i) * percentageFactor));
+
+                lineChart.getData().add(series);
+
+                //
+                // Reset the status again
+                //
+                HistoryManager.setSelectedHistoryStatus(false);
+                statisticsValues = null;
+                System.gc();
+            }
         });
     }
 
+
+    /*
+    |  Calculates the statistics based on user input
+    |  Checks if any of the necessary fields are null
+    |  Based on what room a user selected, it loads the appropriate room/all rooms using Services (JavaFX Concurrency for Threading)
+    |  All rooms are not loaded in whatever case for reducing space complexity and increasing performance
+    |  No further field checking occurs in this method due to the value listeners and their checks in the initialize method (see line 135)
+    |  Do not change the Services
+    */
     @FXML
     protected void calculateStatistics()
     {
@@ -343,7 +439,8 @@ public class StatisticsController implements Initializable
                 || (selectedDataCategory == null)
                 || (selectedShowByOption == null)
                 || (startDateString == null)
-                || (endDateString == null))
+                || (endDateString == null)
+                || selectedStatisticalMethod == null)
             return;
 
         rooms = new ArrayList<>();
@@ -354,8 +451,15 @@ public class StatisticsController implements Initializable
         }
         else
         {
-            for (ObjectTaskReader reader : objectReaderList)
+            for (TaskObjectReader reader : objectReaderList)
                 rooms.add((Room) reader.getResult());
+        }
+
+        // Check if any of the rooms is null (user immediately pressed proceed again after loading history)
+        for (Room room : rooms)
+        {
+            if (room == null)
+                return;
         }
 
         lineChart.getData().clear();
@@ -374,6 +478,8 @@ public class StatisticsController implements Initializable
         // If we want to show Covid Cases, we don't want to multiply it by anything
         int percentageFactor;
 
+        String seriesName;
+
         // Takes the "%" value if we want to show [Min,Max,Average] in Attendance Stats
         // Takes "" value if we want to show [Min,Max,Average] in Covid Cases
         String percentSymbol;
@@ -389,6 +495,7 @@ public class StatisticsController implements Initializable
 
             percentageFactor = 100;
             percentSymbol = "%";
+            seriesName = "Attendance Stats";
         }
         else
         {
@@ -401,31 +508,67 @@ public class StatisticsController implements Initializable
 
             percentageFactor = 1;
             percentSymbol = "";
+            seriesName = "Number of Covid Cases";
         }
 
-            for (int i = 0; i < yAxisData.size(); i++)
-                series.getData().add(new XYChart.Data<String, Number>(showByElements.get(i), yAxisData.get(i) * percentageFactor));
+        series.setName(seriesName);
 
-            lineChart.getData().add(series);
+        for (int i = 0; i < yAxisData.size(); i++)
+            series.getData().add(new XYChart.Data<String, Number>(showByElements.get(i), yAxisData.get(i) * percentageFactor));
 
-            // Remove the decimals
-            DecimalFormat decimalFormat = new DecimalFormat(".");
-            decimalFormat.setGroupingUsed(false);
-            decimalFormat.setDecimalSeparatorAlwaysShown(false);
+        lineChart.getData().add(series);
 
-            minField.setText("Min:\n" + decimalFormat.format(minMaxAverage.get(0) * percentageFactor) + percentSymbol);
-            maxField.setText("Max:\n" + decimalFormat.format(minMaxAverage.get(1) * percentageFactor) + percentSymbol);
-            averageField.setText("Average:\n" + decimalFormat.format(minMaxAverage.get(2) * percentageFactor) + percentSymbol);
+        // Remove the decimals
+        DecimalFormat decimalFormat = new DecimalFormat(".");
+        decimalFormat.setGroupingUsed(false);
+        decimalFormat.setDecimalSeparatorAlwaysShown(false);
 
-            if (minMaxAverage.get(1) == -1)
-            {
-                minField.setText("Min:\n0");
-                maxField.setText("Max:\n0");
-            }
+        minField.setText("Min:\n" + decimalFormat.format(minMaxAverage.get(0) * percentageFactor) + percentSymbol);
+        maxField.setText("Max:\n" + decimalFormat.format(minMaxAverage.get(1) * percentageFactor) + percentSymbol);
+        averageField.setText("Average:\n" + decimalFormat.format(minMaxAverage.get(2) * percentageFactor) + percentSymbol);
 
-            // Deallocate memory
-            rooms = null;
-            System.gc();
+        if (minMaxAverage.get(1) == -1)
+        {
+            minField.setText("Min:\n0");
+            maxField.setText("Max:\n0");
+        }
+
+        //
+        // Calculate statistical method
+        //
+        double result = 0;
+
+        if (selectedStatisticalMethod.equals("Standard Deviation"))
+            result = statisticalAnalysis.calculateStandardDeviation(yAxisData, minMaxAverage.get(2), percentageFactor);
+
+        // Update statistical method label
+        statMethodLabel.setText(selectedStatisticalMethod + ":\n" + decimalFormat.format(result) + percentSymbol);
+
+
+
+        //
+        // Update History
+        //
+        StatisticsValues statisticsValues = new StatisticsValues();
+        statisticsValues.setSelectedRoom(selectedRoom);
+        statisticsValues.setStartDate(startDate);
+        statisticsValues.setEndDate(endDate);
+        statisticsValues.setSelectedDataCategory(selectedDataCategory);
+        statisticsValues.setShowByElements(showByElements);
+        statisticsValues.setShowByOption(selectedShowByOption);
+        statisticsValues.setSelectedStatisticalMethod(selectedStatisticalMethod);
+        statisticsValues.setyAxis(yAxisData);
+        statisticsValues.setMinField(minField.getText());
+        statisticsValues.setMaxField(maxField.getText());
+        statisticsValues.setAverageField(averageField.getText());
+        statisticsValues.setStatMethodLabel(statMethodLabel.getText());
+
+        // Write to file
+        HistoryManager.updateHistory(statisticsValues);
+
+        // Reset Fields
+        rooms = null;
+        System.gc();
     }
 
     @FXML
@@ -447,14 +590,11 @@ public class StatisticsController implements Initializable
             resourceName = "mainApplicationGUI-1000x600-viewSeats.fxml";
 
         Parent visualizationParent = FXMLLoader.load(RunApplication.class.getResource(resourceName));
-        Scene visualizationScene = new Scene(visualizationParent, MainApplicationController.width, MainApplicationController.height);
+        window.getScene().setRoot(visualizationParent);
 
-        window.setScene(visualizationScene);
         window.setTitle("Room Visualization - CovIDetect©");
 
-        // Deallocate memory
-        visualizationParent = null;
-        visualizationScene = null;
+        // Reset Fields
         rooms = null;
         System.gc();
 
@@ -474,14 +614,11 @@ public class StatisticsController implements Initializable
             resourceName = "mainApplicationGUI-1000x600.fxml";
 
         Parent visualizationParent = FXMLLoader.load(RunApplication.class.getResource(resourceName));
-        Scene visualizationScene = new Scene(visualizationParent, MainApplicationController.width, MainApplicationController.height);
+        window.getScene().setRoot(visualizationParent);
 
-        window.setScene(visualizationScene);
         window.setTitle("CovIDetect© by PasoftXperts");
 
-        // Deallocate memory
-        visualizationParent = null;
-        visualizationScene = null;
+        // Reset Fields
         rooms = null;
         System.gc();
 
@@ -501,14 +638,11 @@ public class StatisticsController implements Initializable
             resourceName = "mainApplicationGUI-1000x600-updateStatus.fxml";
 
         Parent visualizationParent = FXMLLoader.load(RunApplication.class.getResource(resourceName));
-        Scene visualizationScene = new Scene(visualizationParent, MainApplicationController.width, MainApplicationController.height);
+        window.getScene().setRoot(visualizationParent);
 
-        window.setScene(visualizationScene);
         window.setTitle("Update Student's Covid Status - CovIDetect©");
 
-        // Deallocate memory
-        visualizationParent = null;
-        visualizationScene = null;
+        // Reset Fields
         rooms = null;
         System.gc();
 

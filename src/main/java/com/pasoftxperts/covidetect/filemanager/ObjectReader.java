@@ -1,5 +1,7 @@
 package com.pasoftxperts.covidetect.filemanager;
 
+import com.pasoftxperts.covidetect.guicontrollers.popupwindow.PopupWindow;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -19,28 +21,25 @@ public class ObjectReader extends Thread
     @Override
     public void run()
     {
-        result = readObjectFile(path);
-    }
-
-    public Object readObjectFile(String path)
-    {
-        Object object = new Object();
-
         try
         {
             FileInputStream fileIn = new FileInputStream(path);
             ObjectInputStream objIn = new ObjectInputStream(fileIn);
 
             // Write object ArrayList
-            try { object =(Object) objIn.readObject(); }
-            catch (ClassNotFoundException e) { e.printStackTrace(); }
+            try
+            {
+                result =(Object) objIn.readObject();
+            }
+            catch (ClassNotFoundException e)
+            {
+                PopupWindow.display("Could not read object file");
+            }
 
             objIn.close();
             fileIn.close();
         }
         catch (IOException e) { e.printStackTrace(); }
-
-        return object;
     }
 
     public Object getResult() { return result; }

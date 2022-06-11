@@ -1,9 +1,11 @@
 package com.pasoftxperts.covidetect.filemanager;
 
+import com.pasoftxperts.covidetect.guicontrollers.popupwindow.PopupWindow;
+
 import java.io.*;
 import java.util.ArrayList;
 
-public class ObjectListReader
+public class ListObjectReader
 {
     public static ArrayList<Object> readObjectListFile(String path)
     {
@@ -15,8 +17,14 @@ public class ObjectListReader
             ObjectInputStream objIn = new ObjectInputStream(fileIn);
 
             // Write object ArrayList
-            try { objectList = (ArrayList<Object>) objIn.readObject(); }
-            catch (ClassNotFoundException e) { e.printStackTrace(); }
+            try
+            {
+                objectList = (ArrayList<Object>) objIn.readObject();
+            }
+            catch (ClassNotFoundException e)
+            {
+                PopupWindow.display("Could not read list object file");
+            }
 
             objIn.close();
             fileIn.close();

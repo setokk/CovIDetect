@@ -102,3 +102,8 @@
 	-fx-background-color: #323232;
 	-fx-text-fill: white;
 }
+
+.general-label:hover
+{
+	-fx-text-fill: #3463e4;
+}

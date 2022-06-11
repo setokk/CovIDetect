@@ -1,10 +1,10 @@
 package com.pasoftxperts.covidetect.guicontrollers;
 
 import com.pasoftxperts.covidetect.RunApplication;
-import com.pasoftxperts.covidetect.filemanager.ObjectListReader;
-import com.pasoftxperts.covidetect.filemanager.ObjectReader;
-import com.pasoftxperts.covidetect.imageslider.ImageSlider;
+import com.pasoftxperts.covidetect.history.HistoryManager;
 import com.pasoftxperts.covidetect.loginsession.LoginSession;
+import com.pasoftxperts.covidetect.simulation.Simulation;
+import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,15 +16,25 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class MainApplicationController implements Initializable
 {
@@ -49,6 +59,17 @@ public class MainApplicationController implements Initializable
     @FXML
     private Label logoutLabel;
 
+    @FXML
+    private ListView historyListView;
+
+    @FXML
+    private Button runSimulationButton;
+
+    @FXML
+    private Label simulationLabel;
+
+    private static boolean simulationPressed = false; // Indicates whether the simulation button was pressed or not
+
     public static final String path = System.getProperty("user.dir") + "/university of macedonia/applied informatics/";
 
     // We need the width and height for other classes
@@ -56,16 +77,66 @@ public class MainApplicationController implements Initializable
 
     public static double height;
 
+    public static String selectedHistoryOption = null;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        if (simulationPressed)
+        {
+            runSimulationButton.setDisable(true);
+            runSimulationButton.setStyle("-fx-background-color:#323232");
+        }
+
+        // Statistics chart video
+        Media media;
+
+        MediaPlayer mediaPlayer;
+
+        MediaView mediaView;
+
+        media = new Media(RunApplication.class.getResource("icons/bigData.mp4").toExternalForm());
+        mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.setAutoPlay(true);
+
+        // Loop it
+        mediaPlayer.setOnEndOfMedia(() ->
+        {
+            mediaPlayer.seek(Duration.ZERO);
+            mediaPlayer.play();
+        });
+        mediaView = new MediaView(mediaPlayer);
+        mediaView.setFitHeight(450);
+        mediaView.setFitWidth(650);
+
+        mainBorderPane.setCenter(mediaView);
+
+
         usernameLabel.setText(LoginSession.getUsername());
 
-        ImageSlider sliderCreator = new ImageSlider();
+        // History List View
 
-        GridPane imageSlider = sliderCreator.createImageSlider();
+        // Make path directories
+        new File(HistoryManager.HISTORY_PATH).mkdirs();
 
-        mainBorderPane.setCenter(imageSlider);
+        // We go through the files
+        File folder = new File(HistoryManager.HISTORY_PATH);
+        List<File> listOfFiles = Arrays.asList(folder.listFiles());
+
+        // Sort based on the last date modified
+        Collections.sort(listOfFiles, (a, b) -> a.lastModified() > b.lastModified() ? -1 : a.lastModified() == b.lastModified() ? 0 : 1);
+
+        List<String> fileNames = listOfFiles.stream()
+                                            .map(File::getName)
+                                            .collect(Collectors.toList());
+
+        historyListView.getItems().addAll(fileNames);
+
+        historyListView.getSelectionModel().selectedItemProperty().addListener((observableValue, o, t1) ->
+        {
+            loadHistory();
+        });
+
     }
 
     @FXML
@@ -92,15 +163,9 @@ public class MainApplicationController implements Initializable
         }
 
         Parent visualizationParent = FXMLLoader.load(RunApplication.class.getResource(resourceName));
-        Scene visualizationScene = new Scene(visualizationParent, width, height);
+        window.getScene().setRoot(visualizationParent);
 
-        window.setScene(visualizationScene);
         window.setTitle("Statistical Analysis - CovIDetect©");
-
-        // Deallocate memory
-        visualizationParent = null;
-        visualizationScene = null;
-        System.gc();
 
         window.show();
     }
@@ -129,15 +194,9 @@ public class MainApplicationController implements Initializable
         }
 
         Parent visualizationParent = FXMLLoader.load(RunApplication.class.getResource(resourceName));
-        Scene visualizationScene = new Scene(visualizationParent, width, height);
+        window.getScene().setRoot(visualizationParent);
 
-        window.setScene(visualizationScene);
         window.setTitle("Room Visualization - CovIDetect©");
-
-        // Deallocate memory
-        visualizationParent = null;
-        visualizationScene = null;
-        System.gc();
 
         window.show();
     }
@@ -166,15 +225,9 @@ public class MainApplicationController implements Initializable
         }
 
         Parent visualizationParent = FXMLLoader.load(RunApplication.class.getResource(resourceName));
-        Scene visualizationScene = new Scene(visualizationParent, width, height);
+        window.getScene().setRoot(visualizationParent);
 
-        window.setScene(visualizationScene);
         window.setTitle("Update Student's Covid Status - CovIDetect© - CovIDetect©");
-
-        // Deallocate memory
-        visualizationParent = null;
-        visualizationScene = null;
-        System.gc();
 
         window.show();
     }
@@ -198,5 +251,119 @@ public class MainApplicationController implements Initializable
         previousWindow.hide();
 
         stage.show();
+    }
+
+    @FXML
+    protected void loadHistory()
+    {
+        selectedHistoryOption = (String) historyListView.getSelectionModel().getSelectedItem();
+
+        if (selectedHistoryOption == null)
+            return;
+
+        HistoryManager.setSelectedHistoryStatus(true);
+
+        if (selectedHistoryOption.contains("Statistics"))
+        {
+            statisticsButton.fireEvent(new ActionEvent()); // Open Statistics page with history status set to true
+        }
+        else
+        {
+
+        }
+    }
+
+    @FXML
+    protected void runSimulationProgress(ActionEvent event) throws IOException
+    {
+        String resourceName;
+
+        Stage window = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
+
+        width = window.getWidth();
+        height = window.getHeight();
+
+        if ((width >= 1600) && (height >= 900))
+        {
+            resourceName = "loadingSimulationGUI-1600x900.fxml";
+            width = 1600;
+            height = 900;
+        }
+        else
+        {
+            resourceName = "loadingSimulationGUI-1000x600.fxml";
+            width = 1000;
+            height = 600;
+        }
+
+        Parent visualizationParent = FXMLLoader.load(RunApplication.class.getResource(resourceName));
+        Scene visualizationScene = new Scene(visualizationParent, width, height);
+
+        window.setScene(visualizationScene);
+
+        Service simulation = new Service()
+        {
+            @Override
+            protected Task createTask()
+            {
+                return new Task<Void>()
+                {
+                    @Override
+                    protected Void call() throws Exception
+                    {
+                        Simulation.runSimulation();
+
+                        return null;
+                    }
+                };
+            }
+        };
+
+        simulation.setOnSucceeded((e) ->
+        {
+            simulationPressed = true;
+            // Delete previous history files, if any
+            new File(HistoryManager.HISTORY_PATH).mkdirs();
+
+            // We go through the files
+            File folder = new File(HistoryManager.HISTORY_PATH);
+            File[] listOfFiles = folder.listFiles();
+
+            // Delete them
+            for (int i = 0; i < listOfFiles.length; i++)
+            {
+                listOfFiles[i].delete();
+            }
+
+            // Go back to the home page
+            String name;
+
+            if ((width >= 1600) && (height >= 900))
+            {
+                name = "mainApplicationGUI-1600x900.fxml";
+                width = 1600;
+                height = 900;
+            }
+            else
+            {
+                name = "mainApplicationGUI-1000x600.fxml";
+                width = 1000;
+                height = 600;
+            }
+
+            Parent parent = null;
+            try
+            {
+                parent = FXMLLoader.load(RunApplication.class.getResource(name));
+                Scene scene = new Scene(parent, width, height);
+                window.setScene(scene);
+            }
+            catch (IOException ex)
+            {
+                System.exit(1);
+            }
+        });
+
+        simulation.start();
     }
 }

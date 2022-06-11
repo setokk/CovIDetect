@@ -11,7 +11,9 @@ public class FileWrapper
     public static final String path = System.getProperty("user.dir");
     private static ArrayList<String> roomNames;
 
-    // Saves input files that it takes from server or simulation
+    //
+    // Gets input from the simulation and save it into files
+    //
     public static void saveFilesByRoom(String universityName, String departmentName, ArrayList<Room> roomList)
     {
         // Make directories for room files
@@ -45,7 +47,9 @@ public class FileWrapper
 
     }
 
+    //
     // Saves Room Names so that they can be used in a combo box etc.
+    //
     public static void saveRoomNames(String universityName, String departmentName)
     {
         String finalPath = path + "/" + universityName.toLowerCase() + "/" + departmentName.toLowerCase();

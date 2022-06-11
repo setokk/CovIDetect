@@ -2,7 +2,7 @@ package com.pasoftxperts.covidetect.statistics;
 
 import com.pasoftxperts.covidetect.counters.CovidCasesCounter;
 import com.pasoftxperts.covidetect.counters.StudentCounter;
-import com.pasoftxperts.covidetect.filemanager.ObjectListReader;
+import com.pasoftxperts.covidetect.filemanager.ListObjectReader;
 import com.pasoftxperts.covidetect.simulation.Simulation;
 import com.pasoftxperts.covidetect.sorting.MultipleSorting;
 import com.pasoftxperts.covidetect.time.TimeStamp;
@@ -55,7 +55,7 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
             case "By Professor":
                 String path = System.getProperty("user.dir") + "/university of macedonia/applied informatics/professors/professorNames.ser";
 
-                ArrayList<Object> tempList = ObjectListReader.readObjectListFile(path);
+                ArrayList<Object> tempList = ListObjectReader.readObjectListFile(path);
 
                 List<String> nameList = tempList.stream()
                                                 .map(object -> Objects.toString(object, null))
@@ -229,6 +229,7 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
 
         minMaxAverage.add(2, average);
 
+
         return attendanceRates;
     }
 
@@ -274,7 +275,7 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
             case "By Professor":
                 String path = System.getProperty("user.dir") + "/university of macedonia/applied informatics/professors/professorNames.ser";
 
-                ArrayList<Object> tempList = ObjectListReader.readObjectListFile(path);
+                ArrayList<Object> tempList = ListObjectReader.readObjectListFile(path);
 
                 List<String> nameList = tempList.stream()
                         .map(object -> Objects.toString(object, null))
@@ -425,5 +426,34 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
         minMaxAverage.add(2, average);
 
         return covidCases;
+    }
+
+
+    //
+    // Takes a list of data, the average of that and a percentage factor (* 100, * 1, etc.) depending on
+    // What the data represents (in the case of rates, percentageFactor is 100)
+    //
+    public double calculateStandardDeviation(ArrayList<Double> yAxis, double average, int percentageFactor)
+    {
+        double result = 0;
+
+        int n = yAxis.size(); // Sample size
+
+        double numerator = 0; // Numerator
+
+        for (int i = 0; i < n; i++)
+        {
+            if (yAxis.get(i) != 0)
+                numerator += Math.pow(yAxis.get(i) * percentageFactor - average * percentageFactor, 2);
+            else
+                n--;
+        }
+
+        if (n - 1 == 0)
+            return 0;
+
+        result = Math.sqrt(numerator / (n - 1)); // Standard Deviation of sample (n - 1)
+
+        return result;
     }
 }

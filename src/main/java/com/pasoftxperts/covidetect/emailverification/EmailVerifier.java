@@ -52,7 +52,10 @@ public class EmailVerifier
             e.printStackTrace();
         }
 
+
+        //
         // Reading the output of the Email Verifier Script
+        //
         try
         {
             File output = new File("ValidEmailOutput.txt");

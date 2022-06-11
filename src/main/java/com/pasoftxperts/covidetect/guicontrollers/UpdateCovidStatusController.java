@@ -2,8 +2,8 @@ package com.pasoftxperts.covidetect.guicontrollers;
 
 import com.pasoftxperts.covidetect.RunApplication;
 import com.pasoftxperts.covidetect.filemanager.FileWrapper;
-import com.pasoftxperts.covidetect.filemanager.ObjectListReader;
-import com.pasoftxperts.covidetect.filemanager.ObjectTaskReader;
+import com.pasoftxperts.covidetect.filemanager.ListObjectReader;
+import com.pasoftxperts.covidetect.filemanager.TaskObjectReader;
 import com.pasoftxperts.covidetect.graphanalysis.SingleCaseNeighbourCalculator;
 import com.pasoftxperts.covidetect.time.TimeStamp;
 import com.pasoftxperts.covidetect.university.Room;
@@ -16,7 +16,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -36,8 +35,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.pasoftxperts.covidetect.graphanalysis.GraphNeighboursGenerator.isCovidCase;
-import static com.pasoftxperts.covidetect.guicontrollers.ClassVisualizationController.DEFAULT_ROOM_CAPACITY;
-import static com.pasoftxperts.covidetect.guicontrollers.ClassVisualizationController.DEFAULT_SEAT_ROWS;
+import static com.pasoftxperts.covidetect.guicontrollers.RoomVisualizationController.DEFAULT_ROOM_CAPACITY;
+import static com.pasoftxperts.covidetect.guicontrollers.RoomVisualizationController.DEFAULT_SEAT_ROWS;
 
 public class UpdateCovidStatusController implements Initializable
 {
@@ -72,7 +71,7 @@ public class UpdateCovidStatusController implements Initializable
     private Label lastUpdatedLabel;
 
     // Object Reader Threads List for reading rooms
-    private List<ObjectTaskReader> objectReaderList;
+    private List<TaskObjectReader> objectReaderList;
 
     // Path to write the last updated file to
     private String path = System.getProperty("user.dir") + "/university of macedonia/applied informatics/lastupdate/";
@@ -105,7 +104,7 @@ public class UpdateCovidStatusController implements Initializable
         });
 
         // Load All Rooms
-        ArrayList<Object> objectList = ObjectListReader.readObjectListFile(MainApplicationController.path + "roomNames.ser");
+        ArrayList<Object> objectList = ListObjectReader.readObjectListFile(MainApplicationController.path + "roomNames.ser");
 
         List<String> roomNames = objectList.stream()
                 .map(object -> Objects.toString(object, null))
@@ -116,38 +115,37 @@ public class UpdateCovidStatusController implements Initializable
 
         for (String name : roomNames)
         {
-            objectReaderList.add(new ObjectTaskReader(MainApplicationController.path + name + ".ser"));
+            objectReaderList.add(new TaskObjectReader(MainApplicationController.path + name + ".ser"));
         }
 
-        Service readFiles = new Service()
+        //
+        // Start services for loading each room object file (.ser) with JavaFX Task Concurrency
+        //
+        for (int i = 0; i < objectReaderList.size(); i++)
         {
-            @Override
-            protected Task createTask()
+            int finalI = i;
+
+            Service readFiles = new Service()
             {
-                return new Task<Void>()
+                @Override
+                protected Task createTask()
                 {
-                    @Override
-                    protected Void call() throws Exception
-                    {
-                        for (int i = 0; i < objectReaderList.size(); i++)
-                        {
-                            objectReaderList.get(i).readObjectFile();
+                    return new Task<Void>() {
+                        @Override
+                        protected Void call() throws Exception {
+                            objectReaderList.get(finalI).readObjectFile();
+
+                            return null;
                         }
+                    };
+                }
+            };
 
-                        return null;
-                    }
-                };
-            }
-        };
+            readFiles.setOnSucceeded((e) -> {
+            });
 
-        readFiles.setOnSucceeded((e) -> {});
-
-        readFiles.start();
-
-        // Deallocate memory
-        objectList = null;
-        roomNames = null;
-        System.gc();
+            readFiles.start();
+        }
     }
 
     @FXML
@@ -178,7 +176,7 @@ public class UpdateCovidStatusController implements Initializable
         // Get Results from Threads
         ArrayList<Room> rooms = new ArrayList<>();
 
-        for (ObjectTaskReader objectReader : objectReaderList)
+        for (TaskObjectReader objectReader : objectReaderList)
         {
             rooms.add((Room) objectReader.getResult());
         }
@@ -247,7 +245,7 @@ public class UpdateCovidStatusController implements Initializable
                             {
                                 seat.getStudent().setHealthIndicator(1);
                                 DefaultUndirectedGraph<Seat, Integer> graph = SingleCaseNeighbourCalculator.calculateSingleCaseNeighbours
-                                        (seat,
+                                                (seat,
                                                 seats,
                                                 DEFAULT_SEAT_ROWS,
                                                 DEFAULT_ROOM_CAPACITY/ DEFAULT_SEAT_ROWS);
@@ -264,6 +262,7 @@ public class UpdateCovidStatusController implements Initializable
                 }
             }
         }
+
 
         // Target date not found
         if (failedAttempts == rooms.size())
@@ -327,7 +326,10 @@ public class UpdateCovidStatusController implements Initializable
             }
         }
 
+
+        //
         // Thread to save only the rooms that were modified (modifiedRooms)
+        //
         Service writeRooms = new Service()
         {
             @Override
@@ -375,6 +377,9 @@ public class UpdateCovidStatusController implements Initializable
         datePicker.setValue(null);
         statusLabel.setTextFill(Color.GREEN);
         statusLabel.setText("Student covid case was\nsuccessfully updated");
+
+        rooms = null;
+        System.gc();
     }
 
     @FXML
@@ -396,14 +401,11 @@ public class UpdateCovidStatusController implements Initializable
             resourceName = "mainApplicationGUI-1000x600-viewSeats.fxml";
 
         Parent visualizationParent = FXMLLoader.load(RunApplication.class.getResource(resourceName));
-        Scene visualizationScene = new Scene(visualizationParent, MainApplicationController.width, MainApplicationController.height);
+        window.getScene().setRoot(visualizationParent);
 
-        window.setScene(visualizationScene);
         window.setTitle("Room Visualization - CovIDetect©");
 
-        // Deallocate memory
-        visualizationParent = null;
-        visualizationScene = null;
+        // Reset Fields
         objectReaderList = null;
         System.gc();
 
@@ -423,14 +425,11 @@ public class UpdateCovidStatusController implements Initializable
             resourceName = "mainApplicationGUI-1000x600.fxml";
 
         Parent visualizationParent = FXMLLoader.load(RunApplication.class.getResource(resourceName));
-        Scene visualizationScene = new Scene(visualizationParent, MainApplicationController.width, MainApplicationController.height);
+        window.getScene().setRoot(visualizationParent);
 
-        window.setScene(visualizationScene);
         window.setTitle("CovIDetect© by PasoftXperts");
 
-        // Deallocate memory
-        visualizationParent = null;
-        visualizationScene = null;
+        // Reset Fields
         objectReaderList = null;
         System.gc();
 
@@ -450,14 +449,11 @@ public class UpdateCovidStatusController implements Initializable
             resourceName = "mainApplicationGUI-1000x600-statistics.fxml";
 
         Parent visualizationParent = FXMLLoader.load(RunApplication.class.getResource(resourceName));
-        Scene visualizationScene = new Scene(visualizationParent, MainApplicationController.width, MainApplicationController.height);
+        window.getScene().setRoot(visualizationParent);
 
-        window.setScene(visualizationScene);
         window.setTitle("Statistical Analysis - CovIDetect©");
 
-        // Deallocate memory
-        visualizationParent = null;
-        visualizationScene = null;
+        // Reset Fields
         objectReaderList = null;
         System.gc();
 

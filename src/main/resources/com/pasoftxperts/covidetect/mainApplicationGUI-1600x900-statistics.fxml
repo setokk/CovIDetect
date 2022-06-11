@@ -66,7 +66,7 @@
             </ImageView>
          </children>
       </AnchorPane>
-      <AnchorPane layoutY="50.0" prefHeight="156.0" prefWidth="1601.0" style="-fx-background-color: #3463e4;">
+      <AnchorPane layoutY="50.0" prefHeight="156.0" prefWidth="1601.0" style="-fx-background-color: #323232;">
          <children>
             <Label layoutX="702.0" layoutY="33.0" text="Statistical Analysis" textFill="WHITE">
                <font>
@@ -128,7 +128,7 @@
             </Button>
          </children>
       </AnchorPane>
-      <LineChart fx:id="lineChart" animated="false" layoutX="518.0" layoutY="325.0" prefHeight="564.0" prefWidth="1068.0">
+      <LineChart fx:id="lineChart" animated="false" layoutX="518.0" layoutY="348.0" prefHeight="541.0" prefWidth="1068.0">
         <xAxis>
           <CategoryAxis side="BOTTOM" />
         </xAxis>
@@ -136,24 +136,38 @@
           <NumberAxis prefHeight="444.0" prefWidth="28.0" side="LEFT" />
         </yAxis>
       </LineChart>
-      <AnchorPane layoutX="1326.0" layoutY="217.0" prefHeight="71.0" prefWidth="260.0" style="-fx-background-color: #323232;">
+      <AnchorPane layoutX="1310.0" layoutY="210.0" prefHeight="71.0" prefWidth="260.0" style="-fx-background-color: #323232;">
          <children>
-            <Label fx:id="minField" layoutX="21.0" layoutY="14.0" text="Min:" textFill="WHITE">
+            <Label fx:id="minField" layoutX="21.0" layoutY="14.0" styleClass="general-label" stylesheets="@mainApplicationStyles-statistics.css" text="Min:" textFill="WHITE">
                <font>
                   <Font name="Corbel Light" size="19.0" />
                </font>
             </Label>
-            <Label fx:id="maxField" layoutX="100.0" layoutY="14.0" text="Max:" textFill="WHITE">
+            <Label fx:id="maxField" layoutX="100.0" layoutY="14.0" styleClass="general-label" text="Max:" textFill="WHITE">
                <font>
                   <Font name="Corbel Light" size="19.0" />
                </font>
             </Label>
-            <Label fx:id="averageField" layoutX="172.0" layoutY="14.0" text="Average:" textFill="WHITE">
+            <Label fx:id="averageField" layoutX="172.0" layoutY="14.0" styleClass="general-label" text="Average:" textFill="WHITE">
                <font>
                   <Font name="Corbel Light" size="19.0" />
                </font>
             </Label>
          </children>
       </AnchorPane>
+      <AnchorPane layoutX="1310.0" layoutY="281.0" prefHeight="71.0" prefWidth="260.0" style="-fx-background-color: #323232;">
+         <children>
+            <Label fx:id="statMethodLabel" layoutX="53.0" layoutY="3.0" prefHeight="63.0" prefWidth="155.0" styleClass="general-label" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="19.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <Label id="historyLabel" layoutX="1538.0" layoutY="855.0" prefHeight="45.0" prefWidth="54.0" style="-fx-text-fill: #323232;" text="v.0.5">
+         <font>
+            <Font name="Corbel Light" size="23.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

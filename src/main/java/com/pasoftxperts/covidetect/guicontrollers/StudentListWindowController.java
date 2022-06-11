@@ -21,10 +21,10 @@ public class StudentListWindowController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        if (ClassVisualizationController.seats == null)
+        if (RoomVisualizationController.seats == null)
             return;
 
-        List<Seat> currentSeats = ClassVisualizationController.seats;
+        List<Seat> currentSeats = RoomVisualizationController.seats;
 
         // Go through the labels and update them accordingly with student ids
         for (int i = 0; i < studentVbox.getChildren().size(); i++)

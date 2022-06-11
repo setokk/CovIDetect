@@ -46,3 +46,34 @@
 	-fx-underline: true;
 	-fx-text-fill: blue;
 }
+
+.list-cell
+{
+	-fx-font-family: "Corbel Light";
+	-fx-font-size: 15px;
+}
+
+.list-cell:hover
+{
+	-fx-background-color: #323232;
+	-fx-text-fill: white;
+}
+
+#simulationButton
+{
+	-fx-background-radius: 10;
+	-fx-border-style: solid;
+	-fx-border-color: white;
+	-fx-border-radius: 30;
+	-fx-border-width: 1;
+}
+
+#simulationButton:hover
+{
+	-fx-background-color: #323232;
+}
+
+.generalLabel:hover
+{
+	-fx-text-fill: #3463e4;
+}

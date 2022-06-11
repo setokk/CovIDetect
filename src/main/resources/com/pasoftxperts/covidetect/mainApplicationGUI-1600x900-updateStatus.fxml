@@ -107,7 +107,7 @@
             </Button>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="-1.0" layoutY="53.0" prefHeight="119.0" prefWidth="1603.0" style="-fx-background-color: #3463e4;">
+      <AnchorPane layoutX="-1.0" layoutY="53.0" prefHeight="119.0" prefWidth="1603.0" style="-fx-background-color: #323232;">
          <children>
             <Label layoutX="592.0" layoutY="14.0" prefHeight="40.0" prefWidth="419.0" text="Update Student's Covid Status" textFill="WHITE">
                <font>
@@ -121,5 +121,10 @@
             </ImageView>
          </children>
       </AnchorPane>
+      <Label id="historyLabel" layoutX="1523.0" layoutY="841.0" prefHeight="45.0" prefWidth="54.0" style="-fx-text-fill: #323232;" text="v.0.5">
+         <font>
+            <Font name="Corbel Light" size="23.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

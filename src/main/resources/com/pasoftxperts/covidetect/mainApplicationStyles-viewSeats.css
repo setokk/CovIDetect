@@ -66,10 +66,7 @@
 {
 	-fx-background-color: #323232;
 	-fx-text-fill: white;
-	-fx-background-radius: 30;
 	-fx-border-style: solid;
-	-fx-border-color: white;
-	-fx-border-width: 2;
 }
 
 #proceedButton:hover

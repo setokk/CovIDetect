@@ -143,12 +143,12 @@ public class StatisticsController implements Initializable
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
         // Add Show By Options List to its ComboBox
-        showByOptions.add("Yearly");
-        showByOptions.add("Monthly");
-        showByOptions.add("Weekly");
-        showByOptions.add("By Day");
-        showByOptions.add("Hourly");
-        showByOptions.add("By Professor");
+        showByOptions.add("Year");
+        showByOptions.add("Month");
+        showByOptions.add("Week");
+        showByOptions.add("Day");
+        showByOptions.add("Hour");
+        showByOptions.add("Professor");
 
         showByComboBox.setItems(FXCollections.observableList(showByOptions));
 
@@ -405,10 +405,11 @@ public class StatisticsController implements Initializable
                 lineChart.getData().clear();
                 lineChart.setTitle(selectedDataCategory);
                 series = new XYChart.Series<String, Number>();
-                series.setName(seriesName);
 
                 for (int i = 0; i < yAxis.size(); i++)
                     series.getData().add(new XYChart.Data<String, Number>(showByElements.get(i), yAxis.get(i) * percentageFactor));
+
+                series.setName(seriesName);
 
                 lineChart.getData().add(series);
 
@@ -416,6 +417,7 @@ public class StatisticsController implements Initializable
                 // Reset the status again
                 //
                 HistoryManager.setSelectedHistoryStatus(false);
+
                 statisticsValues = null;
                 System.gc();
             }
@@ -511,11 +513,10 @@ public class StatisticsController implements Initializable
             seriesName = "Number of Covid Cases";
         }
 
-        series.setName(seriesName);
-
         for (int i = 0; i < yAxisData.size(); i++)
             series.getData().add(new XYChart.Data<String, Number>(showByElements.get(i), yAxisData.get(i) * percentageFactor));
 
+        series.setName(seriesName);
         lineChart.getData().add(series);
 
         // Remove the decimals
@@ -523,15 +524,28 @@ public class StatisticsController implements Initializable
         decimalFormat.setGroupingUsed(false);
         decimalFormat.setDecimalSeparatorAlwaysShown(false);
 
-        minField.setText("Min:\n" + decimalFormat.format(minMaxAverage.get(0) * percentageFactor) + percentSymbol);
-        maxField.setText("Max:\n" + decimalFormat.format(minMaxAverage.get(1) * percentageFactor) + percentSymbol);
-        averageField.setText("Average:\n" + decimalFormat.format(minMaxAverage.get(2) * percentageFactor) + percentSymbol);
+        //
+        // In case ANY of the min, max, average and standard deviation fields are 0, we remove the '%' symbol, if any
+        //
 
-        if (minMaxAverage.get(1) == -1)
-        {
-            minField.setText("Min:\n0");
-            maxField.setText("Max:\n0");
-        }
+        // Min
+        if (minMaxAverage.get(0) == 0)
+            minField.setText("Min:\n" + decimalFormat.format(minMaxAverage.get(0) * percentageFactor));
+        else
+            minField.setText("Min:\n" + decimalFormat.format(minMaxAverage.get(0) * percentageFactor) + percentSymbol);
+
+        // Max
+        if (minMaxAverage.get(1) == 0)
+            maxField.setText("Max:\n" + decimalFormat.format(minMaxAverage.get(1) * percentageFactor));
+        else
+            maxField.setText("Max:\n" + decimalFormat.format(minMaxAverage.get(1) * percentageFactor) + percentSymbol);
+
+        // Average
+        if (minMaxAverage.get(2) == 0)
+            averageField.setText("Average:\n" + decimalFormat.format(minMaxAverage.get(2) * percentageFactor));
+        else
+            averageField.setText("Average:\n" + decimalFormat.format(minMaxAverage.get(2) * percentageFactor) + percentSymbol);
+
 
         //
         // Calculate statistical method
@@ -542,7 +556,12 @@ public class StatisticsController implements Initializable
             result = statisticalAnalysis.calculateStandardDeviation(yAxisData, minMaxAverage.get(2), percentageFactor);
 
         // Update statistical method label
-        statMethodLabel.setText(selectedStatisticalMethod + ":\n" + decimalFormat.format(result) + percentSymbol);
+
+        // Standard Deviation
+        if (result == 0)
+            statMethodLabel.setText(selectedStatisticalMethod + ":\n" + decimalFormat.format(result));
+        else
+            statMethodLabel.setText(selectedStatisticalMethod + ":\n" + decimalFormat.format(result) + percentSymbol);
 
 
 

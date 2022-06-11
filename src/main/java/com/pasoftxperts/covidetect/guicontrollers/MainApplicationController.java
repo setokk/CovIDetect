@@ -68,6 +68,9 @@ public class MainApplicationController implements Initializable
     @FXML
     private Label simulationLabel;
 
+    @FXML
+    private AnchorPane simulationMessageHover;
+
     private static boolean simulationPressed = false; // Indicates whether the simulation button was pressed or not
 
     public static final String path = System.getProperty("user.dir") + "/university of macedonia/applied informatics/";
@@ -87,6 +90,9 @@ public class MainApplicationController implements Initializable
             runSimulationButton.setDisable(true);
             runSimulationButton.setStyle("-fx-background-color:#323232");
         }
+
+        // Simulation Info Pane
+        simulationMessageHover.visibleProperty().bind(runSimulationButton.hoverProperty());
 
         // Statistics chart video
         Media media;
@@ -112,7 +118,8 @@ public class MainApplicationController implements Initializable
         mainBorderPane.setCenter(mediaView);
 
 
-        usernameLabel.setText(LoginSession.getUsername());
+        usernameLabel.setText("Welcome, " +  LoginSession.getUsername());
+
 
         // History List View
 

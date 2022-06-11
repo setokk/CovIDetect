@@ -9,7 +9,9 @@ import java.util.ArrayList;
 
 public class GraphNeighboursGenerator
 {
+    //
     // Calculates the neighbours and returns a graph.
+    //
     public static DefaultUndirectedGraph<Seat, Integer> calculateNeighboursGraph(ArrayList<ArrayList<Seat>> seats,
                                                                                  int rows,
                                                                                  int cols)

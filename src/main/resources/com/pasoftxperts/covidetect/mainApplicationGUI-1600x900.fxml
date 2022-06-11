@@ -100,21 +100,25 @@
                         <Font name="Corbel Light" size="23.0" />
                      </font>
                   </Label>
-                  <Label id="historyLabel" fx:id="simulationLabel" layoutX="766.0" layoutY="119.0" prefHeight="45.0" prefWidth="110.0" style="-fx-text-fill: #323232;" text="Can only run 1 time&#10;per instance" textAlignment="CENTER">
-                     <font>
-                        <Font name="Corbel Light" size="14.0" />
-                     </font>
-                  </Label>
+                  <AnchorPane fx:id="simulationMessageHover" layoutX="903.0" layoutY="6.0" prefHeight="52.0" prefWidth="237.0" style="-fx-background-color: #323232; -fx-opacity: 0.7;">
+                     <children>
+                        <Label id="historyLabel" fx:id="simulationLabel" layoutX="10.0" layoutY="14.0" prefHeight="23.0" prefWidth="222.0" text="Can only run 1 time per instance" textAlignment="CENTER" textFill="WHITE">
+                           <font>
+                              <Font name="Corbel Light" size="17.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
                </children></AnchorPane>
          </bottom>
          <right>
-            <AnchorPane prefHeight="532.0" prefWidth="727.0" BorderPane.alignment="CENTER" />
+            <AnchorPane prefHeight="532.0" prefWidth="784.0" BorderPane.alignment="CENTER" />
          </right>
          <left>
-            <AnchorPane prefHeight="532.0" prefWidth="131.0" BorderPane.alignment="CENTER" />
+            <AnchorPane prefHeight="532.0" prefWidth="112.0" BorderPane.alignment="CENTER" />
          </left>
          <center>
-            <AnchorPane prefHeight="501.0" prefWidth="751.0" BorderPane.alignment="CENTER" />
+            <AnchorPane prefHeight="532.0" prefWidth="709.0" BorderPane.alignment="CENTER" />
          </center>
       </BorderPane>
       <ListView fx:id="historyListView" layoutX="1060.0" layoutY="301.0" prefHeight="410.0" prefWidth="485.0" stylesheets="@mainApplicationStyles.css">

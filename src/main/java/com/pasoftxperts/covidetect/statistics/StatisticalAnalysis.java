@@ -21,15 +21,17 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
                                                       ArrayList<String> showByElements,
                                                       ArrayList<Room> roomList)
     {
+        //
         // showByOption determines the X Axis of the chart (showByElements)
+        //
         switch (showByOption)
         {
-            case "Yearly":
+            case "Year":
                 for (int i = Simulation.START_YEAR; i <= Simulation.END_YEAR + 1; i++)
                     showByElements.add(String.valueOf(i));
                 break;
 
-            case "Monthly":
+            case "Month":
                 showByElements.add("January");
                 showByElements.add("February");
                 showByElements.add("March");
@@ -44,7 +46,7 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
                 showByElements.add("December");
                 break;
 
-            case "By Day":
+            case "Day":
                 showByElements.add("Monday");
                 showByElements.add("Tuesday");
                 showByElements.add("Wednesday");
@@ -52,7 +54,7 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
                 showByElements.add("Friday");
                 break;
 
-            case "By Professor":
+            case "Professor":
                 String path = System.getProperty("user.dir") + "/university of macedonia/applied informatics/professors/professorNames.ser";
 
                 ArrayList<Object> tempList = ListObjectReader.readObjectListFile(path);
@@ -70,7 +72,7 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
         }
 
 
-        // Return statistical results array
+        // Return statistical results array (y Axis)
         ArrayList<Double> attendanceRates = new ArrayList<>(showByElements.size());
 
         // In a month for example, we don't have courses every day.
@@ -93,7 +95,7 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
 
 
         // Calculate Attendance based on case
-        if ((!showByOption.equals("(Default)")) && (!showByOption.equals("Weekly")) && (!showByOption.equals("Hourly")))
+        if ((!showByOption.equals("Week")) && (!showByOption.equals("Hour")))
         {
             for (Room room : roomList)
             {
@@ -113,17 +115,17 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
                         int index;
 
                         // We get the corresponding index of the X Axis
-                        if (showByOption.equals("Yearly")) // Yearly
+                        if (showByOption.equals("Year")) // Yearly
                         {
                             index = showByElements.indexOf(String.valueOf(timeStamp.getYear()));
                         }
-                        else if (showByOption.equals("Monthly")) // Monthly
+                        else if (showByOption.equals("Month")) // Monthly
                         {
                             index = showByElements.indexOf(String.valueOf(timeStamp.getMonthName()));
                         }
-                        else if (showByOption.equals("By Day")) // By Day
+                        else if (showByOption.equals("Day")) // By Day
                         {
-                                index = showByElements.indexOf(String.valueOf(timeStamp.getDayName()));
+                            index = showByElements.indexOf(String.valueOf(timeStamp.getDayName()));
                         }
                         else // By Professor
                         {
@@ -142,7 +144,7 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
                 }
             }
         }
-        else if (showByOption.equals("Hourly"))
+        else if (showByOption.equals("Hour"))
         {
             for (Room room : roomList)
             {
@@ -181,7 +183,9 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
                 }
             }
 
+            //
             // Sorting the hours accordingly
+            //
 
             // Group both elements for sorting
             ArrayList<MultipleSorting> sorted = new ArrayList<>();
@@ -244,12 +248,12 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
         // showByOption determines the X Axis of the chart (showByElements)
         switch (showByOption)
         {
-            case "Yearly":
+            case "Year":
                 for (int i = Simulation.START_YEAR; i <= Simulation.END_YEAR + 1; i++)
                     showByElements.add(String.valueOf(i));
                 break;
 
-            case "Monthly":
+            case "Month":
                 showByElements.add("January");
                 showByElements.add("February");
                 showByElements.add("March");
@@ -264,7 +268,7 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
                 showByElements.add("December");
                 break;
 
-            case "By Day":
+            case "Day":
                 showByElements.add("Monday");
                 showByElements.add("Tuesday");
                 showByElements.add("Wednesday");
@@ -272,7 +276,7 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
                 showByElements.add("Friday");
                 break;
 
-            case "By Professor":
+            case "Professor":
                 String path = System.getProperty("user.dir") + "/university of macedonia/applied informatics/professors/professorNames.ser";
 
                 ArrayList<Object> tempList = ListObjectReader.readObjectListFile(path);
@@ -304,8 +308,10 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
         TimeStamp endTimeStamp = new TimeStamp(endDate);
 
 
+        //
         // Calculate Attendance based on case
-        if ((!showByOption.equals("(Default)")) && (!showByOption.equals("Weekly")) && (!showByOption.equals("Hourly")))
+        //
+        if ((!showByOption.equals("Week")) && (!showByOption.equals("Hour")))
         {
             for (Room room : roomList)
             {
@@ -324,15 +330,15 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
                         int index;
 
                         // We get the corresponding index of the X Axis
-                        if (showByOption.equals("Yearly")) // Yearly
+                        if (showByOption.equals("Year")) // Yearly
                         {
                             index = showByElements.indexOf(String.valueOf(timeStamp.getYear()));
                         }
-                        else if (showByOption.equals("Monthly")) // Monthly
+                        else if (showByOption.equals("Month")) // Monthly
                         {
                             index = showByElements.indexOf(String.valueOf(timeStamp.getMonthName()));
                         }
-                        else if (showByOption.equals("By Day")) // By Day
+                        else if (showByOption.equals("Day")) // By Day
                         {
                             index = showByElements.indexOf(String.valueOf(timeStamp.getDayName()));
                         }
@@ -350,7 +356,7 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
                 }
             }
         }
-        else if (showByOption.equals("Hourly"))
+        else if (showByOption.equals("Hour"))
         {
             for (Room room : roomList)
             {
@@ -444,7 +450,7 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
         for (int i = 0; i < n; i++)
         {
             if (yAxis.get(i) != 0)
-                numerator += Math.pow(yAxis.get(i) * percentageFactor - average * percentageFactor, 2);
+                numerator += Math.pow((yAxis.get(i) - average) * percentageFactor, 2);
             else
                 n--;
         }

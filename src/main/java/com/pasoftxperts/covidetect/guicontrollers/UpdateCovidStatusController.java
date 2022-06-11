@@ -40,6 +40,9 @@ import static com.pasoftxperts.covidetect.guicontrollers.RoomVisualizationContro
 
 public class UpdateCovidStatusController implements Initializable
 {
+
+    public static final int DAYS_TO_LOOK_BACK = 2; // Number of days to look back for possible cases after finding a covid case
+
     @FXML
     private Button statisticsButton;
 
@@ -76,6 +79,7 @@ public class UpdateCovidStatusController implements Initializable
     // Path to write the last updated file to
     private String path = System.getProperty("user.dir") + "/university of macedonia/applied informatics/lastupdate/";
 
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
@@ -89,6 +93,7 @@ public class UpdateCovidStatusController implements Initializable
             lastUpdatedLabel.setText("Last Updated: " + lastUpdate);
 
         } catch (IOException ex) { lastUpdatedLabel.setText("Last Updated: "); }
+
 
         // Set date picker to not editable
         datePicker.setEditable(false);
@@ -110,6 +115,7 @@ public class UpdateCovidStatusController implements Initializable
                 .map(object -> Objects.toString(object, null))
                 .collect(Collectors.toList());
 
+
         // Create and start Threads using JavaFX service threads
         objectReaderList = new ArrayList<>();
 
@@ -117,6 +123,7 @@ public class UpdateCovidStatusController implements Initializable
         {
             objectReaderList.add(new TaskObjectReader(MainApplicationController.path + name + ".ser"));
         }
+
 
         //
         // Start services for loading each room object file (.ser) with JavaFX Task Concurrency
@@ -147,6 +154,7 @@ public class UpdateCovidStatusController implements Initializable
             readFiles.start();
         }
     }
+
 
     @FXML
     protected void updateCovidStatus()
@@ -184,7 +192,7 @@ public class UpdateCovidStatusController implements Initializable
 
         // Find if the student exists,
         // and if they exist,
-        // update the possible cases that surround him for the previous 5 days in every room
+        // update the possible cases that surround him for the previous 2 days in every room
         String studentId = studentField.getText();
 
         // Indicates whether the student was found or not
@@ -296,7 +304,7 @@ public class UpdateCovidStatusController implements Initializable
                 int daysBefore = dayDistanceBetween(currentTimeStamp, targetTimeStamp);
 
                 // We are 5 days or less before
-                if (daysBefore <= 5)
+                if (daysBefore <= DAYS_TO_LOOK_BACK)
                 {
                     ArrayList<Seat> seats = new ArrayList<>(currentTimeStamp.getSeatGraph().vertexSet());
 
@@ -352,6 +360,7 @@ public class UpdateCovidStatusController implements Initializable
 
         writeRooms.start();
 
+
         // Get date
         LocalDateTime localDate = LocalDateTime.now();
         String formattedDate = localDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy, HH:mm"));
@@ -378,6 +387,7 @@ public class UpdateCovidStatusController implements Initializable
         statusLabel.setTextFill(Color.GREEN);
         statusLabel.setText("Student covid case was\nsuccessfully updated");
 
+        // Reset Fields
         rooms = null;
         System.gc();
     }
@@ -405,11 +415,11 @@ public class UpdateCovidStatusController implements Initializable
 
         window.setTitle("Room Visualization - CovIDetect©");
 
+        window.show();
+
         // Reset Fields
         objectReaderList = null;
         System.gc();
-
-        window.show();
     }
 
     @FXML
@@ -429,11 +439,11 @@ public class UpdateCovidStatusController implements Initializable
 
         window.setTitle("CovIDetect© by PasoftXperts");
 
+        window.show();
+
         // Reset Fields
         objectReaderList = null;
         System.gc();
-
-        window.show();
     }
 
     @FXML
@@ -453,17 +463,20 @@ public class UpdateCovidStatusController implements Initializable
 
         window.setTitle("Statistical Analysis - CovIDetect©");
 
+        window.show();
+
         // Reset Fields
         objectReaderList = null;
         System.gc();
 
-        window.show();
     }
 
-    // Calculates the backwards day distance between currentTimeStamp and targetTimeStamp
-    // Returns 100000 (arbitrary) if the days before are more than a month's length. (We only care about 1 or 0 month/year difference between the dates)
-    // We use it to see if we are 5 days before the target timestamp to properly update the
-    // covid status of the student, if they exist in that room and time.
+    /*
+    |  Calculates the backwards day distance between currentTimeStamp and targetTimeStamp
+    |  Returns 100000 (arbitrary) if the days before are more than a month's length. (We only care about 1 or 0 month/year difference between the dates)
+    |  We use it to see if we are 5 days before the target timestamp to properly update the
+    |  covid status of the student, if they exist in that room and time.
+    */
     protected int dayDistanceBetween(TimeStamp currentTimeStamp, TimeStamp targetTimeStamp)
     {
         int daysBefore = 100000;

@@ -74,7 +74,9 @@ public class RegisterGUIController implements Initializable
         visibleRepeatPasswordField.setVisible(false);
     }
 
+    //
     // This method switches from the register page, to the login page
+    //
     @FXML
     protected void openLoginPage(MouseEvent event) throws IOException
     {

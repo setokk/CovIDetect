@@ -3,7 +3,6 @@ package com.pasoftxperts.covidetect.course;
 import com.pasoftxperts.covidetect.professor.Professor;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class Course implements Serializable
 {
@@ -19,11 +18,29 @@ public class Course implements Serializable
         this.semesterNum = semesterNum;
     }
 
-    public String getCourseId() { return courseId;}
+    public String getCourseId() {
+        return courseId;
+    }
 
-    public String getCourseName() { return courseName; }
+    public String getCourseName() {
+        return courseName;
+    }
 
-    public int getSemesterNum() { return semesterNum; }
+    public int getSemesterNum() {
+        return semesterNum;
+    }
+
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
+    public void setSemesterNum(int semesterNum) {
+        this.semesterNum = semesterNum;
+    }
 
     public void addProfessor(Professor professor)
     {

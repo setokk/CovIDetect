@@ -11,8 +11,9 @@ public class FileWrapper
     public static final String path = System.getProperty("user.dir");
     private static ArrayList<String> roomNames;
 
+
     //
-    // Gets input from the simulation and save it into files
+    // Gets input from the simulation and saves it into files
     //
     public static void saveFilesByRoom(String universityName, String departmentName, ArrayList<Room> roomList)
     {
@@ -47,6 +48,7 @@ public class FileWrapper
 
     }
 
+
     //
     // Saves Room Names so that they can be used in a combo box etc.
     //
@@ -71,6 +73,7 @@ public class FileWrapper
         }
         catch (IOException e) { return; }
     }
+
 
     public static void saveProfessorNames(String universityName, String departmentName, ArrayList<String> professorNames)
     {

@@ -54,7 +54,9 @@ public class LoginGUIController implements Initializable
     }
 
 
+    //
     // This method switches from the login/any other page, to the register page
+    //
     @FXML
     protected void openRegisterPage(MouseEvent event) throws IOException
     {
@@ -64,11 +66,6 @@ public class LoginGUIController implements Initializable
         Stage window = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
         window.setScene(registerScene);
         window.setTitle("CovIDetect Register");
-
-        // Deallocate memory
-        registerParent = null;
-        registerScene = null;
-        System.gc();
 
         window.show();
     }

@@ -22,6 +22,7 @@ public class TimeStamp implements Serializable
     private Day day;
     private DefaultUndirectedGraph<Seat, Integer> seatGraph;
 
+
     public TimeStamp(int year, Month month, Day day)
     {
         this.year = year;
@@ -37,6 +38,7 @@ public class TimeStamp implements Serializable
         int startIndex = 0;
         int endIndex;
 
+        // Each field of the format (MMMM, d, yyyy) is stored as text in this list
         ArrayList<String> dateSubstrings = new ArrayList<>(3);
 
         ArrayList<String> monthNames = new ArrayList<>(12);
@@ -69,6 +71,7 @@ public class TimeStamp implements Serializable
         this.year = Integer.parseInt(date.substring(startIndex, date.length()));
     }
 
+
     public String getDateToString()
     {
         Calendar calendar = Calendar.getInstance();
@@ -82,10 +85,12 @@ public class TimeStamp implements Serializable
         return dateToString;
     }
 
+
     public String getDayName()
     {
         return convertDayToText(year, month, day.getDayNumber());
     }
+
 
     public static String convertDayToText(int year, Month month, int dayNumber)
     {
@@ -97,6 +102,7 @@ public class TimeStamp implements Serializable
 
         return f.format(date);
     }
+
 
     public static int getDayValueOfWeek(int year, Month month, int dayNumber)
     {
@@ -129,6 +135,7 @@ public class TimeStamp implements Serializable
 
     public void addSeatGraph(DefaultUndirectedGraph<Seat, Integer> graph) { this.seatGraph = graph; }
 
+
     @Override
     public boolean equals(Object o)
     {
@@ -142,6 +149,7 @@ public class TimeStamp implements Serializable
         return false;
     }
 
+
     public boolean isBefore(TimeStamp other)
     {
         return ((this.getYear() < other.getYear())
@@ -153,6 +161,7 @@ public class TimeStamp implements Serializable
                 && (this.getMonth().getValue() == other.getMonth().getValue())
                 && (this.getDay().getDayNumber() < other.getDay().getDayNumber())));
     }
+
 
     public boolean isAfter(TimeStamp other)
     {

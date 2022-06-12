@@ -109,6 +109,11 @@
                         </Label>
                      </children>
                   </AnchorPane>
+                  <Label layoutX="211.0" prefHeight="170.0" prefWidth="375.0" text="Visualize Rooms&#10;Update the Covid Status of a Student&#10;Get Statistical Analysis Reports" textAlignment="CENTER" textFill="#323232">
+                     <font>
+                        <Font name="Corbel Light" size="24.0" />
+                     </font>
+                  </Label>
                </children></AnchorPane>
          </bottom>
          <right>

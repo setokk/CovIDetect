@@ -142,256 +142,262 @@ public class StatisticsController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        // Add Show By Options List to its ComboBox
-        showByOptions.add("Year");
-        showByOptions.add("Month");
-        showByOptions.add("Week");
-        showByOptions.add("Day");
-        showByOptions.add("Hour");
-        showByOptions.add("Professor");
-
-        showByComboBox.setItems(FXCollections.observableList(showByOptions));
-
-
-        // Add Data Category Options List to its ComboBox
-        dataCategoryOptions.add("Attendance Stats");
-        dataCategoryOptions.add("Covid Cases Stats");
-
-        dataCategoryComboBox.setItems(FXCollections.observableList(dataCategoryOptions));
-
-
-        // Add Data Category Options List to its ComboBox
-        statisticalMethodOptions.add("Standard Deviation");
-
-        methodsComboBox.setItems(FXCollections.observableList(statisticalMethodOptions));
-
-
-        // Make date pickers not editable
-        startDatePicker.setEditable(false);
-        endDatePicker.setEditable(false);
-
-
-        // Read room names
-        ArrayList<Object> objectList = ListObjectReader.readObjectListFile(MainApplicationController.path + "roomNames.ser");
-
-        List<String> roomNames = objectList.stream()
-                .map(object -> Objects.toString(object, null))
-                .collect(Collectors.toList());
-
-        roomNames.add("All Rooms");
-
-        Collections.sort(roomNames);
-
-        // Initialize room combo box
-        roomComboBox.setItems(FXCollections.observableList(roomNames));
-
-
-        //
-        // ROOM COMBO BOX LISTENER
-        //
-        roomComboBox.valueProperty().addListener((observableValue, o, t1) ->
+        /*
+        | We check if we have loaded this page from the history option or not in main application home page
+        | and we also load element values after initialization has completed (better performance, faster scene switching)
+        | (We use Platform.runLater() method because it has to run as soon as the fields have been initialized)
+        */
+        Platform.runLater(() ->
         {
-            // Set date picker selected values to null
-            startDatePicker.setValue(null);
-            endDatePicker.setValue(null);
-            endDateString = null;
-            startDate = null;
+            // Add Show By Options List to its ComboBox
+            showByOptions.add("Year");
+            showByOptions.add("Month");
+            showByOptions.add("Week");
+            showByOptions.add("Day");
+            showByOptions.add("Hour");
+            showByOptions.add("Professor");
 
-            if (roomComboBox.getValue() == null)
-                return;
+            showByComboBox.setItems(FXCollections.observableList(showByOptions));
 
-            selectedRoom = (String) roomComboBox.getValue();
 
-            objectReaderList = new ArrayList<>();
+            // Add Data Category Options List to its ComboBox
+            dataCategoryOptions.add("Attendance Stats");
+            dataCategoryOptions.add("Covid Cases Stats");
 
-            minField.setText("Min:");
-            maxField.setText("Max:");
-            averageField.setText("Average:");
+            dataCategoryComboBox.setItems(FXCollections.observableList(dataCategoryOptions));
 
-            if (selectedRoom.equals("All Rooms"))
+
+            // Add Data Category Options List to its ComboBox
+            statisticalMethodOptions.add("Standard Deviation");
+
+            methodsComboBox.setItems(FXCollections.observableList(statisticalMethodOptions));
+
+
+            // Make date pickers not editable
+            startDatePicker.setEditable(false);
+            endDatePicker.setEditable(false);
+
+
+            // Read room names
+            ArrayList<Object> objectList = ListObjectReader.readObjectListFile(MainApplicationController.path + "roomNames.ser");
+
+            List<String> roomNames = objectList.stream()
+                    .map(object -> Objects.toString(object, null))
+                    .collect(Collectors.toList());
+
+            roomNames.add("All Rooms");
+
+            Collections.sort(roomNames);
+
+            // Initialize room combo box
+            roomComboBox.setItems(FXCollections.observableList(roomNames));
+
+
+            //
+            // ROOM COMBO BOX LISTENER
+            //
+            roomComboBox.valueProperty().addListener((observableValue, o, t1) ->
             {
-                objectReader = null;
+                // Set date picker selected values to null
+                startDatePicker.setValue(null);
+                endDatePicker.setValue(null);
+                endDateString = null;
+                startDate = null;
 
-                //
-                // Load all rooms
-                //
-                for (String name : roomNames)
+                if (roomComboBox.getValue() == null)
+                    return;
+
+                selectedRoom = (String) roomComboBox.getValue();
+
+                objectReaderList = new ArrayList<>();
+
+                minField.setText("Min:");
+                maxField.setText("Max:");
+                averageField.setText("Average:");
+
+                if (selectedRoom.equals("All Rooms"))
                 {
-                    if (!name.equals("All Rooms"))
+                    objectReader = null;
+
+                    //
+                    // Load all rooms
+                    //
+                    for (String name : roomNames)
                     {
-                        objectReaderList.add(new TaskObjectReader(MainApplicationController.path + name + ".ser"));
+                        if (!name.equals("All Rooms"))
+                        {
+                            objectReaderList.add(new TaskObjectReader(MainApplicationController.path + name + ".ser"));
+                        }
+                    }
+
+
+                    //
+                    // Start services for loading each room object file (.ser) with JavaFX Task Concurrency
+                    //
+                    for (int i = 0; i < objectReaderList.size(); i++)
+                    {
+                        int finalI = i;
+
+                        Service readFiles = new Service()
+                        {
+                            @Override
+                            protected Task createTask()
+                            {
+                                return new Task<Void>()
+                                {
+                                    @Override
+                                    protected Void call() throws Exception
+                                    {
+                                        objectReaderList.get(finalI).readObjectFile();
+
+                                        return null;
+                                    }
+                                };
+                            }
+                        };
+
+                        readFiles.start();
+                    }
+
+                }
+                else
+                {
+                    // Load only one object
+                    objectReader = new ObjectReader(MainApplicationController.path + selectedRoom + ".ser");
+                    objectReader.start();
+                }
+            });
+
+
+            //
+            // START DATE LISTENER
+            //
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM,d,yyyy", Locale.US);
+
+            startDatePicker.valueProperty().addListener((observableValue, localDate, t1) ->
+            {
+                if (startDatePicker.getValue() == null)
+                    return;
+
+                startDate = startDatePicker.getValue();
+
+                // Check if Start Date is after End Date
+                if ((endDatePicker.getValue() != null) && (startDate.isAfter(endDatePicker.getValue())))
+                {
+                    startDatePicker.setValue(null);
+
+                    try
+                    {
+                        PopupWindow.display("Start Date can't be after End Date");
+                    }
+                    catch (IOException e)
+                    {
+
                     }
                 }
 
+                startDateString = formatter.format(startDate);
+            });
 
-                //
-                // Start services for loading each room object file (.ser) with JavaFX Task Concurrency
-                //
-                for (int i = 0; i < objectReaderList.size(); i++)
+
+            //
+            // END DATE LISTENER
+            //
+            endDatePicker.valueProperty().addListener((observableValue, localDate, t1) ->
+            {
+                if (endDatePicker.getValue() == null)
+                    return;
+
+                endDate = endDatePicker.getValue();
+
+                endDateString = formatter.format(endDate);
+
+                if (startDateString == null)
+                    return;
+
+                if (endDate.isBefore(startDate))
                 {
-                    int finalI = i;
-
-                    Service readFiles = new Service()
+                    try
                     {
-                        @Override
-                        protected Task createTask()
-                        {
-                            return new Task<Void>()
-                            {
-                                @Override
-                                protected Void call() throws Exception
-                                {
-                                    objectReaderList.get(finalI).readObjectFile();
-
-                                    return null;
-                                }
-                            };
-                        }
-                    };
-
-                    readFiles.setOnSucceeded((e) -> {});
-
-                    readFiles.start();
+                        PopupWindow.display("End Date can't be before Start Date");
+                        endDatePicker.setValue(null);
+                    } catch (IOException e)
+                    {
+                        e.printStackTrace();
+                    }
                 }
+            });
 
-            }
-            else
+
+            //
+            // SHOW BY COMBO BOX LISTENER
+            //
+            showByComboBox.valueProperty().addListener((observableValue, o, t1) ->
             {
-                // Load only one object
-                objectReader = new ObjectReader(MainApplicationController.path + selectedRoom + ".ser");
-                objectReader.start();
-            }
-        });
+                if (showByComboBox.getValue() == null)
+                    return;
+
+                selectedShowByOption = (String) showByComboBox.getValue();
+            });
 
 
-        //
-        // START DATE LISTENER
-        //
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM,d,yyyy", Locale.US);
-
-        startDatePicker.valueProperty().addListener((observableValue, localDate, t1) ->
-        {
-            if (startDatePicker.getValue() == null)
-                return;
-
-            startDate = startDatePicker.getValue();
-
-            // Check if Start Date is after End Date
-            if ((endDatePicker.getValue() != null) && (startDate.isAfter(endDatePicker.getValue())))
+            //
+            // DATA CATEGORY COMBO BOX LISTENER
+            //
+            dataCategoryComboBox.valueProperty().addListener((observableValue, o, t1) ->
             {
-                startDatePicker.setValue(null);
+                if (dataCategoryComboBox.getValue() == null)
+                    return;
 
-                try
-                {
-                    PopupWindow.display("Start Date can't be after End Date");
-                }
-                catch (IOException e)
-                {
-
-                }
-            }
-
-            startDateString = formatter.format(startDate);
-        });
+                selectedDataCategory = (String) dataCategoryComboBox.getValue();
+            });
 
 
-        //
-        // END DATE LISTENER
-        //
-        endDatePicker.valueProperty().addListener((observableValue, localDate, t1) ->
-        {
-            if (endDatePicker.getValue() == null)
-                return;
-
-            endDate = endDatePicker.getValue();
-
-            endDateString = formatter.format(endDate);
-
-            if (startDateString == null)
-                return;
-
-            if (endDate.isBefore(startDate))
+            // STATISTICAL METHODS COMBO BOX
+            methodsComboBox.valueProperty().addListener((observableValue, o, t1) ->
             {
-                try
-                {
-                    PopupWindow.display("End Date can't be before Start Date");
-                    endDatePicker.setValue(null);
-                } catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        });
+                if (methodsComboBox.getValue() == null)
+                    return;
+
+                selectedStatisticalMethod = (String) methodsComboBox.getValue();
+
+            });
 
 
-        //
-        // SHOW BY COMBO BOX LISTENER
-        //
-        showByComboBox.valueProperty().addListener((observableValue, o, t1) ->
-        {
-            if (showByComboBox.getValue() == null)
-                return;
-
-            selectedShowByOption = (String) showByComboBox.getValue();
-        });
-
-
-        //
-        // DATA CATEGORY COMBO BOX LISTENER
-        //
-        dataCategoryComboBox.valueProperty().addListener((observableValue, o, t1) ->
-        {
-            if (dataCategoryComboBox.getValue() == null)
-                return;
-
-            selectedDataCategory = (String) dataCategoryComboBox.getValue();
-        });
-
-
-        // STATISTICAL METHODS COMBO BOX
-        methodsComboBox.valueProperty().addListener((observableValue, o, t1) ->
-        {
-            if (methodsComboBox.getValue() == null)
-                return;
-
-            selectedStatisticalMethod = (String) methodsComboBox.getValue();
-
-        });
-
-
-
-        //
-        // We check if we have loaded this page from the history option or not in main application home page
-        // (We use Platform.runLater() method because it has to run as soon as the fields have been initialized)
-        //
-        Platform.runLater(() ->
-        {
+            //
             // True, if we have selected an option from the history list
+            //
             if (HistoryManager.isSelectedHistoryStatus())
             {
                 StatisticsValues statisticsValues = (StatisticsValues) HistoryManager.readHistory(MainApplicationController.selectedHistoryOption);
-                roomComboBox.setValue(statisticsValues.getSelectedRoom());
-                roomComboBox.fireEvent(new ActionEvent()); // To load the rooms
 
-                startDatePicker.setValue(statisticsValues.getStartDate());
-                endDatePicker.setValue(statisticsValues.getEndDate());
-                showByComboBox.setValue(statisticsValues.getShowByOption());
-                dataCategoryComboBox.setValue(statisticsValues.getSelectedDataCategory());
-                methodsComboBox.setValue(statisticsValues.getSelectedStatisticalMethod());
-                minField.setText(statisticsValues.getMinField());
-                maxField.setText(statisticsValues.getMaxField());
-                averageField.setText(statisticsValues.getAverageField());
-                statMethodLabel.setText(statisticsValues.getStatMethodLabel());
+                // Read StatisticsValues class comments to understand functionality
+
+                // Pass on the array from StatisticsValues object
+                ArrayList<Object> fieldValues = statisticsValues.getFieldValues();
+
+                roomComboBox.setValue(fieldValues.get(0));
+                roomComboBox.fireEvent(new ActionEvent()); // Fire roomComboBox event to load the rooms
+
+                startDatePicker.setValue((LocalDate) fieldValues.get(1));
+                endDatePicker.setValue((LocalDate) fieldValues.get(2));
+                showByComboBox.setValue(fieldValues.get(3));
+                dataCategoryComboBox.setValue(fieldValues.get(4));
+                methodsComboBox.setValue(fieldValues.get(5));
+                minField.setText((String) fieldValues.get(6));
+                maxField.setText((String) fieldValues.get(7));
+                averageField.setText((String) fieldValues.get(8));
+                statMethodLabel.setText((String) fieldValues.get(9));
 
 
                 // Populate LineChart
-                showByElements = statisticsValues.getShowByElements();
-                ArrayList<Double> yAxis = statisticsValues.getyAxis();
+                ArrayList<Double> yAxis = (ArrayList<Double>) fieldValues.get(10);
+                showByElements = (ArrayList<String>) fieldValues.get(11);
 
                 int percentageFactor;
                 String seriesName;
 
-                if (statisticsValues.getSelectedDataCategory().equals("Attendance Stats"))
+                if (dataCategoryComboBox.getValue().equals("Attendance Stats"))
                 {
                     percentageFactor = 100;
                     seriesName = "Attendance Rates";
@@ -567,20 +573,21 @@ public class StatisticsController implements Initializable
 
         //
         // Update History
+        // CAREFUL, add in appropriate ORDER (see StatisticsValues class)
         //
         StatisticsValues statisticsValues = new StatisticsValues();
-        statisticsValues.setSelectedRoom(selectedRoom);
-        statisticsValues.setStartDate(startDate);
-        statisticsValues.setEndDate(endDate);
-        statisticsValues.setSelectedDataCategory(selectedDataCategory);
-        statisticsValues.setShowByElements(showByElements);
-        statisticsValues.setShowByOption(selectedShowByOption);
-        statisticsValues.setSelectedStatisticalMethod(selectedStatisticalMethod);
-        statisticsValues.setyAxis(yAxisData);
-        statisticsValues.setMinField(minField.getText());
-        statisticsValues.setMaxField(maxField.getText());
-        statisticsValues.setAverageField(averageField.getText());
-        statisticsValues.setStatMethodLabel(statMethodLabel.getText());
+        statisticsValues.addValue(selectedRoom);
+        statisticsValues.addValue(startDate);
+        statisticsValues.addValue(endDate);
+        statisticsValues.addValue(selectedShowByOption);
+        statisticsValues.addValue(selectedDataCategory);
+        statisticsValues.addValue(selectedStatisticalMethod);
+        statisticsValues.addValue(minField.getText());
+        statisticsValues.addValue(maxField.getText());
+        statisticsValues.addValue(averageField.getText());
+        statisticsValues.addValue(statMethodLabel.getText());
+        statisticsValues.addValue(yAxisData);
+        statisticsValues.addValue(showByElements);
 
         // Write to file
         HistoryManager.updateHistory(statisticsValues);
@@ -608,7 +615,7 @@ public class StatisticsController implements Initializable
         else
             resourceName = "mainApplicationGUI-1000x600-viewSeats.fxml";
 
-        Parent visualizationParent = FXMLLoader.load(RunApplication.class.getResource(resourceName));
+        Parent visualizationParent = CacheFXMLLoader.load(resourceName);
         window.getScene().setRoot(visualizationParent);
 
         window.setTitle("Room Visualization - CovIDetect©");
@@ -632,7 +639,7 @@ public class StatisticsController implements Initializable
         else
             resourceName = "mainApplicationGUI-1000x600.fxml";
 
-        Parent visualizationParent = FXMLLoader.load(RunApplication.class.getResource(resourceName));
+        Parent visualizationParent = CacheFXMLLoader.load(resourceName);
         window.getScene().setRoot(visualizationParent);
 
         window.setTitle("CovIDetect© by PasoftXperts");
@@ -656,7 +663,7 @@ public class StatisticsController implements Initializable
         else
             resourceName = "mainApplicationGUI-1000x600-updateStatus.fxml";
 
-        Parent visualizationParent = FXMLLoader.load(RunApplication.class.getResource(resourceName));
+        Parent visualizationParent = CacheFXMLLoader.load(resourceName);
         window.getScene().setRoot(visualizationParent);
 
         window.setTitle("Update Student's Covid Status - CovIDetect©");

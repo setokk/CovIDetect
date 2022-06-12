@@ -18,7 +18,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.awt.*;
 import java.io.IOException;
@@ -38,9 +42,32 @@ public class LoginGUIController implements Initializable
     @FXML
     private TextField passwordField;
 
+    // Element to load mp4
+    public static MediaView mediaView;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        Media media;
+        MediaPlayer mediaPlayer;
+
+        // Load the mp4 for main application page
+        media = new Media(RunApplication.class.getResource("icons/bigData.mp4").toExternalForm());
+
+        mediaPlayer = new MediaPlayer(media); // Already loaded media
+        mediaPlayer.setAutoPlay(true);
+
+        // Loop it
+        mediaPlayer.setOnEndOfMedia(() ->
+        {
+            mediaPlayer.seek(Duration.ZERO);
+            mediaPlayer.play();
+        });
+        mediaView = new MediaView(mediaPlayer);
+        mediaView.setFitHeight(450);
+        mediaView.setFitWidth(650);
+
+        // Login button enter event listener
         Platform.runLater(() ->
         {
             Scene scene = loginButton.getScene();

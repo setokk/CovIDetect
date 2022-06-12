@@ -8,6 +8,7 @@ import com.pasoftxperts.covidetect.graphanalysis.SingleCaseNeighbourCalculator;
 import com.pasoftxperts.covidetect.time.TimeStamp;
 import com.pasoftxperts.covidetect.university.Room;
 import com.pasoftxperts.covidetect.university.Seat;
+import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -83,76 +84,79 @@ public class UpdateCovidStatusController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        // Initialize the last update label
-        File lastUpdated = new File(path + "date.txt");
-        try
+        // Using platform.runLater() to initialize all the fields once the initialize phase has finished (faster scene transitions)
+        Platform.runLater(() ->
         {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(lastUpdated));
-
-            String lastUpdate = bufferedReader.readLine();
-            lastUpdatedLabel.setText("Last Updated: " + lastUpdate);
-
-        } catch (IOException ex) { lastUpdatedLabel.setText("Last Updated: "); }
-
-
-        // Set date picker to not editable
-        datePicker.setEditable(false);
-
-        studentField.textProperty().addListener((observableValue, s, t1) ->
-        {
-            statusLabel.setText("");
-        });
-
-        datePicker.valueProperty().addListener((observableValue, localDate, t1) ->
-        {
-            statusLabel.setText("");
-        });
-
-        // Load All Rooms
-        ArrayList<Object> objectList = ListObjectReader.readObjectListFile(MainApplicationController.path + "roomNames.ser");
-
-        List<String> roomNames = objectList.stream()
-                .map(object -> Objects.toString(object, null))
-                .collect(Collectors.toList());
-
-
-        // Create and start Threads using JavaFX service threads
-        objectReaderList = new ArrayList<>();
-
-        for (String name : roomNames)
-        {
-            objectReaderList.add(new TaskObjectReader(MainApplicationController.path + name + ".ser"));
-        }
-
-
-        //
-        // Start services for loading each room object file (.ser) with JavaFX Task Concurrency
-        //
-        for (int i = 0; i < objectReaderList.size(); i++)
-        {
-            int finalI = i;
-
-            Service readFiles = new Service()
+            // Initialize the last update label
+            File lastUpdated = new File(path + "date.txt");
+            try
             {
-                @Override
-                protected Task createTask()
-                {
-                    return new Task<Void>() {
-                        @Override
-                        protected Void call() throws Exception {
-                            objectReaderList.get(finalI).readObjectFile();
+                BufferedReader bufferedReader = new BufferedReader(new FileReader(lastUpdated));
 
-                            return null;
-                        }
-                    };
-                }
-            };
+                String lastUpdate = bufferedReader.readLine();
+                lastUpdatedLabel.setText("Last Updated: " + lastUpdate);
 
-            readFiles.setOnSucceeded((e) -> {
+            } catch (IOException ex) { lastUpdatedLabel.setText("Last Updated: "); }
+
+
+            // Set date picker to not editable
+            datePicker.setEditable(false);
+
+            studentField.textProperty().addListener((observableValue, s, t1) ->
+            {
+                statusLabel.setText("");
             });
 
-            readFiles.start();
-        }
+            datePicker.valueProperty().addListener((observableValue, localDate, t1) ->
+            {
+                statusLabel.setText("");
+            });
+
+            // Load All Rooms
+            ArrayList<Object> objectList = ListObjectReader.readObjectListFile(MainApplicationController.path + "roomNames.ser");
+
+            List<String> roomNames = objectList.stream()
+                    .map(object -> Objects.toString(object, null))
+                    .collect(Collectors.toList());
+
+
+            // Create and start Threads using JavaFX service threads
+            objectReaderList = new ArrayList<>();
+
+            for (String name : roomNames)
+            {
+                objectReaderList.add(new TaskObjectReader(MainApplicationController.path + name + ".ser"));
+            }
+
+
+            //
+            // Start services for loading each room object file (.ser) with JavaFX Task Concurrency
+            //
+            for (int i = 0; i < objectReaderList.size(); i++)
+            {
+                int finalI = i;
+
+                Service readFiles = new Service()
+                {
+                    @Override
+                    protected Task createTask()
+                    {
+                        return new Task<Void>()
+                        {
+                            @Override
+                            protected Void call() throws Exception
+                            {
+                                objectReaderList.get(finalI).readObjectFile();
+
+                                return null;
+                            }
+                        };
+                    }
+                };
+
+                readFiles.start();
+            }
+        });
     }
 
 
@@ -410,7 +414,7 @@ public class UpdateCovidStatusController implements Initializable
         else
             resourceName = "mainApplicationGUI-1000x600-viewSeats.fxml";
 
-        Parent visualizationParent = FXMLLoader.load(RunApplication.class.getResource(resourceName));
+        Parent visualizationParent = CacheFXMLLoader.load(resourceName);
         window.getScene().setRoot(visualizationParent);
 
         window.setTitle("Room Visualization - CovIDetect©");
@@ -434,7 +438,7 @@ public class UpdateCovidStatusController implements Initializable
         else
             resourceName = "mainApplicationGUI-1000x600.fxml";
 
-        Parent visualizationParent = FXMLLoader.load(RunApplication.class.getResource(resourceName));
+        Parent visualizationParent = CacheFXMLLoader.load(resourceName);
         window.getScene().setRoot(visualizationParent);
 
         window.setTitle("CovIDetect© by PasoftXperts");
@@ -458,7 +462,7 @@ public class UpdateCovidStatusController implements Initializable
         else
             resourceName = "mainApplicationGUI-1000x600-statistics.fxml";
 
-        Parent visualizationParent = FXMLLoader.load(RunApplication.class.getResource(resourceName));
+        Parent visualizationParent = CacheFXMLLoader.load(resourceName);
         window.getScene().setRoot(visualizationParent);
 
         window.setTitle("Statistical Analysis - CovIDetect©");

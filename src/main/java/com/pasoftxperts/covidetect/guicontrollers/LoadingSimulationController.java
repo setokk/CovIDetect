@@ -43,6 +43,7 @@ public class LoadingSimulationController implements Initializable
         mediaView.setFitWidth(800);
 
         centerPane.getChildren().add(mediaView);
+
     }
 }
 

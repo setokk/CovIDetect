@@ -1,6 +1,22 @@
+/*
+ | Author: setokk
+ | LinkedIn: https://www.linkedin.com/in/kostandin-kote-255382223/
+ |
+ |
+ | Class Description:
+ |
+ | We create an arraylist of objects and add GUI field values to them in a specific order (from top left to bottom - top right to bottom)
+ | Thus, we can save the values to a file and load them back when a user selects the history option
+ | Example,
+ | In the statistics GUI, we will add them in this order:
+ | - (Top Left to Bottom) Room value, Start Date Value, End Date Value, Show By Option Value, Data Category Value, Statistical Method Value.
+ | - (Top Right to Bottom) Min Value, Max Value, Average Value, Statistical Method Result (Standard Deviation) value, yAxis values, Show by Elements (xAxis) values
+*/
+
 package com.pasoftxperts.covidetect.history;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
@@ -21,7 +37,7 @@ public class HistoryManager
         try
         {
             FileInputStream fileInputStream = new FileInputStream(HISTORY_PATH + name);
-            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+            ObjectInputStream objectInputStream = new ObjectInputStream(new BufferedInputStream(fileInputStream));
 
             Object values = objectInputStream.readObject();
 
@@ -54,52 +70,29 @@ public class HistoryManager
             listOfFiles.get(MAX_FILES - 1).delete();
         }
 
-        // Check cases
-        if (values instanceof RoomVisualizationValues)
-        {
-            RoomVisualizationValues roomVisualizationValues = (RoomVisualizationValues) values;
-
-            try
-            {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy", Locale.US);
-
-                FileOutputStream fileOutputStream = new FileOutputStream(HISTORY_PATH + "[Room Visualization] " + roomVisualizationValues.getSelectedRoom() + " (" +formatter.format(roomVisualizationValues.getDateLabel()) + ")");
-                ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-
-                objectOutputStream.writeObject(roomVisualizationValues);
-
-                objectOutputStream.close();
-                fileOutputStream.close();
-            }
-            catch (IOException e)
-            {
-
-            }
-        }
-        else if (values instanceof StatisticsValues)
+        if (values instanceof StatisticsValues)
         {
             StatisticsValues statisticsValues = (StatisticsValues) values;
 
-            try
-            {
+            // CAREFUL, get in appropriate oder (see StatisticalValues class)
+            String selectedRoom = (String) statisticsValues.getFieldValues().get(0);
+            LocalDate startDate = (LocalDate) statisticsValues.getFieldValues().get(1);
+            LocalDate endDate = (LocalDate) statisticsValues.getFieldValues().get(2);
+
+            // Update History
+            try {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy", Locale.US);
 
-                FileOutputStream fileOutputStream = new FileOutputStream(HISTORY_PATH + "[Statistics] " + statisticsValues.getSelectedRoom() + " (" + formatter.format(statisticsValues.getStartDate()) + " - " + formatter.format(statisticsValues.getEndDate()) + ")");
+                FileOutputStream fileOutputStream = new FileOutputStream(HISTORY_PATH + "[Statistics] " + selectedRoom + " (" + formatter.format(startDate) + " - " + formatter.format(endDate) + ")");
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
 
-                objectOutputStream.writeObject(statisticsValues);
+                objectOutputStream.writeObject(values);
 
                 objectOutputStream.close();
                 fileOutputStream.close();
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 return;
             }
-        }
-        else
-        {
-            return;
         }
     }
 

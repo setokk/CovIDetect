@@ -2,6 +2,7 @@ package com.pasoftxperts.covidetect.filemanager;
 
 import com.pasoftxperts.covidetect.guicontrollers.popupwindow.PopupWindow;
 
+import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -24,12 +25,12 @@ public class ObjectReader extends Thread
         try
         {
             FileInputStream fileIn = new FileInputStream(path);
-            ObjectInputStream objIn = new ObjectInputStream(fileIn);
+            ObjectInputStream objIn = new ObjectInputStream(new BufferedInputStream(fileIn));
 
             // Write object ArrayList
             try
             {
-                result =(Object) objIn.readObject();
+                result = (Object) objIn.readObject();
             }
             catch (ClassNotFoundException e)
             {

@@ -2,6 +2,7 @@ package com.pasoftxperts.covidetect.filemanager;
 
 import com.pasoftxperts.covidetect.guicontrollers.popupwindow.PopupWindow;
 
+import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -23,7 +24,7 @@ public class TaskObjectReader
         try
         {
             FileInputStream fileIn = new FileInputStream(path);
-            ObjectInputStream objIn = new ObjectInputStream(fileIn);
+            ObjectInputStream objIn = new ObjectInputStream(new BufferedInputStream(fileIn));
 
             // Write object ArrayList
             try
@@ -39,7 +40,7 @@ public class TaskObjectReader
         {
             try
             {
-                PopupWindow.display("Could not read task object file");
+                PopupWindow.display("Could not read room file");
             }
             catch (IOException ex)
             {

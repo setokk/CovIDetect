@@ -1,12 +1,23 @@
+/*
+ | Author: setokk
+ | LinkedIn: https://www.linkedin.com/in/kostandin-kote-255382223/
+ |
+ |
+ | Class Description:
+ |
+ |
+ |
+*/
+
 package com.pasoftxperts.covidetect.guicontrollers;
 
-import com.pasoftxperts.covidetect.RunApplication;
 import com.pasoftxperts.covidetect.filemanager.ListObjectReader;
 import com.pasoftxperts.covidetect.filemanager.ObjectReader;
 import com.pasoftxperts.covidetect.filemanager.TaskObjectReader;
 import com.pasoftxperts.covidetect.guicontrollers.popupwindow.PopupWindow;
 import com.pasoftxperts.covidetect.history.HistoryManager;
 import com.pasoftxperts.covidetect.history.StatisticsValues;
+import com.pasoftxperts.covidetect.loginsession.LoginSession;
 import com.pasoftxperts.covidetect.statistics.StatisticalAnalysis;
 import com.pasoftxperts.covidetect.university.Room;
 import javafx.application.Platform;
@@ -15,16 +26,17 @@ import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
@@ -49,6 +61,12 @@ public class StatisticsController implements Initializable
 
     @FXML
     private Label homeButton;
+
+    @FXML
+    private Label logoutLabel;
+
+    @FXML
+    private Label usernameLabel;
 
     @FXML
     private ComboBox roomComboBox;
@@ -142,6 +160,8 @@ public class StatisticsController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        usernameLabel.setText("Welcome, " + LoginSession.getUsername());
+
         /*
         | We check if we have loaded this page from the history option or not in main application home page
         | and we also load element values after initialization has completed (better performance, faster scene switching)
@@ -152,7 +172,6 @@ public class StatisticsController implements Initializable
             // Add Show By Options List to its ComboBox
             showByOptions.add("Year");
             showByOptions.add("Month");
-            showByOptions.add("Week");
             showByOptions.add("Day");
             showByOptions.add("Hour");
             showByOptions.add("Professor");
@@ -673,5 +692,28 @@ public class StatisticsController implements Initializable
         System.gc();
 
         window.show();
+    }
+
+    @FXML
+    protected void logout(MouseEvent event) throws IOException
+    {
+        LoginSession.resetSession();
+
+        Stage stage = new Stage();
+
+        Parent parent = CacheFXMLLoader.load("loginGUI.fxml");
+        Scene scene = new Scene(parent);
+
+        stage.setScene(scene);
+        stage.setTitle("CovIDetect Login");
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/pasoftxperts/covidetect/icons/covidDetectWindowIcon.png")));
+        stage.setResizable(false);
+
+        // Get previous window and hide it
+        Stage previousWindow = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
+        previousWindow.hide();
+        System.gc();
+
+        stage.show();
     }
 }

@@ -1,3 +1,14 @@
+/*
+ | Author: setokk
+ | LinkedIn: https://www.linkedin.com/in/kostandin-kote-255382223/
+ |
+ |
+ | Class Description:
+ |
+ |
+ |
+*/
+
 package com.pasoftxperts.covidetect.guicontrollers;
 
 import com.pasoftxperts.covidetect.RunApplication;
@@ -8,6 +19,7 @@ import com.pasoftxperts.covidetect.counters.CovidCasesCounter;
 import com.pasoftxperts.covidetect.counters.FreeSeatsCounter;
 import com.pasoftxperts.covidetect.counters.PossibleCasesCounter;
 import com.pasoftxperts.covidetect.counters.StudentCounter;
+import com.pasoftxperts.covidetect.loginsession.LoginSession;
 import com.pasoftxperts.covidetect.student.Student;
 import com.pasoftxperts.covidetect.time.HourSpan;
 import com.pasoftxperts.covidetect.time.TimeStamp;
@@ -17,7 +29,6 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -64,6 +75,12 @@ public class RoomVisualizationController implements Initializable
 
     @FXML
     private Label homeButton;
+
+    @FXML
+    private Label logoutLabel;
+
+    @FXML
+    private Label usernameLabel;
 
     @FXML
     private DatePicker datePicker;
@@ -130,6 +147,8 @@ public class RoomVisualizationController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        usernameLabel.setText("Welcome, " + LoginSession.getUsername());
+
         // Initialize room seats
         int maxWidth = 50; // Max seat icon width
         int maxHeight = 78; // Max seat icon height
@@ -474,5 +493,28 @@ public class RoomVisualizationController implements Initializable
         seatList = null;
 
         window.show();
+    }
+
+    @FXML
+    protected void logout(MouseEvent event) throws IOException
+    {
+        LoginSession.resetSession();
+
+        Stage stage = new Stage();
+
+        Parent parent = CacheFXMLLoader.load("loginGUI.fxml");
+        Scene scene = new Scene(parent);
+
+        stage.setScene(scene);
+        stage.setTitle("CovIDetect Login");
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/pasoftxperts/covidetect/icons/covidDetectWindowIcon.png")));
+        stage.setResizable(false);
+
+        // Get previous window and hide it
+        Stage previousWindow = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
+        previousWindow.hide();
+        System.gc();
+
+        stage.show();
     }
 }

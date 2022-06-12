@@ -16,71 +16,6 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" style="-fx-background-color: white;" stylesheets="@mainApplicationStyles-viewSeats.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pasoftxperts.covidetect.guicontrollers.RoomVisualizationController">
    <children>
-      <AnchorPane prefHeight="53.0" prefWidth="1603.0" styleClass="menu">
-         <children>
-            <Label id="logoLabel" fx:id="homeButton" layoutX="17.0" layoutY="10.0" onMouseClicked="#openHomePage" prefHeight="31.0" prefWidth="161.0" stylesheets="@mainApplicationStyles.css" text="   CovIDetect" textFill="WHITE">
-               <font>
-                  <Font name="Corbel Light" size="25.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Label>
-            <ImageView fx:id="seatsIcon" fitHeight="26.0" fitWidth="44.0" layoutX="346.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@icons/seatVisualizationIconHoverWhite.png" />
-               </image>
-            </ImageView>
-            <Button id="seatButton" fx:id="viewSeatButton" layoutX="390.0" layoutY="8.0" mnemonicParsing="false" onAction="#openSeatsView" prefHeight="35.0" prefWidth="172.0" stylesheets="@mainApplicationStyles-viewSeats.css" text="Room Visualization" textFill="#e9ff1c">
-               <font>
-                  <Font name="Corbel Light" size="19.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <Button id="seatButton" fx:id="updateCovidStatusButton" layoutX="772.0" layoutY="8.0" mnemonicParsing="false" onAction="#openUpdateCovidCase" prefHeight="9.0" prefWidth="199.0" stylesheets="@mainApplicationStyles.css" text="Update Covid Status" textFill="WHITE">
-               <font>
-                  <Font name="Corbel Light" size="19.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <ImageView fitHeight="18.0" fitWidth="22.0" layoutX="754.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@icons/updateIcon.png" />
-               </image>
-            </ImageView>
-            <Button id="seatButton" fx:id="statisticsButton" layoutX="1193.0" layoutY="9.0" mnemonicParsing="false" onAction="#openStatistics" prefHeight="35.0" prefWidth="172.0" stylesheets="@mainApplicationStyles.css" text="Statistical Analysis" textFill="WHITE">
-               <font>
-                  <Font name="Corbel Light" size="19.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="1166.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@icons/statisticsIcon.png" />
-               </image>
-            </ImageView>
-         </children>
-      </AnchorPane>
-      <AnchorPane layoutX="-4.0" layoutY="53.0" prefHeight="116.0" prefWidth="1604.0" style="-fx-background-color: #323232;">
-         <children>
-            <Label layoutX="700.0" layoutY="14.0" prefHeight="40.0" prefWidth="267.0" text="Room Visualization" textFill="WHITE">
-               <font>
-                  <Font name="Corbel Light" size="34.0" />
-               </font>
-            </Label>
-            <ImageView fitHeight="53.0" fitWidth="54.0" layoutX="807.0" layoutY="58.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@icons/amphitheater.png" />
-               </image>
-            </ImageView>
-         </children>
-      </AnchorPane>
       <GridPane fx:id="seatsGridPane" layoutX="658.0" layoutY="425.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -242,5 +177,90 @@
             <Font name="Corbel Light" size="23.0" />
          </font>
       </Label>
+      <AnchorPane layoutY="69.0" prefHeight="115.0" prefWidth="1600.0" style="-fx-background-color: #323232;">
+         <children>
+            <Label layoutX="693.0" layoutY="14.0" prefHeight="40.0" prefWidth="267.0" text="Room Visualization" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="34.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="53.0" fitWidth="54.0" layoutX="800.0" layoutY="58.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/amphitheater.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="69.0" prefWidth="1603.0" styleClass="menu">
+         <children>
+            <Label id="logoLabel" fx:id="homeButton" layoutX="14.0" layoutY="18.0" onMouseClicked="#openHomePage" prefHeight="31.0" prefWidth="134.0" stylesheets="@mainApplicationStyles.css" text="   CovIDetect" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="25.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Label>
+            <ImageView fx:id="seatsIcon" fitHeight="26.0" fitWidth="44.0" layoutX="343.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/seatVisualizationIconHoverWhite.png" />
+               </image>
+            </ImageView>
+            <Button id="seatButton" fx:id="viewSeatButton" layoutX="376.0" layoutY="18.0" mnemonicParsing="false" onAction="#openSeatsView" prefHeight="35.0" prefWidth="172.0" style="-fx-text-fill: #cfeb34;" stylesheets="@mainApplicationStyles.css" text="Room Visualization" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="19.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button id="seatButton" fx:id="updateCovidStatusButton" layoutX="723.0" layoutY="18.0" mnemonicParsing="false" onAction="#openUpdateCovidCase" prefHeight="35.0" prefWidth="189.0" stylesheets="@mainApplicationStyles.css" text="Update Covid Status" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="19.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <ImageView fitHeight="18.0" fitWidth="22.0" layoutX="705.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/updateIcon.png" />
+               </image>
+            </ImageView>
+            <Button id="seatButton" fx:id="statisticsButton" layoutX="1087.0" layoutY="18.0" mnemonicParsing="false" onAction="#openStatistics" prefHeight="35.0" prefWidth="172.0" stylesheets="@mainApplicationStyles.css" text="Statistical Analysis" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="19.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="1060.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/statisticsIcon.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="42.0" fitWidth="43.0" layoutX="1338.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/userIcon.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="usernameLabel" layoutX="1394.0" layoutY="13.0" prefHeight="21.0" prefWidth="190.0" text="Welcome,&#10;" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="17.0" />
+               </font>
+            </Label>
+            <Label id="logoutLabel" fx:id="logoutLabel" ellipsisString="Logout" layoutX="1414.0" layoutY="38.0" onMouseClicked="#logout" prefHeight="16.0" prefWidth="41.0" style="-fx-cursor: hand;" stylesheets="@mainApplicationStyles.css" text=" Logout&#10;" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="14.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="17.0" fitWidth="12.0" layoutX="1397.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/logoutIcon.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

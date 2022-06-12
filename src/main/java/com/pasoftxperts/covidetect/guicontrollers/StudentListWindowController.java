@@ -1,3 +1,14 @@
+/*
+ | Author: setokk
+ | LinkedIn: https://www.linkedin.com/in/kostandin-kote-255382223/
+ |
+ |
+ | Class Description:
+ |
+ |
+ |
+*/
+
 package com.pasoftxperts.covidetect.guicontrollers;
 
 import com.pasoftxperts.covidetect.graphanalysis.GraphNeighboursGenerator;

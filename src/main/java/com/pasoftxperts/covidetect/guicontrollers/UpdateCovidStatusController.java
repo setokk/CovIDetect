@@ -1,10 +1,21 @@
+/*
+ | Author: setokk
+ | LinkedIn: https://www.linkedin.com/in/kostandin-kote-255382223/
+ |
+ |
+ | Class Description:
+ |
+ |
+ |
+*/
+
 package com.pasoftxperts.covidetect.guicontrollers;
 
-import com.pasoftxperts.covidetect.RunApplication;
 import com.pasoftxperts.covidetect.filemanager.FileWrapper;
 import com.pasoftxperts.covidetect.filemanager.ListObjectReader;
 import com.pasoftxperts.covidetect.filemanager.TaskObjectReader;
 import com.pasoftxperts.covidetect.graphanalysis.SingleCaseNeighbourCalculator;
+import com.pasoftxperts.covidetect.loginsession.LoginSession;
 import com.pasoftxperts.covidetect.time.TimeStamp;
 import com.pasoftxperts.covidetect.university.Room;
 import com.pasoftxperts.covidetect.university.Seat;
@@ -13,14 +24,15 @@ import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -60,6 +72,12 @@ public class UpdateCovidStatusController implements Initializable
     private Label homeButton;
 
     @FXML
+    private Label logoutLabel;
+
+    @FXML
+    private Label usernameLabel;
+
+    @FXML
     private Button updateButton;
 
     @FXML
@@ -84,11 +102,14 @@ public class UpdateCovidStatusController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        usernameLabel.setText("Welcome, " + LoginSession.getUsername());
+
         // Using platform.runLater() to initialize all the fields once the initialize phase has finished (faster scene transitions)
         Platform.runLater(() ->
         {
             // Initialize the last update label
             File lastUpdated = new File(path + "date.txt");
+
             try
             {
                 BufferedReader bufferedReader = new BufferedReader(new FileReader(lastUpdated));
@@ -102,15 +123,9 @@ public class UpdateCovidStatusController implements Initializable
             // Set date picker to not editable
             datePicker.setEditable(false);
 
-            studentField.textProperty().addListener((observableValue, s, t1) ->
-            {
-                statusLabel.setText("");
-            });
+            studentField.textProperty().addListener((observableValue, s, t1) -> statusLabel.setText(""));
 
-            datePicker.valueProperty().addListener((observableValue, localDate, t1) ->
-            {
-                statusLabel.setText("");
-            });
+            datePicker.valueProperty().addListener((observableValue, localDate, t1) -> statusLabel.setText(""));
 
             // Load All Rooms
             ArrayList<Object> objectList = ListObjectReader.readObjectListFile(MainApplicationController.path + "roomNames.ser");
@@ -473,6 +488,29 @@ public class UpdateCovidStatusController implements Initializable
         objectReaderList = null;
         System.gc();
 
+    }
+
+    @FXML
+    protected void logout(MouseEvent event) throws IOException
+    {
+        LoginSession.resetSession();
+
+        Stage stage = new Stage();
+
+        Parent parent = CacheFXMLLoader.load("loginGUI.fxml");
+        Scene scene = new Scene(parent);
+
+        stage.setScene(scene);
+        stage.setTitle("CovIDetect Login");
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/pasoftxperts/covidetect/icons/covidDetectWindowIcon.png")));
+        stage.setResizable(false);
+
+        // Get previous window and hide it
+        Stage previousWindow = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
+        previousWindow.hide();
+        System.gc();
+
+        stage.show();
     }
 
     /*

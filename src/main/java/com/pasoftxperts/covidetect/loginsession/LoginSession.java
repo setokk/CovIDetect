@@ -1,7 +1,16 @@
-package com.pasoftxperts.covidetect.loginsession;
+/*
+ | Author: setokk
+ | LinkedIn: https://www.linkedin.com/in/kostandin-kote-255382223/
+ |
+ |
+ | Class Description:
+ | This class is used to keep the logged in user's email and username as a session from the login page
+ | so that they can be used in the main application. (see user in header of application GUI)
+ |
+ |
+*/
 
-/* This class is used to keep the logged in user's email and username as a session from the login page
-   so that they can be used in the main application. */
+package com.pasoftxperts.covidetect.loginsession;
 
 public final class LoginSession
 {

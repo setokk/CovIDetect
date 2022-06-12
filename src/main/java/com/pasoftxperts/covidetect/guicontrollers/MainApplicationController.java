@@ -1,6 +1,17 @@
+/*
+ | Author: setokk
+ | LinkedIn: https://www.linkedin.com/in/kostandin-kote-255382223/
+ |
+ |
+ | Class Description:
+ |
+ |
+ |
+*/
+
 package com.pasoftxperts.covidetect.guicontrollers;
 
-import com.pasoftxperts.covidetect.RunApplication;
+import com.pasoftxperts.covidetect.filemanager.FileWrapper;
 import com.pasoftxperts.covidetect.history.HistoryManager;
 import com.pasoftxperts.covidetect.loginsession.LoginSession;
 import com.pasoftxperts.covidetect.simulation.Simulation;
@@ -9,7 +20,6 @@ import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -22,10 +32,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
@@ -85,6 +92,8 @@ public class MainApplicationController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        usernameLabel.setText("Welcome, " + LoginSession.getUsername());
+
         // Using platform.runLater() to initialize all the fields once the initialize phase has finished (faster scene transitions)
         Platform.runLater(() ->
         {
@@ -100,15 +109,13 @@ public class MainApplicationController implements Initializable
             // Simulation Info Pane
             simulationMessageHover.visibleProperty().bind(runSimulationButton.hoverProperty());
 
-            usernameLabel.setText("Welcome, " +  LoginSession.getUsername());
-
             // History List View
 
             // Make path directories
-            new File(HistoryManager.HISTORY_PATH).mkdirs();
+            new File(HistoryManager.HISTORY_PATH + LoginSession.getUsername()).mkdirs();
 
             // We go through the files
-            File folder = new File(HistoryManager.HISTORY_PATH);
+            File folder = new File(HistoryManager.HISTORY_PATH + LoginSession.getUsername());
             List<File> listOfFiles = Arrays.asList(folder.listFiles());
 
             // Sort based on the last date modified
@@ -120,10 +127,7 @@ public class MainApplicationController implements Initializable
 
             historyListView.getItems().addAll(fileNames);
 
-            historyListView.getSelectionModel().selectedItemProperty().addListener((observableValue, o, t1) ->
-            {
-                loadHistory();
-            });
+            historyListView.getSelectionModel().selectedItemProperty().addListener((observableValue, o, t1) -> loadHistory());
         });
     }
 
@@ -251,16 +255,11 @@ public class MainApplicationController implements Initializable
         if (selectedHistoryOption == null)
             return;
 
+        // Set history status to true
         HistoryManager.setSelectedHistoryStatus(true);
 
-        if (selectedHistoryOption.contains("Statistics"))
-        {
-            statisticsButton.fireEvent(new ActionEvent()); // Open Statistics page with history status set to true
-        }
-        else
-        {
-
-        }
+        // Open Statistics page with history status set to true
+        statisticsButton.fireEvent(new ActionEvent());
     }
 
     @FXML
@@ -310,18 +309,12 @@ public class MainApplicationController implements Initializable
         simulation.setOnSucceeded((e) ->
         {
             simulationPressed = true;
+
             // Delete previous history files, if any
-            new File(HistoryManager.HISTORY_PATH).mkdirs();
+            FileWrapper.deleteDirectoryRecursively(HistoryManager.HISTORY_PATH);
 
-            // We go through the files
-            File folder = new File(HistoryManager.HISTORY_PATH);
-            File[] listOfFiles = folder.listFiles();
-
-            // Delete them
-            for (int i = 0; i < listOfFiles.length; i++)
-            {
-                listOfFiles[i].delete();
-            }
+            // Delete the last updated date file for update covid status
+            FileWrapper.deleteDirectoryRecursively(path + "lastupdate/");
 
             // Go back to the home page
             String name;
@@ -342,7 +335,7 @@ public class MainApplicationController implements Initializable
             Parent parent = null;
             try
             {
-                parent = CacheFXMLLoader.load(resourceName);
+                parent = CacheFXMLLoader.load(name);
                 window.getScene().setRoot(parent);
             }
             catch (IOException ex)

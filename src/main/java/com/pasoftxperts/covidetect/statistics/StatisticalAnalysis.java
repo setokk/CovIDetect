@@ -95,7 +95,7 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
 
 
         // Calculate Attendance based on case
-        if ((!showByOption.equals("Week")) && (!showByOption.equals("Hour")))
+        if (!showByOption.equals("Hour"))
         {
             for (Room room : roomList)
             {
@@ -144,7 +144,7 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
                 }
             }
         }
-        else if (showByOption.equals("Hour"))
+        else
         {
             for (Room room : roomList)
             {
@@ -311,7 +311,7 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
         //
         // Calculate Attendance based on case
         //
-        if ((!showByOption.equals("Week")) && (!showByOption.equals("Hour")))
+        if (!showByOption.equals("Hour"))
         {
             for (Room room : roomList)
             {
@@ -356,7 +356,7 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
                 }
             }
         }
-        else if (showByOption.equals("Hour"))
+        else
         {
             for (Room room : roomList)
             {

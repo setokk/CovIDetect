@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class FileWrapper
 {
-    public static final String path = System.getProperty("user.dir");
+    public static final String PATH = System.getProperty("user.dir");
     private static ArrayList<String> roomNames;
 
 
@@ -18,7 +18,7 @@ public class FileWrapper
     public static void saveFilesByRoom(String universityName, String departmentName, ArrayList<Room> roomList)
     {
         // Make directories for room files
-        String finalPath = path + "/" + universityName.toLowerCase() + "/" + departmentName.toLowerCase();
+        String finalPath = PATH + "/" + universityName.toLowerCase() + "/" + departmentName.toLowerCase();
 
         //  Room name list (needed for list catalogs)
         roomNames = new ArrayList<>();
@@ -35,7 +35,7 @@ public class FileWrapper
             try
             {
                 FileOutputStream fileOut = new FileOutputStream(finalPath + "/" + room.getRoomId() + ".ser");
-                ObjectOutputStream objOut = new ObjectOutputStream(fileOut);
+                ObjectOutputStream objOut = new ObjectOutputStream(new BufferedOutputStream(fileOut));
 
                 // Write object ArrayList
                 objOut.writeObject(room);
@@ -54,7 +54,7 @@ public class FileWrapper
     //
     public static void saveRoomNames(String universityName, String departmentName)
     {
-        String finalPath = path + "/" + universityName.toLowerCase() + "/" + departmentName.toLowerCase();
+        String finalPath = PATH + "/" + universityName.toLowerCase() + "/" + departmentName.toLowerCase();
 
         if (roomNames == null)
             return;
@@ -63,7 +63,7 @@ public class FileWrapper
         try
         {
             FileOutputStream fileOut = new FileOutputStream(finalPath + "/roomNames.ser");
-            ObjectOutputStream objOut = new ObjectOutputStream(fileOut);
+            ObjectOutputStream objOut = new ObjectOutputStream(new BufferedOutputStream(fileOut));
 
             // Write object ArrayList
             objOut.writeObject(roomNames);
@@ -82,14 +82,14 @@ public class FileWrapper
         for (int i = 0; i < names.size(); i++)
             names.set(i, "Professor " + names.get(i));
 
-        String finalPath = path + "/" + universityName + "/" + departmentName + "/" + "professors";
+        String finalPath = PATH + "/" + universityName + "/" + departmentName + "/" + "professors";
 
         new File(finalPath).mkdirs();
 
         try
         {
             FileOutputStream fileOut = new FileOutputStream(finalPath + "/professorNames.ser");
-            ObjectOutputStream objOut = new ObjectOutputStream(fileOut);
+            ObjectOutputStream objOut = new ObjectOutputStream(new BufferedOutputStream(fileOut));
 
             // Write object ArrayList
             objOut.writeObject(names);
@@ -98,5 +98,34 @@ public class FileWrapper
             fileOut.close();
         }
         catch (IOException e) { return; }
+    }
+
+    public static void deleteDirectoryRecursively(String path)
+    {
+        // Delete previous history files, if any
+        new File(path).mkdirs();
+
+        // We go through the user folders
+        File folder = new File(path);
+        File[] listOfFolders = folder.listFiles();
+
+        if (listOfFolders == null)
+            return;
+
+        // Delete them
+        for (int i = 0; i < listOfFolders.length; i++)
+        {
+            File[] listOfFiles = listOfFolders[i].listFiles();
+
+            if (listOfFiles != null)
+            {
+                // We go through the files
+                for (int j = 0; j < listOfFiles.length; j++)
+                    listOfFiles[j].delete();
+
+            }
+
+            listOfFolders[i].delete();
+        }
     }
 }

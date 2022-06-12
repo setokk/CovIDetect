@@ -12,7 +12,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" style="-fx-background-color: white;" stylesheets="@mainApplicationStyles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pasoftxperts.covidetect.guicontrollers.MainApplicationController">
    <children>
-      <AnchorPane prefHeight="69.0" prefWidth="1607.0" styleClass="menu">
+      <AnchorPane prefHeight="69.0" prefWidth="1603.0" styleClass="menu">
          <children>
             <Label id="logoLabel" layoutX="14.0" layoutY="18.0" prefHeight="31.0" prefWidth="161.0" stylesheets="@mainApplicationStyles.css" text="   CovIDetect" textFill="WHITE">
                <font>
@@ -66,7 +66,7 @@
                   <Image url="@icons/userIcon.png" />
                </image>
             </ImageView>
-            <Label fx:id="usernameLabel" layoutX="1394.0" layoutY="13.0" prefHeight="21.0" prefWidth="195.0" text="Welcome,&#10;" textFill="WHITE">
+            <Label fx:id="usernameLabel" layoutX="1394.0" layoutY="13.0" prefHeight="21.0" prefWidth="190.0" text="Welcome,&#10;" textFill="WHITE">
                <font>
                   <Font name="Corbel Light" size="17.0" />
                </font>
@@ -109,11 +109,6 @@
                         </Label>
                      </children>
                   </AnchorPane>
-                  <Label layoutX="211.0" prefHeight="170.0" prefWidth="375.0" text="Visualize Rooms&#10;Update the Covid Status of a Student&#10;Get Statistical Analysis Reports" textAlignment="CENTER" textFill="#323232">
-                     <font>
-                        <Font name="Corbel Light" size="24.0" />
-                     </font>
-                  </Label>
                </children></AnchorPane>
          </bottom>
          <right>
@@ -141,7 +136,7 @@
             <Image url="@icons/historyIcon.png" />
          </image>
       </ImageView>
-      <AnchorPane layoutX="-5.0" layoutY="68.0" prefHeight="115.0" prefWidth="1609.0" style="-fx-background-color: #323232;">
+      <AnchorPane layoutX="-8.0" layoutY="69.0" prefHeight="115.0" prefWidth="1609.0" style="-fx-background-color: #323232;">
          <children>
             <Label layoutX="600.0" layoutY="21.0" styleClass="generalLabel" stylesheets="@mainApplicationStyles.css" text="Dashboard Panel" textFill="WHITE">
                <font>

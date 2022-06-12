@@ -5,15 +5,13 @@
  |
  | Class Description:
  |
- | We create an arraylist of objects and add GUI field values to them in a specific order (from top left to bottom - top right to bottom)
- | Thus, we can save the values to a file and load them back when a user selects the history option
- | Example,
- | In the statistics GUI, we will add them in this order:
- | - (Top Left to Bottom) Room value, Start Date Value, End Date Value, Show By Option Value, Data Category Value, Statistical Method Value.
- | - (Top Right to Bottom) Min Value, Max Value, Average Value, Statistical Method Result (Standard Deviation) value, yAxis values, Show by Elements (xAxis) values
+ |
+ |
 */
 
 package com.pasoftxperts.covidetect.history;
+
+import com.pasoftxperts.covidetect.loginsession.LoginSession;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -36,7 +34,7 @@ public class HistoryManager
     {
         try
         {
-            FileInputStream fileInputStream = new FileInputStream(HISTORY_PATH + name);
+            FileInputStream fileInputStream = new FileInputStream(HISTORY_PATH + LoginSession.getUsername() + "/" + name);
             ObjectInputStream objectInputStream = new ObjectInputStream(new BufferedInputStream(fileInputStream));
 
             Object values = objectInputStream.readObject();
@@ -55,10 +53,10 @@ public class HistoryManager
     public static void updateHistory(Object values)
     {
         // Make path directories
-        new File(HISTORY_PATH).mkdirs();
+        new File(HISTORY_PATH + LoginSession.getUsername()).mkdirs();
 
         // We go through the files and see if we exceeded the MAX FILES limit (10 files)
-        File folder = new File(HISTORY_PATH);
+        File folder = new File(HISTORY_PATH + LoginSession.getUsername());
         List<File> listOfFiles = Arrays.asList(folder.listFiles());
 
         // Sort based on the last date modified
@@ -78,19 +76,39 @@ public class HistoryManager
             String selectedRoom = (String) statisticsValues.getFieldValues().get(0);
             LocalDate startDate = (LocalDate) statisticsValues.getFieldValues().get(1);
             LocalDate endDate = (LocalDate) statisticsValues.getFieldValues().get(2);
+            String tempData = (String) statisticsValues.getFieldValues().get(4);
+
+            // Create a string with only the first word (either attendance or covid)
+            int index = 0;
+
+            for (int i = 0; i < tempData.length(); i++)
+            {
+                if (tempData.charAt(i) == ' ')
+                {
+                    index = i;
+                    break;
+                }
+
+            }
+
+            String dataCategory = tempData.substring(0, index);
+
 
             // Update History
-            try {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy", Locale.US);
+            try
+            {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d-MM-yyyy", Locale.US);
 
-                FileOutputStream fileOutputStream = new FileOutputStream(HISTORY_PATH + "[Statistics] " + selectedRoom + " (" + formatter.format(startDate) + " - " + formatter.format(endDate) + ")");
+                FileOutputStream fileOutputStream = new FileOutputStream(HISTORY_PATH + LoginSession.getUsername() + "/[REPORT]_" + dataCategory.toUpperCase() + "_" + selectedRoom.toUpperCase() + "_(" + formatter.format(startDate) + "_" + formatter.format(endDate) + ")");
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
 
                 objectOutputStream.writeObject(values);
 
                 objectOutputStream.close();
                 fileOutputStream.close();
-            } catch (IOException e) {
+            }
+            catch (IOException e)
+            {
                 return;
             }
         }

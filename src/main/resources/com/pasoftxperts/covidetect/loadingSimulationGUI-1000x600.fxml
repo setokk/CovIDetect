@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pasoftxperts.covidetect.guicontrollers.LoadingSimulationController">
+   <children>
+      <Label layoutX="309.0" layoutY="484.0" prefHeight="71.0" prefWidth="400.0" text="Simulation in Progress...">
+         <font>
+            <Font name="Corbel Light" size="40.0" />
+         </font>
+      </Label>
+      <AnchorPane fx:id="centerPane" layoutX="300.0" layoutY="130.0" prefHeight="300.0" prefWidth="400.0" />
+   </children>
+</AnchorPane>

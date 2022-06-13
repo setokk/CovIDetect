@@ -56,7 +56,7 @@
             </Button>
          </children>
       </AnchorPane>
-      <Label id="historyLabel" layoutX="1523.0" layoutY="841.0" prefHeight="45.0" prefWidth="54.0" style="-fx-text-fill: #323232;" text="v.0.5">
+      <Label id="historyLabel" layoutX="1515.0" layoutY="841.0" prefHeight="45.0" prefWidth="62.0" style="-fx-text-fill: #323232;" text="v.0.65">
          <font>
             <Font name="Corbel Light" size="23.0" />
          </font>

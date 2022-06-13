@@ -50,8 +50,17 @@ public class LoadingSimulationController implements Initializable
             mediaPlayer.play();
         });
         mediaView = new MediaView(mediaPlayer);
-        mediaView.setFitHeight(600);
-        mediaView.setFitWidth(800);
+
+        if (MainApplicationController.width >= 1600 && MainApplicationController.height >= 900)
+        {
+            mediaView.setFitHeight(600);
+            mediaView.setFitWidth(800);
+        }
+        else
+        {
+            mediaView.setFitHeight(300);
+            mediaView.setFitWidth(400);
+        }
 
         centerPane.getChildren().add(mediaView);
 

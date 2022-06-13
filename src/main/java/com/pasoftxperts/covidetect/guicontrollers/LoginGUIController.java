@@ -75,10 +75,26 @@ public class LoginGUIController implements Initializable
             mediaPlayer.play();
         });
         mediaView = new MediaView(mediaPlayer);
-        mediaView.setFitHeight(450);
-        mediaView.setFitWidth(650);
 
+        // Get default monitor resolution
+        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        int width = gd.getDisplayMode().getWidth();
+        int height = gd.getDisplayMode().getHeight();
+
+        if (width >= 1600 && height >= 900)
+        {
+            mediaView.setFitHeight(250);
+            mediaView.setFitWidth(450);
+        }
+        else
+        {
+            mediaView.setFitHeight(450);
+            mediaView.setFitWidth(650);
+        }
+
+        //
         // Login button enter event listener
+        //
         Platform.runLater(() ->
         {
             Scene scene = loginButton.getScene();
@@ -148,16 +164,19 @@ public class LoginGUIController implements Initializable
         Stage mainApplicationWindow = new Stage();
         Scene mainScene;
 
+        //
         // First we get the monitor resolution. (Checks default screen in case of multiple monitors)
+        //
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         int width = gd.getDisplayMode().getWidth();
         int height = gd.getDisplayMode().getHeight();
 
         // We can now check if the monitor resolution is higher that 1600x900 or less.
         if ((width >= 1600) && (height >= 900))
-            mainScene = new Scene(FXMLLoader.load(RunApplication.class.getResource("mainApplicationGUI-1600x900.fxml")), 1600, 900);
+            mainScene = new Scene(CacheFXMLLoader.load("mainApplicationGUI-1600x900.fxml"));
         else
-            mainScene = new Scene(FXMLLoader.load(RunApplication.class.getResource("mainApplicationGUI-1000x600.fxml")), 1000, 600);
+            mainScene = new Scene(CacheFXMLLoader.load("mainApplicationGUI-1000x600.fxml"));
+
 
         mainApplicationWindow.setTitle("CovIDetect© by PasoftXperts");
         mainApplicationWindow.setResizable(false);

@@ -150,11 +150,20 @@ public class RoomVisualizationController implements Initializable
         usernameLabel.setText("Welcome, " + LoginSession.getUsername());
 
         // Initialize room seats
-        int maxWidth = 50; // Max seat icon width
-        int maxHeight = 78; // Max seat icon height
 
-        int widthRatio = (int) (MainApplicationController.width / 64); // Ratio to scale seat width depending on resolution
-        int heightRatio = maxHeight - (maxWidth - widthRatio); // Ratio to scale seat height depending on resolution
+        int widthRatio;
+        int heightRatio;
+
+        if (MainApplicationController.width >= 1600 && MainApplicationController.height >= 900)
+        {
+            widthRatio = 25;
+            heightRatio = 53;
+        }
+        else
+        {
+            widthRatio = 16;
+            heightRatio = 32;
+        }
 
         // Create a single free seat image (optimizing runtime)
         Image freeSeatImage = new Image(RunApplication.class.getResourceAsStream("/com/pasoftxperts/covidetect/icons/freeSeat.png"));

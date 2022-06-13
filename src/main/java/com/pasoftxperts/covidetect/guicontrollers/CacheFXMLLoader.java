@@ -4,7 +4,7 @@
  |
  |
  | Class Description:
- |
+ | This class is used to load the GUI scenes faster by caching the all the scenes in the login page (JavaFX FXMLLoader)
  |
  |
 */

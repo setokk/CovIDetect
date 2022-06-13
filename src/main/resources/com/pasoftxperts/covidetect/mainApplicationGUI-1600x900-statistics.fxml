@@ -63,7 +63,7 @@
             </Button>
          </children>
       </AnchorPane>
-      <LineChart fx:id="lineChart" animated="false" layoutX="518.0" layoutY="348.0" prefHeight="541.0" prefWidth="1068.0">
+      <LineChart fx:id="lineChart" animated="false" layoutX="516.0" layoutY="341.0" prefHeight="541.0" prefWidth="1068.0">
         <xAxis>
           <CategoryAxis side="BOTTOM" />
         </xAxis>
@@ -99,7 +99,7 @@
             </Label>
          </children>
       </AnchorPane>
-      <Label id="historyLabel" layoutX="1538.0" layoutY="855.0" prefHeight="45.0" prefWidth="54.0" style="-fx-text-fill: #323232;" text="v.0.5">
+      <Label id="historyLabel" layoutX="1524.0" layoutY="847.0" prefHeight="45.0" prefWidth="60.0" style="-fx-text-fill: #323232;" text="v.0.65">
          <font>
             <Font name="Corbel Light" size="23.0" />
          </font>

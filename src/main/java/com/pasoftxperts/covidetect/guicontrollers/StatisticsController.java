@@ -702,7 +702,7 @@ public class StatisticsController implements Initializable
         Stage stage = new Stage();
 
         Parent parent = CacheFXMLLoader.load("loginGUI.fxml");
-        Scene scene = new Scene(parent);
+        Scene scene = new Scene(parent, 600, 500);
 
         stage.setScene(scene);
         stage.setTitle("CovIDetect Login");
@@ -712,7 +712,7 @@ public class StatisticsController implements Initializable
         // Get previous window and hide it
         Stage previousWindow = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
         previousWindow.hide();
-        System.gc();
+        previousWindow = null;
 
         stage.show();
     }

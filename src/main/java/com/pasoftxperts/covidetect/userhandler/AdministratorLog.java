@@ -30,19 +30,6 @@ public class AdministratorLog implements Serializable
         updateAdminLog();
     }
 
-    // Checks if the email is not registered. If registered, returns false.
-    // Otherwise, returns true
-    public static Administrator emailIsNotRegistered(String email)
-    {
-        // Read admin log from file
-        readAdminLog();
-
-        return adminList.stream()
-                        .filter(e -> e.getEmail().equals(email))
-                        .findFirst()
-                        .orElse(new Administrator("Not Registered", ""));
-    }
-
     public static void updateAdminLog()
     {
         try
@@ -51,7 +38,7 @@ public class AdministratorLog implements Serializable
             new File(path + "/adminlog").mkdirs();
 
             FileOutputStream fileOut = new FileOutputStream(path + "/adminlog/adminLog.ser");
-            ObjectOutputStream objOut = new ObjectOutputStream(fileOut);
+            ObjectOutputStream objOut = new ObjectOutputStream(new BufferedOutputStream(fileOut));
 
             // Write object ArrayList
             objOut.writeObject(adminList);
@@ -67,7 +54,7 @@ public class AdministratorLog implements Serializable
         try
         {
             FileInputStream fileIn = new FileInputStream(path + "/adminlog/adminLog.ser");
-            ObjectInputStream objIn = new ObjectInputStream(fileIn);
+            ObjectInputStream objIn = new ObjectInputStream(new BufferedInputStream(fileIn));
 
             // Read object ArrayList
             try { adminList = (ArrayList<Administrator>) objIn.readObject(); }
@@ -77,5 +64,20 @@ public class AdministratorLog implements Serializable
             fileIn.close();
         }
         catch (IOException i) { return; }
+    }
+
+    //
+    // Checks if the email is not registered. If registered, returns false.
+    // Otherwise, returns true
+    //
+    public static Administrator emailIsNotRegistered(String email)
+    {
+        // Read admin log from file
+        readAdminLog();
+
+        return adminList.stream()
+                .filter(e -> e.getEmail().equals(email))
+                .findFirst()
+                .orElse(new Administrator("Not Registered", ""));
     }
 }

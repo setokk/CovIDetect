@@ -13,12 +13,13 @@ package com.pasoftxperts.covidetect.guicontrollers;
 
 import com.pasoftxperts.covidetect.RunApplication;
 import com.pasoftxperts.covidetect.course.Course;
-import com.pasoftxperts.covidetect.filemanager.ListObjectReader;
 import com.pasoftxperts.covidetect.filemanager.ObjectReader;
 import com.pasoftxperts.covidetect.counters.CovidCasesCounter;
 import com.pasoftxperts.covidetect.counters.FreeSeatsCounter;
 import com.pasoftxperts.covidetect.counters.PossibleCasesCounter;
 import com.pasoftxperts.covidetect.counters.StudentCounter;
+import com.pasoftxperts.covidetect.filemanager.TaskObjectReader;
+import com.pasoftxperts.covidetect.guicontrollers.cachefxmlloader.CacheFXMLLoader;
 import com.pasoftxperts.covidetect.loginsession.LoginSession;
 import com.pasoftxperts.covidetect.student.Student;
 import com.pasoftxperts.covidetect.time.HourSpan;
@@ -46,12 +47,13 @@ import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 import org.jgrapht.graph.DefaultUndirectedGraph;
 
+import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
 
 import static com.pasoftxperts.covidetect.graphanalysis.GraphNeighboursGenerator.numberOfSeat;
 
@@ -150,11 +152,15 @@ public class RoomVisualizationController implements Initializable
         usernameLabel.setText("Welcome, " + LoginSession.getUsername());
 
         // Initialize room seats
-
         int widthRatio;
         int heightRatio;
 
-        if (MainApplicationController.width >= 1600 && MainApplicationController.height >= 900)
+        // Get default monitor resolution
+        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        int width = gd.getDisplayMode().getWidth();
+        int height = gd.getDisplayMode().getHeight();
+
+        if (width >= 1600 && height >= 900)
         {
             widthRatio = 25;
             heightRatio = 53;
@@ -204,7 +210,7 @@ public class RoomVisualizationController implements Initializable
                 seatsGridPane.getRowConstraints().add(rc);
             }
 
-            if ((MainApplicationController.width >= 1600) && (MainApplicationController.height >= 900))
+            if ((width>= 1600) && (height >= 900))
             {
                 seatsGridPane.setPrefHeight(400);
                 seatsGridPane.setPrefWidth(400);
@@ -385,11 +391,10 @@ public class RoomVisualizationController implements Initializable
 
 
             // Read room names
-            ArrayList<Object> objectList = ListObjectReader.readObjectListFile(MainApplicationController.path + "roomNames.ser");
+            TaskObjectReader taskObjectReader = new TaskObjectReader(MainApplicationController.path + "roomNames.ser");
+            taskObjectReader.readObjectFile();
 
-            List<String> roomNames = objectList.stream()
-                    .map(object -> Objects.toString(object, null))
-                    .collect(Collectors.toList());
+            ArrayList<String> roomNames = (ArrayList<String>) taskObjectReader.getResult();
 
             // Initialize room combo box
             roomComboBox.setItems(FXCollections.observableList(roomNames));
@@ -433,7 +438,10 @@ public class RoomVisualizationController implements Initializable
 
         Stage window = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
 
-        if ((MainApplicationController.width >= 1600) && (MainApplicationController.height >= 900))
+        double width = window.getWidth();
+        double height = window.getHeight();
+
+        if ((width >= 1600) && (height >= 900))
             resourceName = "mainApplicationGUI-1600x900-statistics.fxml";
         else
             resourceName = "mainApplicationGUI-1000x600-statistics.fxml";
@@ -442,10 +450,6 @@ public class RoomVisualizationController implements Initializable
         window.getScene().setRoot(visualizationParent);
 
         window.setTitle("Statistical Analysis - CovIDetect©");
-
-        // Reset fields
-        room = null;
-        seatList = null;
 
         window.show();
     }
@@ -463,7 +467,10 @@ public class RoomVisualizationController implements Initializable
 
         Stage window = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
 
-        if ((MainApplicationController.width >= 1600) && (MainApplicationController.height >= 900))
+        double width = window.getWidth();
+        double height = window.getHeight();
+
+        if ((width >= 1600) && (height >= 900))
             resourceName = "mainApplicationGUI-1600x900.fxml";
         else
             resourceName = "mainApplicationGUI-1000x600.fxml";
@@ -472,10 +479,6 @@ public class RoomVisualizationController implements Initializable
         window.getScene().setRoot(visualizationParent);
 
         window.setTitle("CovIDetect© by PasoftXperts");
-
-        // Reset Fields
-        room = null;
-        seatList = null;
 
         window.show();
     }
@@ -487,7 +490,10 @@ public class RoomVisualizationController implements Initializable
 
         Stage window = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
 
-        if ((MainApplicationController.width >= 1600) && (MainApplicationController.height >= 900))
+        double width = window.getWidth();
+        double height = window.getHeight();
+
+        if ((width >= 1600) && (height >= 900))
             resourceName = "mainApplicationGUI-1600x900-updateStatus.fxml";
         else
             resourceName = "mainApplicationGUI-1000x600-updateStatus.fxml";
@@ -496,10 +502,6 @@ public class RoomVisualizationController implements Initializable
         window.getScene().setRoot(visualizationParent);
 
         window.setTitle("Update Student's Covid Status - CovIDetect©");
-
-        // Reset Fields
-        room = null;
-        seatList = null;
 
         window.show();
     }
@@ -522,7 +524,6 @@ public class RoomVisualizationController implements Initializable
         // Get previous window and hide it
         Stage previousWindow = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
         previousWindow.hide();
-        System.gc();
 
         stage.show();
     }

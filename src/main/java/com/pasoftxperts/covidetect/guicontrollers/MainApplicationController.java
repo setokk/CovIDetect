@@ -11,7 +11,8 @@
 
 package com.pasoftxperts.covidetect.guicontrollers;
 
-import com.pasoftxperts.covidetect.filemanager.FileWrapper;
+import com.pasoftxperts.covidetect.filemanager.RecursiveDeleter;
+import com.pasoftxperts.covidetect.guicontrollers.cachefxmlloader.CacheFXMLLoader;
 import com.pasoftxperts.covidetect.history.HistoryManager;
 import com.pasoftxperts.covidetect.loginsession.LoginSession;
 import com.pasoftxperts.covidetect.simulation.Simulation;
@@ -34,7 +35,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -79,16 +79,14 @@ public class MainApplicationController implements Initializable
     @FXML
     private AnchorPane simulationMessageHover;
 
+    //
+    // FLAGS
+    //
     private static boolean simulationPressed = false; // Indicates whether the simulation button was pressed or not
 
-    public static final String path = System.getProperty("user.dir") + "/university of macedonia/applied informatics/";
+    public static String selectedHistoryOption = null; // Indicates whether the user has selected to load statistics from history
 
-    // We need the width and height for other classes
-    public static double width;
-
-    public static double height;
-
-    public static String selectedHistoryOption = null;
+    public static final String path = System.getProperty("user.dir") + "/university of macedonia/applied informatics/"; // Path in which all the simulation files are saved
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
@@ -139,21 +137,13 @@ public class MainApplicationController implements Initializable
 
         Stage window = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
 
-        width = window.getWidth();
-        height = window.getHeight();
+        double width = window.getWidth();
+        double height = window.getHeight();
 
         if ((width >= 1600) && (height >= 900))
-        {
             resourceName = "mainApplicationGUI-1600x900-statistics.fxml";
-            width = 1600;
-            height = 900;
-        }
         else
-        {
             resourceName = "mainApplicationGUI-1000x600-statistics.fxml";
-            width = 1000;
-            height = 600;
-        }
 
         Parent visualizationParent = CacheFXMLLoader.load(resourceName);
         window.getScene().setRoot(visualizationParent);
@@ -170,21 +160,14 @@ public class MainApplicationController implements Initializable
 
         Stage window = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
 
-        width = window.getWidth();
-        height = window.getHeight();
+        double width = window.getWidth();
+        double height = window.getHeight();
 
         if ((width >= 1600) && (height >= 900))
-        {
             resourceName = "mainApplicationGUI-1600x900-viewSeats.fxml";
-            width = 1600;
-            height = 900;
-        }
         else
-        {
             resourceName = "mainApplicationGUI-1000x600-viewSeats.fxml";
-            width = 1000;
-            height = 600;
-        }
+
 
         Parent visualizationParent = CacheFXMLLoader.load(resourceName);
         window.getScene().setRoot(visualizationParent);
@@ -201,21 +184,13 @@ public class MainApplicationController implements Initializable
 
         Stage window = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
 
-        width = window.getWidth();
-        height = window.getHeight();
+        double width = window.getWidth();
+        double height = window.getHeight();
 
         if ((width >= 1600) && (height >= 900))
-        {
             resourceName = "mainApplicationGUI-1600x900-updateStatus.fxml";
-            width = 1600;
-            height = 900;
-        }
         else
-        {
             resourceName = "mainApplicationGUI-1000x600-updateStatus.fxml";
-            width = 1000;
-            height = 600;
-        }
 
         Parent visualizationParent = CacheFXMLLoader.load(resourceName);
         window.getScene().setRoot(visualizationParent);
@@ -243,7 +218,6 @@ public class MainApplicationController implements Initializable
         // Get previous window and hide it
         Stage previousWindow = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
         previousWindow.hide();
-        System.gc();
 
         stage.show();
     }
@@ -270,21 +244,13 @@ public class MainApplicationController implements Initializable
 
         Stage window = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
 
-        width = window.getWidth();
-        height = window.getHeight();
+        double width = window.getWidth();
+        double height = window.getHeight();
 
         if ((width >= 1600) && (height >= 900))
-        {
             resourceName = "loadingSimulationGUI-1600x900.fxml";
-            width = 1600;
-            height = 900;
-        }
         else
-        {
             resourceName = "loadingSimulationGUI-1000x600.fxml";
-            width = 1000;
-            height = 600;
-        }
 
         Parent visualizationParent = CacheFXMLLoader.load(resourceName);
         window.getScene().setRoot(visualizationParent);
@@ -312,26 +278,19 @@ public class MainApplicationController implements Initializable
             simulationPressed = true;
 
             // Delete previous history files, if any
-            FileWrapper.deleteDirectoryRecursively(HistoryManager.HISTORY_PATH);
+            RecursiveDeleter.deleteDirectoryRecursively(HistoryManager.HISTORY_PATH);
 
             // Delete the last updated date file for update covid status
-            FileWrapper.deleteDirectoryRecursively(path + "lastupdate/");
+            RecursiveDeleter.deleteDirectoryRecursively(path + "lastupdate/");
 
             // Go back to the home page
             String name;
 
             if ((width >= 1600) && (height >= 900))
-            {
                 name = "mainApplicationGUI-1600x900.fxml";
-                width = 1600;
-                height = 900;
-            }
             else
-            {
                 name = "mainApplicationGUI-1000x600.fxml";
-                width = 1000;
-                height = 600;
-            }
+
 
             Parent parent = null;
             try

@@ -7,6 +7,7 @@ public class Student implements Serializable
     private String studentId;
     private int healthIndicator; // 0 == healthy. 1 == covid case. 2 == possible covid case.
 
+
     public Student(String studentId, int healthIndicator)
     {
         // Value between [0,2]
@@ -16,6 +17,7 @@ public class Student implements Serializable
         this.healthIndicator = healthIndicator;
         this.studentId = studentId;
     }
+
 
     public String getStudentId() { return studentId; }
 

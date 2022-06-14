@@ -1,3 +1,14 @@
+/*
+ | Author: setokk
+ | LinkedIn: https://www.linkedin.com/in/kostandin-kote-255382223/
+ |
+ |
+ | Class Description:
+ | This class is used to just read a .ser file (not using threads) (used for JavaFX Service concurrency)
+ |
+ |
+*/
+
 package com.pasoftxperts.covidetect.filemanager;
 
 import com.pasoftxperts.covidetect.guicontrollers.popupwindow.PopupWindow;
@@ -7,7 +18,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
-/* This class is used to just read a .ser file (not using threads) (used for JavaFX Service concurrency) */
 public class TaskObjectReader
 {
     private String path;

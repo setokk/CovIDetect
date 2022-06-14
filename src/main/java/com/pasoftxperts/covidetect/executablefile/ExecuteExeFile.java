@@ -1,3 +1,14 @@
+/*
+ | Author: setokk
+ | LinkedIn: https://www.linkedin.com/in/kostandin-kote-255382223/
+ |
+ |
+ | Class Description:
+ | This class is used to copy an .exe file from the resources folder
+ | to the directory in which the .jar application was launched so that it can be executed
+ |
+*/
+
 package com.pasoftxperts.covidetect.executablefile;
 
 import com.pasoftxperts.covidetect.RunApplication;

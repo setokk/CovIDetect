@@ -12,6 +12,7 @@
 package com.pasoftxperts.covidetect.guicontrollers;
 
 import com.pasoftxperts.covidetect.RunApplication;
+import com.pasoftxperts.covidetect.guicontrollers.cachefxmlloader.CacheFXMLLoader;
 import com.pasoftxperts.covidetect.guicontrollers.popupwindow.PopupWindow;
 import com.pasoftxperts.covidetect.loginsession.LoginSession;
 import com.pasoftxperts.covidetect.userhandler.Administrator;
@@ -59,6 +60,8 @@ public class LoginGUIController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        CacheFXMLLoader.initializeLoader();
+
         Media media;
         MediaPlayer mediaPlayer;
 
@@ -83,13 +86,13 @@ public class LoginGUIController implements Initializable
 
         if (width >= 1600 && height >= 900)
         {
-            mediaView.setFitHeight(250);
-            mediaView.setFitWidth(450);
+            mediaView.setFitHeight(450);
+            mediaView.setFitWidth(650);
         }
         else
         {
-            mediaView.setFitHeight(450);
-            mediaView.setFitWidth(650);
+            mediaView.setFitHeight(250);
+            mediaView.setFitWidth(450);
         }
 
         //
@@ -189,10 +192,5 @@ public class LoginGUIController implements Initializable
 
         // Show main application
         mainApplicationWindow.show();
-
-        // Deallocate memory
-        window = null;
-        mainScene = null;
-        System.gc();
     }
 }

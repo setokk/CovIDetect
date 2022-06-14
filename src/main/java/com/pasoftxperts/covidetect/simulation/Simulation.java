@@ -1,3 +1,44 @@
+/*
+ | Author: setokk
+ | LinkedIn: https://www.linkedin.com/in/kostandin-kote-255382223/
+ |
+ |
+ | Class Description:
+ | This class is used for creating a simulation (university, department, students, covid cases, possible cases) and saving
+ | Its usage is only for demonstration purposes. It only exists to serve as input data for our system.
+ |
+ |
+ | Design:
+ |
+ | - The TOTAL_COURSES for this simulation are 48
+ | - The START_YEAR is 2020
+ | - The END_YEAR is 2022 (but it goes till January 24th 2023, end of semester)
+ | - The NUMBER_OF_ROOMS is 9
+ | - The LOWER_BOUND of total students in this department and university is 700
+ | - The UPPER_BOUND of total students in this department and university is 1000
+ |
+ |   In order to populate the graphs, we firstly set all the students' health indicators to 0 (healthy)
+ |   After that, every 5 days, we reset the health indicators randomly for all students with a covid case probability of 4% (see line 288)
+ |
+ |   We populate the seats randomly, at random seats each time and with random students
+ |   (We don't check if a certain student is attending all semester's course for the sake of this class being just a simulation)
+ |
+ |
+ |
+ | Method Documentation:
+ |
+ |     [*] public static void runSimulation()
+ |         Creates a random simulation (populated room objects) and saves the room objects, room names and professor names to .ser files
+ |
+ |     [*] public static ArrayList<ArrayList<Seat>> populateWithStudents(ArrayList<Student> studentList, int rows, int cols)
+ |         Takes an ArrayList of Students and the rows/cols of the seats of a room as input. Returns a 2D ArrayList that's populated with students
+ |
+ |     [*] public static Room findRoomById(String roomId, ArrayList<Room> roomList)
+ |         Takes a room and an ArrayList of rooms as input. Returns a room with that room ID, if found.
+ |         If not found, returns a new room object with a room ID of "Room not found"
+ |
+*/
+
 package com.pasoftxperts.covidetect.simulation;
 
 import com.pasoftxperts.covidetect.filemanager.FileWrapper;
@@ -25,26 +66,23 @@ public class Simulation
     public static final int UPPER_BOUND = 1000; // Upper bound for number of students
     public static final int NUMBER_OF_ROOMS = 9;
     public static final int START_YEAR = 2020; // Year the simulation starts
-    public static final int END_YEAR = 2022; // Year the simulation ends [current year]
-
-    // We use an arraylist for students because we are going to search for students really often.
-    // If we were frequently adding/removing students, we would use a linked list.
-    private static ArrayList<Student> studentList = new ArrayList<>();
-
-    // List of attending students
-    private static ArrayList<Student> attendingStudents = new ArrayList<>();
-
-    // Seats of the current room
-    private static ArrayList<ArrayList<Seat>> seats;
-
-    // Create 2D Seat ArrayList
-    private static ArrayList<ArrayList<Seat>> roomSeats = new ArrayList<>();
-
-    // Seat graph
-    private static DefaultUndirectedGraph<Seat, Integer> graph;
+    public static final int END_YEAR = 2022; // Year the simulation ends
 
     public static void runSimulation()
     {
+        // We use an arraylist for students because we are going to search for students really often.
+        // If we were frequently adding/removing students, we would use a linked list.
+        ArrayList<Student> studentList = new ArrayList<>();
+
+        // List of attending students
+        ArrayList<Student> attendingStudents = new ArrayList<>();
+
+        // Seats of the current room
+        ArrayList<ArrayList<Seat>> seats;
+
+        // Seat graph
+        DefaultUndirectedGraph<Seat, Integer> graph;
+
         // Create a university
         University university = new University("UoM", "University of Macedonia");
 
@@ -65,18 +103,21 @@ public class Simulation
             studentList.add(new Student("AI" + (idNumberCounter + i*8), healthIndicator));
         }
 
-        // Initialize Curriculum
-        Curriculum.initializeCurriculum();
-
-        // We now have a reference for which rooms have which HourSpans and for which days
+        // We now create a reference for which rooms have which HourSpans and for which days
 
         // Fall Semester Curriculum
-        ArrayList<ArrayList<HourSpan>> fallSemesterCurriculum = Curriculum.getFallSemesterCurriculum();
-        ArrayList<String> fallSemesterRoomIdList = Curriculum.getFallSemesterRoomIdList();
+        ArrayList<ArrayList<HourSpan>> fallSemesterCurriculum = new ArrayList<>();
+        ArrayList<String> fallSemesterRoomIdList = new ArrayList<>();
 
         // Spring Semester Curriculum
-        ArrayList<ArrayList<HourSpan>> springSemesterCurriculum = Curriculum.getSpringSemesterCurriculum();
-        ArrayList<String> springSemesterRoomIdList = Curriculum.getSpringSemesterRoomIdList();
+        ArrayList<ArrayList<HourSpan>> springSemesterCurriculum = new ArrayList<>();
+        ArrayList<String> springSemesterRoomIdList = new ArrayList<>();
+
+        // Initialize Curriculum
+        ArrayList<String> professorNameList = Curriculum.initializeCurriculum(fallSemesterCurriculum,
+                                                                              springSemesterCurriculum,
+                                                                              fallSemesterRoomIdList,
+                                                                              springSemesterRoomIdList);
 
         // Create Rooms
         ArrayList<Room> roomList = new ArrayList<>();
@@ -249,7 +290,7 @@ public class Simulation
 
                     // With a certain low probability, pick a number of students that are going to be a covid case
                     // from studentList
-                    double probability = 0.040;
+                    double probability = 0.04;
 
                     for (int k = 0; k < studentList.size(); k++)
                     {
@@ -258,7 +299,7 @@ public class Simulation
                     }
                 }
 
-                seats = populateWithStudents(studentList, room.getSeatRows(), room.getSeatColumns());
+                seats = populateWithStudents(studentList, attendingStudents, room.getSeatRows(), room.getSeatColumns());
 
                 // Calculate Neighbours
                 graph = GraphNeighboursGenerator.calculateNeighboursGraph(seats,
@@ -297,23 +338,8 @@ public class Simulation
         FileWrapper.saveFilesByRoom(university.getUniversityName(), appliedInformatics.getDepartmentName(), roomList);
         FileWrapper.saveRoomNames(university.getUniversityName(), appliedInformatics.getDepartmentName());
 
-        FileWrapper.saveProfessorNames(university.getUniversityName(), appliedInformatics.getDepartmentName(), Curriculum.getProfessorNameList());
+        FileWrapper.saveProfessorNames(university.getUniversityName(), appliedInformatics.getDepartmentName(), professorNameList);
 
-        //
-        // Deallocate memory
-        // (Even though it is a bad practice, we have to be assured that the gc tries to garbage collect again what's possibly left
-        // so that we can reduce the GUI memory usage to the most that we can)
-        //
-        room = null;
-        roomList = null;
-        studentList = null;
-        fallSemesterCurriculum = null;
-        fallSemesterRoomIdList = null;
-        springSemesterCurriculum = null;
-        springSemesterRoomIdList = null;
-        timeStamps = null;
-        roomSeats = null;
-        graph = null;
         System.gc();
     }
 
@@ -326,6 +352,7 @@ public class Simulation
     }
 
     public static ArrayList<ArrayList<Seat>> populateWithStudents(ArrayList<Student> studentList,
+                                                                  ArrayList<Student> attendingStudents,
                                                                   int rows,
                                                                   int cols)
     {
@@ -356,7 +383,7 @@ public class Simulation
         }
 
         // Create and add seats to list
-        roomSeats = new ArrayList<>();
+        ArrayList<ArrayList<Seat>> roomSeats = new ArrayList<>();
 
         for (int i = 0; i < rows; i++)
         {

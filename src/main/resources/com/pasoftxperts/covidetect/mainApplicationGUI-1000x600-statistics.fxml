@@ -75,17 +75,17 @@
          <children>
             <Label fx:id="minField" layoutX="21.0" layoutY="14.0" styleClass="general-label" stylesheets="@mainApplicationStyles-statistics.css" text="Min:" textFill="WHITE">
                <font>
-                  <Font name="Corbel Light" size="13.0" />
+                  <Font name="Corbel Light" size="14.0" />
                </font>
             </Label>
             <Label fx:id="maxField" layoutX="79.0" layoutY="14.0" styleClass="general-label" text="Max:" textFill="WHITE">
                <font>
-                  <Font name="Corbel Light" size="13.0" />
+                  <Font name="Corbel Light" size="14.0" />
                </font>
             </Label>
             <Label fx:id="averageField" layoutX="133.0" layoutY="14.0" styleClass="general-label" text="Average:" textFill="WHITE">
                <font>
-                  <Font name="Corbel Light" size="13.0" />
+                  <Font name="Corbel Light" size="14.0" />
                </font>
             </Label>
          </children>
@@ -94,7 +94,7 @@
          <children>
             <Label fx:id="statMethodLabel" layoutX="31.0" layoutY="4.0" prefHeight="45.0" prefWidth="135.0" styleClass="general-label" textAlignment="CENTER" textFill="WHITE">
                <font>
-                  <Font name="Corbel Light" size="13.0" />
+                  <Font name="Corbel Light" size="14.0" />
                </font>
             </Label>
          </children>
@@ -108,7 +108,7 @@
          <children>
             <Label id="logoLabel" fx:id="homeButton" layoutX="14.0" layoutY="18.0" onMouseClicked="#openHomePage" prefHeight="31.0" prefWidth="112.0" stylesheets="@mainApplicationStyles.css" text="   CovIDetect" textFill="WHITE">
                <font>
-                  <Font name="Corbel Light" size="20.0" />
+                  <Font name="Corbel Light" size="22.0" />
                </font>
                <cursor>
                   <Cursor fx:constant="HAND" />
@@ -119,17 +119,17 @@
                   <Image url="@icons/seatVisualizationIcon.png" />
                </image>
             </ImageView>
-            <Button id="seatButton" fx:id="viewSeatButton" layoutX="214.0" layoutY="18.0" mnemonicParsing="false" onAction="#openSeatsView" prefHeight="35.0" prefWidth="128.0" stylesheets="@mainApplicationStyles.css" text="Room Visualization" textFill="WHITE">
+            <Button id="seatButton" fx:id="viewSeatButton" layoutX="214.0" layoutY="18.0" mnemonicParsing="false" onAction="#openSeatsView" prefHeight="35.0" prefWidth="147.0" stylesheets="@mainApplicationStyles.css" text="Room Visualization" textFill="WHITE">
                <font>
-                  <Font name="Corbel Light" size="14.0" />
+                  <Font name="Corbel Light" size="16.0" />
                </font>
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button id="seatButton" fx:id="updateCovidStatusButton" layoutX="419.0" layoutY="17.0" mnemonicParsing="false" onAction="#openUpdateCovidCase" prefHeight="35.0" prefWidth="141.0" stylesheets="@mainApplicationStyles.css" text="Update Covid Status" textFill="WHITE">
+            <Button id="seatButton" fx:id="updateCovidStatusButton" layoutX="419.0" layoutY="17.0" mnemonicParsing="false" onAction="#openUpdateCovidCase" prefHeight="35.0" prefWidth="158.0" stylesheets="@mainApplicationStyles.css" text="Update Covid Status" textFill="WHITE">
                <font>
-                  <Font name="Corbel Light" size="14.0" />
+                  <Font name="Corbel Light" size="16.0" />
                </font>
                <cursor>
                   <Cursor fx:constant="HAND" />
@@ -140,9 +140,9 @@
                   <Image url="@icons/updateIcon.png" />
                </image>
             </ImageView>
-            <Button id="seatButton" fx:id="statisticsButton" layoutX="623.0" layoutY="16.0" mnemonicParsing="false" onAction="#openStatistics" prefHeight="35.0" prefWidth="121.0" style="-fx-text-fill: #cfeb34;" stylesheets="@mainApplicationStyles.css" text="Statistical Analysis" textFill="WHITE">
+            <Button id="seatButton" fx:id="statisticsButton" layoutX="623.0" layoutY="16.0" mnemonicParsing="false" onAction="#openStatistics" prefHeight="35.0" prefWidth="147.0" style="-fx-text-fill: #cfeb34;" stylesheets="@mainApplicationStyles.css" text="Statistical Analysis" textFill="WHITE">
                <font>
-                  <Font name="Corbel Light" size="14.0" />
+                  <Font name="Corbel Light" size="16.0" />
                </font>
                <cursor>
                   <Cursor fx:constant="HAND" />
@@ -160,15 +160,15 @@
             </ImageView>
             <Label fx:id="usernameLabel" layoutX="853.0" layoutY="17.0" prefHeight="21.0" prefWidth="135.0" text="Welcome,&#10;" textFill="WHITE">
                <font>
-                  <Font name="Corbel Light" size="12.0" />
+                  <Font name="Corbel Light" size="14.0" />
                </font>
             </Label>
             <Label id="logoutLabel" fx:id="logoutLabel" ellipsisString="Logout" layoutX="865.0" layoutY="35.0" onMouseClicked="#logout" prefHeight="16.0" prefWidth="41.0" style="-fx-cursor: hand;" stylesheets="@mainApplicationStyles.css" text=" Logout&#10;" textFill="WHITE">
                <font>
-                  <Font name="Corbel Light" size="9.0" />
+                  <Font name="Corbel Light" size="11.0" />
                </font>
             </Label>
-            <ImageView fitHeight="8.0" fitWidth="9.0" layoutX="855.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="8.0" fitWidth="9.0" layoutX="855.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@icons/logoutIcon.png" />
                </image>

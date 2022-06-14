@@ -12,9 +12,9 @@
 package com.pasoftxperts.covidetect.guicontrollers;
 
 import com.pasoftxperts.covidetect.filemanager.FileWrapper;
-import com.pasoftxperts.covidetect.filemanager.ListObjectReader;
 import com.pasoftxperts.covidetect.filemanager.TaskObjectReader;
 import com.pasoftxperts.covidetect.graphanalysis.SingleCaseNeighbourCalculator;
+import com.pasoftxperts.covidetect.guicontrollers.cachefxmlloader.CacheFXMLLoader;
 import com.pasoftxperts.covidetect.loginsession.LoginSession;
 import com.pasoftxperts.covidetect.time.TimeStamp;
 import com.pasoftxperts.covidetect.university.Room;
@@ -34,6 +34,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -45,7 +46,6 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.pasoftxperts.covidetect.graphanalysis.GraphNeighboursGenerator.isCovidCase;
 import static com.pasoftxperts.covidetect.guicontrollers.RoomVisualizationController.DEFAULT_ROOM_CAPACITY;
@@ -107,6 +107,20 @@ public class UpdateCovidStatusController implements Initializable
         // Using platform.runLater() to initialize all the fields once the initialize phase has finished (faster scene transitions)
         Platform.runLater(() ->
         {
+            //
+            // Update button enter event listener
+            //
+            Scene scene = updateButton.getScene();
+
+            scene.setOnKeyPressed((keyEvent ->
+            {
+                if (keyEvent.getCode() == KeyCode.ENTER)
+                    updateButton.fire();
+            }));
+
+            scene = null;
+
+
             // Initialize the last update label
             File lastUpdated = new File(path + "date.txt");
 
@@ -128,21 +142,17 @@ public class UpdateCovidStatusController implements Initializable
             datePicker.valueProperty().addListener((observableValue, localDate, t1) -> statusLabel.setText(""));
 
             // Load All Rooms
-            ArrayList<Object> objectList = ListObjectReader.readObjectListFile(MainApplicationController.path + "roomNames.ser");
+            TaskObjectReader taskObjectReader = new TaskObjectReader(MainApplicationController.path + "roomNames.ser");
+            taskObjectReader.readObjectFile();
 
-            List<String> roomNames = objectList.stream()
-                    .map(object -> Objects.toString(object, null))
-                    .collect(Collectors.toList());
+            ArrayList<String> roomNames = (ArrayList<String>) taskObjectReader.getResult();
 
 
             // Create and start Threads using JavaFX service threads
             objectReaderList = new ArrayList<>();
 
             for (String name : roomNames)
-            {
                 objectReaderList.add(new TaskObjectReader(MainApplicationController.path + name + ".ser"));
-            }
-
 
             //
             // Start services for loading each room object file (.ser) with JavaFX Task Concurrency
@@ -199,6 +209,7 @@ public class UpdateCovidStatusController implements Initializable
         String targetDate = formatter.format(datePicker.getValue());
 
         TimeStamp targetTimeStamp = new TimeStamp(targetDate);
+
 
         // Get Results from Threads
         ArrayList<Room> rooms = new ArrayList<>();
@@ -405,10 +416,6 @@ public class UpdateCovidStatusController implements Initializable
         datePicker.setValue(null);
         statusLabel.setTextFill(Color.GREEN);
         statusLabel.setText("Student covid case was\nsuccessfully updated");
-
-        // Reset Fields
-        rooms = null;
-        System.gc();
     }
 
     @FXML
@@ -424,7 +431,10 @@ public class UpdateCovidStatusController implements Initializable
 
         Stage window = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
 
-        if ((MainApplicationController.width >= 1600) && (MainApplicationController.height >= 900))
+        double width = window.getWidth();
+        double height = window.getHeight();
+
+        if ((width >= 1600) && (height >= 900))
             resourceName = "mainApplicationGUI-1600x900-viewSeats.fxml";
         else
             resourceName = "mainApplicationGUI-1000x600-viewSeats.fxml";
@@ -436,7 +446,6 @@ public class UpdateCovidStatusController implements Initializable
 
         window.show();
 
-        // Reset Fields
         objectReaderList = null;
         System.gc();
     }
@@ -448,7 +457,10 @@ public class UpdateCovidStatusController implements Initializable
 
         Stage window = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
 
-        if ((MainApplicationController.width >= 1600) && (MainApplicationController.height >= 900))
+        double width = window.getWidth();
+        double height = window.getHeight();
+
+        if ((width >= 1600) && (height >= 900))
             resourceName = "mainApplicationGUI-1600x900.fxml";
         else
             resourceName = "mainApplicationGUI-1000x600.fxml";
@@ -460,7 +472,6 @@ public class UpdateCovidStatusController implements Initializable
 
         window.show();
 
-        // Reset Fields
         objectReaderList = null;
         System.gc();
     }
@@ -472,7 +483,10 @@ public class UpdateCovidStatusController implements Initializable
 
         Stage window = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
 
-        if ((MainApplicationController.width >= 1600) && (MainApplicationController.height >= 900))
+        double width = window.getWidth();
+        double height = window.getHeight();
+
+        if ((width >= 1600) && (height >= 900))
             resourceName = "mainApplicationGUI-1600x900-statistics.fxml";
         else
             resourceName = "mainApplicationGUI-1000x600-statistics.fxml";
@@ -484,10 +498,8 @@ public class UpdateCovidStatusController implements Initializable
 
         window.show();
 
-        // Reset Fields
         objectReaderList = null;
         System.gc();
-
     }
 
     @FXML
@@ -508,9 +520,11 @@ public class UpdateCovidStatusController implements Initializable
         // Get previous window and hide it
         Stage previousWindow = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
         previousWindow.hide();
-        System.gc();
 
         stage.show();
+
+        objectReaderList = null;
+        System.gc();
     }
 
     /*

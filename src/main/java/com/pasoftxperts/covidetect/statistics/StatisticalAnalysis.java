@@ -2,14 +2,13 @@ package com.pasoftxperts.covidetect.statistics;
 
 import com.pasoftxperts.covidetect.counters.CovidCasesCounter;
 import com.pasoftxperts.covidetect.counters.StudentCounter;
-import com.pasoftxperts.covidetect.filemanager.ListObjectReader;
+import com.pasoftxperts.covidetect.filemanager.TaskObjectReader;
 import com.pasoftxperts.covidetect.simulation.Simulation;
 import com.pasoftxperts.covidetect.sorting.MultipleSorting;
 import com.pasoftxperts.covidetect.time.TimeStamp;
 import com.pasoftxperts.covidetect.university.Room;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
 {
@@ -57,11 +56,11 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
             case "Professor":
                 String path = System.getProperty("user.dir") + "/university of macedonia/applied informatics/professors/professorNames.ser";
 
-                ArrayList<Object> tempList = ListObjectReader.readObjectListFile(path);
+                // Read professor names
+                TaskObjectReader taskObjectReader = new TaskObjectReader(path);
+                taskObjectReader.readObjectFile();
 
-                List<String> nameList = tempList.stream()
-                                                .map(object -> Objects.toString(object, null))
-                                                .collect(Collectors.toList());
+                ArrayList<String> nameList = (ArrayList<String>) taskObjectReader.getResult();
 
                 for (int i = 0; i < nameList.size(); i++)
                     showByElements.add(nameList.get(i));
@@ -279,11 +278,11 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
             case "Professor":
                 String path = System.getProperty("user.dir") + "/university of macedonia/applied informatics/professors/professorNames.ser";
 
-                ArrayList<Object> tempList = ListObjectReader.readObjectListFile(path);
+                // Read professor names
+                TaskObjectReader taskObjectReader = new TaskObjectReader(path);
+                taskObjectReader.readObjectFile();
 
-                List<String> nameList = tempList.stream()
-                        .map(object -> Objects.toString(object, null))
-                        .collect(Collectors.toList());
+                ArrayList<String> nameList = (ArrayList<String>) taskObjectReader.getResult();
 
                 for (int i = 0; i < nameList.size(); i++)
                     showByElements.add(nameList.get(i));

@@ -1,3 +1,14 @@
+/*
+ | Author: setokk
+ | LinkedIn: https://www.linkedin.com/in/kostandin-kote-255382223/
+ |
+ |
+ | Class Description:
+ |
+ |
+ |
+*/
+
 package com.pasoftxperts.covidetect.graphanalysis;
 
 import com.pasoftxperts.covidetect.university.Seat;

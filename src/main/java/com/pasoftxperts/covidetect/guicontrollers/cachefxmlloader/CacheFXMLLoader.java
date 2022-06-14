@@ -9,7 +9,7 @@
  |
 */
 
-package com.pasoftxperts.covidetect.guicontrollers;
+package com.pasoftxperts.covidetect.guicontrollers.cachefxmlloader;
 
 import com.pasoftxperts.covidetect.RunApplication;
 import javafx.fxml.FXMLLoader;
@@ -20,9 +20,21 @@ import java.io.IOException;
 public class CacheFXMLLoader
 {
     public static final FXMLLoader loader = new FXMLLoader();
+    private static int c = 0; // Counts how many times it has been initialized
+
+    public static void initializeLoader()
+    {
+        if (c == 1)
+            return;
+
+        loader.setClassLoader(FXMLLoader.getDefaultClassLoader());
+        c = 1;
+    }
 
     public static Parent load(String resourceName) throws IOException
     {
         return loader.load(RunApplication.class.getResource(resourceName));
     }
 }
+
+

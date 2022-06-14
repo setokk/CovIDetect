@@ -20,6 +20,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.util.Duration;
 
+import java.awt.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -51,7 +52,12 @@ public class LoadingSimulationController implements Initializable
         });
         mediaView = new MediaView(mediaPlayer);
 
-        if (MainApplicationController.width >= 1600 && MainApplicationController.height >= 900)
+        // Get default monitor resolution
+        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        int width = gd.getDisplayMode().getWidth();
+        int height = gd.getDisplayMode().getHeight();
+
+        if (width >= 1600 && height >= 900)
         {
             mediaView.setFitHeight(600);
             mediaView.setFitWidth(800);

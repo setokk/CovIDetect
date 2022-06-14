@@ -4,8 +4,14 @@
  |
  |
  | Class Description:
+ | This class is used to update and load the history of statistical reports (Max Files in history = 10)
  |
+ | Method Documentation:
+ |      [*] public static readHistory(String fileName)
+ |          Reads a file with name "fileName" that holds stores previous values of the statistical analysis results
  |
+ |      [*] public static updateHistory(Object values)
+ |          Gets the statistical analysis results in a StatisticalValues object (values) and saves them into a file
  |
 */
 
@@ -30,11 +36,11 @@ public class HistoryManager
 
     public static final String HISTORY_PATH = System.getProperty("user.dir") + "/university of macedonia/applied informatics/history/";
 
-    public static Object readHistory(String name)
+    public static Object readHistory(String fileName)
     {
         try
         {
-            FileInputStream fileInputStream = new FileInputStream(HISTORY_PATH + LoginSession.getUsername() + "/" + name);
+            FileInputStream fileInputStream = new FileInputStream(HISTORY_PATH + LoginSession.getUsername() + "/" + fileName);
             ObjectInputStream objectInputStream = new ObjectInputStream(new BufferedInputStream(fileInputStream));
 
             Object values = objectInputStream.readObject();

@@ -1,3 +1,14 @@
+/*
+ | Author: setokk
+ | LinkedIn: https://www.linkedin.com/in/kostandin-kote-255382223/
+ |
+ |
+ | Class Description:
+ | This class is used to parallel sort 3 elements based on xaxis
+ |
+ |
+*/
+
 package com.pasoftxperts.covidetect.sorting;
 
 public class MultipleSorting implements Comparable<MultipleSorting>

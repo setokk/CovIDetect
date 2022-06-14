@@ -1,3 +1,14 @@
+/*
+ | Author: setokk
+ | LinkedIn: https://www.linkedin.com/in/kostandin-kote-255382223/
+ |
+ |
+ | Class Description:
+ | This class represents a Course. Each course has one professor.
+ |
+ |
+*/
+
 package com.pasoftxperts.covidetect.course;
 
 import com.pasoftxperts.covidetect.professor.Professor;

@@ -1,3 +1,14 @@
+/*
+ | Author: setokk
+ | LinkedIn: https://www.linkedin.com/in/kostandin-kote-255382223/
+ |
+ |
+ | Class Description:
+ | This class is used to save room files and room/professor names to .ser files
+ |
+ |
+*/
+
 package com.pasoftxperts.covidetect.filemanager;
 
 import com.pasoftxperts.covidetect.university.Room;
@@ -9,8 +20,8 @@ import java.util.ArrayList;
 public class FileWrapper
 {
     public static final String PATH = System.getProperty("user.dir");
-    private static ArrayList<String> roomNames;
 
+    private static ArrayList<String> roomNames;
 
     //
     // Gets input from the simulation and saves it into files
@@ -98,34 +109,5 @@ public class FileWrapper
             fileOut.close();
         }
         catch (IOException e) { return; }
-    }
-
-    public static void deleteDirectoryRecursively(String path)
-    {
-        // Delete previous history files, if any
-        new File(path).mkdirs();
-
-        // We go through the user folders
-        File folder = new File(path);
-        File[] listOfFolders = folder.listFiles();
-
-        if (listOfFolders == null)
-            return;
-
-        // Delete them
-        for (int i = 0; i < listOfFolders.length; i++)
-        {
-            File[] listOfFiles = listOfFolders[i].listFiles();
-
-            if (listOfFiles != null)
-            {
-                // We go through the files
-                for (int j = 0; j < listOfFiles.length; j++)
-                    listOfFiles[j].delete();
-
-            }
-
-            listOfFolders[i].delete();
-        }
     }
 }

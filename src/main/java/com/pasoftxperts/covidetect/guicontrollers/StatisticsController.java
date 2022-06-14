@@ -11,9 +11,9 @@
 
 package com.pasoftxperts.covidetect.guicontrollers;
 
-import com.pasoftxperts.covidetect.filemanager.ListObjectReader;
 import com.pasoftxperts.covidetect.filemanager.ObjectReader;
 import com.pasoftxperts.covidetect.filemanager.TaskObjectReader;
+import com.pasoftxperts.covidetect.guicontrollers.cachefxmlloader.CacheFXMLLoader;
 import com.pasoftxperts.covidetect.guicontrollers.popupwindow.PopupWindow;
 import com.pasoftxperts.covidetect.history.HistoryManager;
 import com.pasoftxperts.covidetect.history.StatisticsValues;
@@ -46,7 +46,6 @@ import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class StatisticsController implements Initializable
 {
@@ -154,8 +153,6 @@ public class StatisticsController implements Initializable
     // Min, Max, Average
     private ArrayList<Double> minMaxAverage = new ArrayList<>(3);
 
-    // Rooms List to apply statistical analysis to
-    private ArrayList<Room> rooms;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
@@ -198,12 +195,10 @@ public class StatisticsController implements Initializable
 
 
             // Read room names
-            ArrayList<Object> objectList = ListObjectReader.readObjectListFile(MainApplicationController.path + "roomNames.ser");
+            TaskObjectReader taskObjectReader = new TaskObjectReader(MainApplicationController.path + "roomNames.ser");
+            taskObjectReader.readObjectFile();
 
-            List<String> roomNames = objectList.stream()
-                    .map(object -> Objects.toString(object, null))
-                    .collect(Collectors.toList());
-
+            ArrayList<String> roomNames = (ArrayList<String>) taskObjectReader.getResult();
             roomNames.add("All Rooms");
 
             Collections.sort(roomNames);
@@ -311,7 +306,7 @@ public class StatisticsController implements Initializable
                     }
                     catch (IOException e)
                     {
-
+                        return;
                     }
                 }
 
@@ -342,7 +337,7 @@ public class StatisticsController implements Initializable
                         endDatePicker.setValue(null);
                     } catch (IOException e)
                     {
-                        e.printStackTrace();
+                        return;
                     }
                 }
             });
@@ -442,9 +437,6 @@ public class StatisticsController implements Initializable
                 // Reset the status again
                 //
                 HistoryManager.setSelectedHistoryStatus(false);
-
-                statisticsValues = null;
-                System.gc();
             }
         });
     }
@@ -470,7 +462,8 @@ public class StatisticsController implements Initializable
                 || selectedStatisticalMethod == null)
             return;
 
-        rooms = new ArrayList<>();
+        // Rooms List to apply statistical analysis to
+        ArrayList<Room> rooms = new ArrayList<>();
 
         if (!selectedRoom.equals("All Rooms")) // Means that the user selected only one room
         {
@@ -610,10 +603,6 @@ public class StatisticsController implements Initializable
 
         // Write to file
         HistoryManager.updateHistory(statisticsValues);
-
-        // Reset Fields
-        rooms = null;
-        System.gc();
     }
 
     @FXML
@@ -629,7 +618,10 @@ public class StatisticsController implements Initializable
 
         Stage window = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
 
-        if ((MainApplicationController.width >= 1600) && (MainApplicationController.height >= 900))
+        double width = window.getWidth();
+        double height = window.getHeight();
+
+        if ((width >= 1600) && (height >= 900))
             resourceName = "mainApplicationGUI-1600x900-viewSeats.fxml";
         else
             resourceName = "mainApplicationGUI-1000x600-viewSeats.fxml";
@@ -639,11 +631,10 @@ public class StatisticsController implements Initializable
 
         window.setTitle("Room Visualization - CovIDetect©");
 
-        // Reset Fields
-        rooms = null;
-        System.gc();
-
         window.show();
+
+        objectReaderList = null;
+        System.gc();
     }
 
     @FXML
@@ -653,7 +644,10 @@ public class StatisticsController implements Initializable
 
         Stage window = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
 
-        if ((MainApplicationController.width >= 1600) && (MainApplicationController.height >= 900))
+        double width = window.getWidth();
+        double height = window.getHeight();
+
+        if ((width >= 1600) && (height >= 900))
             resourceName = "mainApplicationGUI-1600x900.fxml";
         else
             resourceName = "mainApplicationGUI-1000x600.fxml";
@@ -663,11 +657,10 @@ public class StatisticsController implements Initializable
 
         window.setTitle("CovIDetect© by PasoftXperts");
 
-        // Reset Fields
-        rooms = null;
-        System.gc();
-
         window.show();
+
+        objectReaderList = null;
+        System.gc();
     }
 
     @FXML
@@ -677,7 +670,10 @@ public class StatisticsController implements Initializable
 
         Stage window = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
 
-        if ((MainApplicationController.width >= 1600) && (MainApplicationController.height >= 900))
+        double width = window.getWidth();
+        double height = window.getHeight();
+
+        if ((width >= 1600) && (height >= 900))
             resourceName = "mainApplicationGUI-1600x900-updateStatus.fxml";
         else
             resourceName = "mainApplicationGUI-1000x600-updateStatus.fxml";
@@ -687,11 +683,10 @@ public class StatisticsController implements Initializable
 
         window.setTitle("Update Student's Covid Status - CovIDetect©");
 
-        // Reset Fields
-        rooms = null;
-        System.gc();
-
         window.show();
+
+        objectReaderList = null;
+        System.gc();
     }
 
     @FXML
@@ -712,8 +707,10 @@ public class StatisticsController implements Initializable
         // Get previous window and hide it
         Stage previousWindow = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
         previousWindow.hide();
-        previousWindow = null;
 
         stage.show();
+
+        objectReaderList = null;
+        System.gc();
     }
 }

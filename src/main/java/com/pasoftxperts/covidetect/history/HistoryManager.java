@@ -41,11 +41,13 @@ public class HistoryManager
         try
         {
             FileInputStream fileInputStream = new FileInputStream(HISTORY_PATH + LoginSession.getUsername() + "/" + fileName);
-            ObjectInputStream objectInputStream = new ObjectInputStream(new BufferedInputStream(fileInputStream));
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
+            ObjectInputStream objectInputStream = new ObjectInputStream(new BufferedInputStream(bufferedInputStream));
 
             Object values = objectInputStream.readObject();
 
             objectInputStream.close();
+            bufferedInputStream.close();
             fileInputStream.close();
 
             return values;
@@ -106,11 +108,13 @@ public class HistoryManager
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d-MM-yyyy", Locale.US);
 
                 FileOutputStream fileOutputStream = new FileOutputStream(HISTORY_PATH + LoginSession.getUsername() + "/[REPORT]_" + dataCategory.toUpperCase() + "_" + selectedRoom.toUpperCase() + "_(" + formatter.format(startDate) + "_" + formatter.format(endDate) + ")");
-                ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+                BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(bufferedOutputStream);
 
                 objectOutputStream.writeObject(values);
 
                 objectOutputStream.close();
+                bufferedOutputStream.close();
                 fileOutputStream.close();
             }
             catch (IOException e)

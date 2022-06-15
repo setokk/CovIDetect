@@ -4,7 +4,9 @@
  |
  |
  | Class Description:
- |
+ | This class contains the same login of GraphNeighboursGenerator, but for a single case only.
+ | (In later versions, since the Seats of the undirected graphs will all be connected to
+ | their surrounding ones, we won't need this class)
  |
  |
 */
@@ -15,6 +17,7 @@ import com.pasoftxperts.covidetect.university.Seat;
 import org.jgrapht.graph.DefaultUndirectedGraph;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.pasoftxperts.covidetect.graphanalysis.GraphNeighboursGenerator.*;
 
@@ -22,7 +25,7 @@ import static com.pasoftxperts.covidetect.graphanalysis.GraphNeighboursGenerator
 public class SingleCaseNeighbourCalculator
 {
     public static DefaultUndirectedGraph<Seat, Integer> calculateSingleCaseNeighbours(Seat covidCase,
-                                                                                      ArrayList<Seat> seats,
+                                                                                      List<Seat> seats,
                                                                                       int rows,
                                                                                       int cols)
     {
@@ -89,7 +92,7 @@ public class SingleCaseNeighbourCalculator
 
     // Looks either up or down and in each case, to the right too (based on a mathematical formula).
     public static void lookRight(String direction,
-                                 ArrayList<Seat> seats,
+                                 List<Seat> seats,
                                  DefaultUndirectedGraph<Seat, Integer> graph,
                                  int i,
                                  int j,
@@ -140,7 +143,7 @@ public class SingleCaseNeighbourCalculator
 
     // Looks either up or down and in each case, to the left too (based on a mathematical formula).
     public static void lookLeft(String direction,
-                                ArrayList<Seat> seats,
+                                List<Seat> seats,
                                 DefaultUndirectedGraph<Seat, Integer> graph,
                                 int i,
                                 int j,

@@ -93,10 +93,25 @@ public class UpdateCovidStatusController implements Initializable
     private Label lastUpdatedLabel;
 
     // Object Reader Threads List for reading rooms
-    private List<TaskObjectReader> objectReaderList;
+    private List<TaskObjectReader> objectReaderList = new ArrayList<>();
+
+    private ArrayList<String> roomNames; // Room names
+
+    List<Room> rooms = new ArrayList<>(); // All rooms available
+
+    // Arraylist to save the rooms in which we found the student
+    // (improves performance because we don't save ALL rooms after updating the status)
+    List<Room> modifiedRooms = new ArrayList<>();
+
+    private List<Seat> seats; // Seat list
+
+    private List<Service> readFiles = new ArrayList<>();
+
+    // Date Formatter to create a TimeStamp Object
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM,d,yyyy", Locale.US);
 
     // Path to write the last updated file to
-    private String path = System.getProperty("user.dir") + "/university of macedonia/applied informatics/lastupdate/";
+    private static String path = System.getProperty("user.dir") + "/university of macedonia/applied informatics/lastupdate/";
 
 
     @Override
@@ -118,8 +133,6 @@ public class UpdateCovidStatusController implements Initializable
                     updateButton.fire();
             }));
 
-            scene = null;
-
 
             // Initialize the last update label
             File lastUpdated = new File(path + "date.txt");
@@ -128,8 +141,7 @@ public class UpdateCovidStatusController implements Initializable
             {
                 BufferedReader bufferedReader = new BufferedReader(new FileReader(lastUpdated));
 
-                String lastUpdate = bufferedReader.readLine();
-                lastUpdatedLabel.setText("Last Updated: " + lastUpdate);
+                lastUpdatedLabel.setText("Last Updated: " + bufferedReader.readLine());
 
             } catch (IOException ex) { lastUpdatedLabel.setText("Last Updated: "); }
 
@@ -145,12 +157,10 @@ public class UpdateCovidStatusController implements Initializable
             TaskObjectReader taskObjectReader = new TaskObjectReader(MainApplicationController.path + "roomNames.ser");
             taskObjectReader.readObjectFile();
 
-            ArrayList<String> roomNames = (ArrayList<String>) taskObjectReader.getResult();
+            roomNames = (ArrayList<String>) taskObjectReader.getResult();
 
 
             // Create and start Threads using JavaFX service threads
-            objectReaderList = new ArrayList<>();
-
             for (String name : roomNames)
                 objectReaderList.add(new TaskObjectReader(MainApplicationController.path + name + ".ser"));
 
@@ -161,8 +171,7 @@ public class UpdateCovidStatusController implements Initializable
             {
                 int finalI = i;
 
-                Service readFiles = new Service()
-                {
+                readFiles.add(new Service() {
                     @Override
                     protected Task createTask()
                     {
@@ -177,9 +186,9 @@ public class UpdateCovidStatusController implements Initializable
                             }
                         };
                     }
-                };
+                });
 
-                readFiles.start();
+                readFiles.get(i).start();
             }
         });
     }
@@ -204,20 +213,15 @@ public class UpdateCovidStatusController implements Initializable
             return;
         }
 
-        // Date Formatter to create a TimeStamp Object
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM,d,yyyy", Locale.US);
-        String targetDate = formatter.format(datePicker.getValue());
 
-        TimeStamp targetTimeStamp = new TimeStamp(targetDate);
+        // Target date
+        TimeStamp targetTimeStamp = new TimeStamp(formatter.format(datePicker.getValue()));
 
 
         // Get Results from Threads
-        ArrayList<Room> rooms = new ArrayList<>();
-
         for (TaskObjectReader objectReader : objectReaderList)
-        {
             rooms.add((Room) objectReader.getResult());
-        }
+
 
 
         // Find if the student exists,
@@ -232,29 +236,23 @@ public class UpdateCovidStatusController implements Initializable
         // If it equals the number of rooms in total, it means the targetTimeStamp is out of bounds.
         int failedAttempts = 0;
 
-        // Arraylist to save the rooms in which we found the student
-        // (improves performance because we don't save ALL rooms after updating the status)
-        ArrayList<Room> modifiedRooms = new ArrayList<>();
 
         for (int i = 0; i < rooms.size(); i++)
         {
-            Room room = rooms.get(i);
-
-            ArrayList<TimeStamp> timeStamps = room.getTimeStampList();
-
             // Count as failed attempt to find the student
-            if (timeStamps.size() == 0)
+            if (rooms.get(i).getTimeStampList().size() == 0)
                 failedAttempts++;
 
             int firstIndex = 0;
-            int lastIndex = timeStamps.size() - 1;
+            int lastIndex = rooms.get(i).getTimeStampList().size() - 1;
 
-            for (int j = 0; j < timeStamps.size(); j++)
+            for (int j = 0; j < rooms.get(i).getTimeStampList().size(); j++)
             {
-                TimeStamp currentTimeStamp = timeStamps.get(j);
+                TimeStamp currentTimeStamp = rooms.get(i).getTimeStampList().get(j);
 
                 // Check if target timestamp is in timestamps list
-                if ((targetTimeStamp.isAfter(timeStamps.get(lastIndex))) || (targetTimeStamp.isBefore(timeStamps.get(firstIndex))))
+                if ((targetTimeStamp.isAfter(rooms.get(i).getTimeStampList().get(lastIndex)))
+                        || (targetTimeStamp.isBefore(rooms.get(i).getTimeStampList().get(firstIndex))))
                 {
                     failedAttempts++;
                     break;
@@ -263,17 +261,15 @@ public class UpdateCovidStatusController implements Initializable
                 // We now are at the target date
                 if (currentTimeStamp.equals(targetTimeStamp))
                 {
-                    ArrayList<Seat> seats = new ArrayList<>(currentTimeStamp.getSeatGraph().vertexSet());
+                    seats = new ArrayList<>(currentTimeStamp.getSeatGraph().vertexSet());
 
                     for (int k = 0; k < seats.size(); k++)
                     {
-                        Seat seat = seats.get(k);
-
-                        if (seat.isOccupied() && seat.getStudent().getStudentId().equals(studentId))
+                        if (seats.get(k).isOccupied() && seats.get(k).getStudent().getStudentId().equals(studentId))
                         {
                             found = true;
 
-                            if (seat.getStudent().getHealthIndicator() == 1)
+                            if (seats.get(k).getStudent().getHealthIndicator() == 1)
                             {
                                 statusLabel.setTextFill(Color.RED);
                                 statusLabel.setText("Student " + studentId + " is already\n registered as a covid case");
@@ -281,20 +277,22 @@ public class UpdateCovidStatusController implements Initializable
                             }
                             else
                             {
-                                seat.getStudent().setHealthIndicator(1);
+                                seats.get(k).getStudent().setHealthIndicator(1);
                                 DefaultUndirectedGraph<Seat, Integer> graph = SingleCaseNeighbourCalculator.calculateSingleCaseNeighbours
-                                                (seat,
+                                                (seats.get(k),
                                                 seats,
                                                 DEFAULT_SEAT_ROWS,
                                                 DEFAULT_ROOM_CAPACITY/ DEFAULT_SEAT_ROWS);
 
                                 currentTimeStamp.addSeatGraph(graph);
 
-                                if (!modifiedRooms.contains(room))
-                                    modifiedRooms.add(room);
+                                if (!modifiedRooms.contains(rooms.get(i)))
+                                    modifiedRooms.add(rooms.get(i));
                             }
                         }
                     }
+
+                    seats.clear();
 
                     break;
                 }
@@ -318,6 +316,7 @@ public class UpdateCovidStatusController implements Initializable
             return;
         }
 
+
         // We now check for the student for the past 5 days in every room
         for (Room room : rooms)
         {
@@ -325,41 +324,40 @@ public class UpdateCovidStatusController implements Initializable
 
             for (int j = 0; j < timeStamps.size(); j++)
             {
-                TimeStamp currentTimeStamp = timeStamps.get(j);
-
                 // Break from loop. We only want to check before that timestamp
-                if (currentTimeStamp.isAfter(targetTimeStamp) || currentTimeStamp.equals(targetTimeStamp))
+                if (timeStamps.get(j).isAfter(targetTimeStamp) || timeStamps.get(j).equals(targetTimeStamp))
                     break;
 
-                int daysBefore = dayDistanceBetween(currentTimeStamp, targetTimeStamp);
+                int daysBefore = dayDistanceBetween(timeStamps.get(j), targetTimeStamp);
 
                 // We are 5 days or less before
                 if (daysBefore <= DAYS_TO_LOOK_BACK)
                 {
-                    ArrayList<Seat> seats = new ArrayList<>(currentTimeStamp.getSeatGraph().vertexSet());
+                    seats = new ArrayList<>(timeStamps.get(j).getSeatGraph().vertexSet());
 
                     for (int k = 0; k < seats.size(); k++)
                     {
-                        Seat seat = seats.get(k);
-
-                        if (seat.isOccupied() && seat.getStudent().getStudentId().equals(studentId))
+                        if (seats.get(k).isOccupied() && seats.get(k).getStudent().getStudentId().equals(studentId))
                         {
-                            if (!isCovidCase(seat.getStudent()))
+                            if (!isCovidCase(seats.get(k).getStudent()))
                             {
-                                seat.getStudent().setHealthIndicator(1);
+                                seats.get(k).getStudent().setHealthIndicator(1);
+
                                 DefaultUndirectedGraph<Seat, Integer> graph = SingleCaseNeighbourCalculator.calculateSingleCaseNeighbours
-                                                                                            (seat,
+                                                                                            (seats.get(k),
                                                                                             seats,
                                                                                             DEFAULT_SEAT_ROWS,
                                                                                        DEFAULT_ROOM_CAPACITY/ DEFAULT_SEAT_ROWS);
 
-                                currentTimeStamp.addSeatGraph(graph);
+                                timeStamps.get(j).addSeatGraph(graph);
 
                                 if (!modifiedRooms.contains(room))
                                     modifiedRooms.add(room);
                             }
                         }
                     }
+
+                    seats.clear();
                 }
             }
         }
@@ -386,15 +384,10 @@ public class UpdateCovidStatusController implements Initializable
             }
         };
 
-        writeRooms.setOnSucceeded((e) -> {});
-
         writeRooms.start();
 
-
         // Get date
-        LocalDateTime localDate = LocalDateTime.now();
-        String formattedDate = localDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy, HH:mm"));
-        lastUpdatedLabel.setText("Last Updated: " + formattedDate);
+        lastUpdatedLabel.setText("Last Updated: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy, HH:mm")));
 
         // Write to file
         // Make dir
@@ -405,17 +398,19 @@ public class UpdateCovidStatusController implements Initializable
         {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(lastUpdated));
 
-            bufferedWriter.write(formattedDate);
+            bufferedWriter.write(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy, HH:mm")));
 
             bufferedWriter.close();
 
-        } catch (IOException ex) { ex.printStackTrace(); }
+        } catch (IOException ex) { return; }
 
 
         studentField.setText("");
         datePicker.setValue(null);
         statusLabel.setTextFill(Color.GREEN);
         statusLabel.setText("Student covid case was\nsuccessfully updated");
+
+        targetTimeStamp = null;
     }
 
     @FXML
@@ -446,8 +441,13 @@ public class UpdateCovidStatusController implements Initializable
 
         window.show();
 
+        // Dereference objects
+        objectReaderList.removeAll(objectReaderList);
+        readFiles.removeAll(readFiles);
+        modifiedRooms.removeAll(modifiedRooms);
+        readFiles = null;
         objectReaderList = null;
-        System.gc();
+        modifiedRooms = null;
     }
 
     @FXML
@@ -472,8 +472,12 @@ public class UpdateCovidStatusController implements Initializable
 
         window.show();
 
+        // Dereference objects
+        objectReaderList.removeAll(objectReaderList);
+        readFiles.removeAll(readFiles);
+        readFiles = null;
         objectReaderList = null;
-        System.gc();
+        modifiedRooms = null;
     }
 
     @FXML
@@ -498,8 +502,12 @@ public class UpdateCovidStatusController implements Initializable
 
         window.show();
 
+        // Dereference objects
+        objectReaderList.removeAll(objectReaderList);
+        readFiles.removeAll(readFiles);
+        readFiles = null;
         objectReaderList = null;
-        System.gc();
+        modifiedRooms = null;
     }
 
     @FXML
@@ -523,8 +531,12 @@ public class UpdateCovidStatusController implements Initializable
 
         stage.show();
 
+        // Dereference objects
+        objectReaderList.removeAll(objectReaderList);
+        readFiles.removeAll(readFiles);
+        readFiles = null;
         objectReaderList = null;
-        System.gc();
+        modifiedRooms = null;
     }
 
     /*

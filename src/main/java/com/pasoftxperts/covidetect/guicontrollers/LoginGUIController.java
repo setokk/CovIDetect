@@ -60,8 +60,6 @@ public class LoginGUIController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        CacheFXMLLoader.initializeLoader();
-
         Media media;
         MediaPlayer mediaPlayer;
 

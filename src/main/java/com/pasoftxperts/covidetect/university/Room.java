@@ -40,4 +40,15 @@ public class Room implements Serializable
     {
         timeStampList.add(ts);
     }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (!(o instanceof Room))
+            return false;
+
+        Room otherRoom = (Room) o;
+
+        return (this.roomId.equals(otherRoom.getRoomId()));
+    }
 }

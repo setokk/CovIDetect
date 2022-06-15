@@ -94,6 +94,7 @@ import com.pasoftxperts.covidetect.university.Seat;
 import org.jgrapht.graph.DefaultUndirectedGraph;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GraphNeighboursGenerator
 {
@@ -160,7 +161,7 @@ public class GraphNeighboursGenerator
             }
         }
 
-        ArrayList<Seat> seatsInGraph = new ArrayList<>(graph.vertexSet());
+        List<Seat> seatsInGraph = List.copyOf(graph.vertexSet());
 
         
         // We turn the falsely probable positive cases to 1 again

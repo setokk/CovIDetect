@@ -16,6 +16,7 @@ import org.apache.commons.lang3.SerializationUtils;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class FileWrapper
 {
@@ -26,7 +27,7 @@ public class FileWrapper
     //
     // Gets input from the simulation and saves it into files
     //
-    public static void saveFilesByRoom(String universityName, String departmentName, ArrayList<Room> roomList)
+    public static void saveFilesByRoom(String universityName, String departmentName, List<Room> roomList)
     {
         // Make directories for room files
         String finalPath = PATH + "/" + universityName.toLowerCase() + "/" + departmentName.toLowerCase();
@@ -39,19 +40,19 @@ public class FileWrapper
         // We now save every room in a different .ser file
         for (int i = 0; i < roomList.size(); i++)
         {
-            Room room = roomList.get(i);
-
-            roomNames.add(room.getRoomId());
+            roomNames.add(roomList.get(i).getRoomId());
 
             try
             {
-                FileOutputStream fileOut = new FileOutputStream(finalPath + "/" + room.getRoomId() + ".ser");
-                ObjectOutputStream objOut = new ObjectOutputStream(new BufferedOutputStream(fileOut));
+                FileOutputStream fileOut = new FileOutputStream(finalPath + "/" + roomList.get(i).getRoomId() + ".ser");
+                BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOut);
+                ObjectOutputStream objOut = new ObjectOutputStream(bufferedOutputStream);
 
                 // Write object ArrayList
-                objOut.writeObject(room);
+                objOut.writeObject(roomList.get(i));
 
                 objOut.close();
+                bufferedOutputStream.close();
                 fileOut.close();
             }
             catch (IOException e) { return; }

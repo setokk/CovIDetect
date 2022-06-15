@@ -54,16 +54,18 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
                 break;
 
             case "Professor":
-                String path = System.getProperty("user.dir") + "/university of macedonia/applied informatics/professors/professorNames.ser";
 
                 // Read professor names
-                TaskObjectReader taskObjectReader = new TaskObjectReader(path);
+                TaskObjectReader taskObjectReader = new TaskObjectReader(System.getProperty("user.dir") + "/university of macedonia/applied informatics/professors/professorNames.ser");
                 taskObjectReader.readObjectFile();
 
                 ArrayList<String> nameList = (ArrayList<String>) taskObjectReader.getResult();
 
                 for (int i = 0; i < nameList.size(); i++)
                     showByElements.add(nameList.get(i));
+
+                nameList.clear();
+
                 break;
 
             default:
@@ -98,9 +100,7 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
         {
             for (Room room : roomList)
             {
-                ArrayList<TimeStamp> timeStamps = room.getTimeStampList();
-
-                for (TimeStamp timeStamp : timeStamps)
+                for (TimeStamp timeStamp : room.getTimeStampList())
                 {
                     // Check if we exceeded the end date
                     if (timeStamp.isAfter(endTimeStamp) || timeStamp.equals(endTimeStamp))
@@ -147,9 +147,7 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
         {
             for (Room room : roomList)
             {
-                ArrayList<TimeStamp> timeStamps = room.getTimeStampList();
-
-                for (TimeStamp timeStamp : timeStamps)
+                for (TimeStamp timeStamp : room.getTimeStampList())
                 {
                     // Check if we exceeded the end date
                     if (timeStamp.isAfter(endTimeStamp) || timeStamp.equals(endTimeStamp))
@@ -233,6 +231,8 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
         minMaxAverage.add(2, average);
 
 
+        showByCounter.removeAll(showByCounter);
+
         return attendanceRates;
     }
 
@@ -284,8 +284,13 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
 
                 ArrayList<String> nameList = (ArrayList<String>) taskObjectReader.getResult();
 
+                taskObjectReader = null;
+
                 for (int i = 0; i < nameList.size(); i++)
                     showByElements.add(nameList.get(i));
+
+                nameList.clear();
+
                 break;
 
             default:
@@ -314,9 +319,7 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
         {
             for (Room room : roomList)
             {
-                ArrayList<TimeStamp> timeStamps = room.getTimeStampList();
-
-                for (TimeStamp timeStamp : timeStamps)
+                for (TimeStamp timeStamp : room.getTimeStampList())
                 {
                     // Check if we exceeded the end date
                     if (timeStamp.isAfter(endTimeStamp) || timeStamp.equals(endTimeStamp))
@@ -359,9 +362,7 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
         {
             for (Room room : roomList)
             {
-                ArrayList<TimeStamp> timeStamps = room.getTimeStampList();
-
-                for (TimeStamp timeStamp : timeStamps)
+                for (TimeStamp timeStamp : room.getTimeStampList())
                 {
                     // Check if we exceeded the end date
                     if (timeStamp.isAfter(endTimeStamp) || timeStamp.equals(endTimeStamp))
@@ -407,6 +408,8 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
                 showByElements.set(i, sorted.get(i).xaxis + ":00");
                 covidCases.set(i, sorted.get(i).yaxis);
             }
+
+            sorted.clear();
 
         }
 

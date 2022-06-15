@@ -1,3 +1,14 @@
+/*
+ | Author: setokk
+ | LinkedIn: https://www.linkedin.com/in/kostandin-kote-255382223/
+ |
+ |
+ | Class Description:
+ | This class is used to delete a directory recursively
+ |
+ |
+*/
+
 package com.pasoftxperts.covidetect.filemanager;
 
 import java.io.File;

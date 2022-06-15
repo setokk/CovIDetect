@@ -33,4 +33,15 @@ public class Student implements Serializable
 
         this.healthIndicator = healthIndicator;
     }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (!(o instanceof Student))
+            return false;
+
+        Student otherStudent = (Student) o;
+
+        return (this.studentId.equals(otherStudent.getStudentId()));
+    }
 }

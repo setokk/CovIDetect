@@ -17,15 +17,19 @@ import org.jgrapht.graph.DefaultUndirectedGraph;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class PossibleCasesCounter
+public class PossibleCasesCounter
 {
     public static int countPossibleCases(DefaultUndirectedGraph<Seat, Integer> seatGraph)
     {
         List<Seat> seatList = new ArrayList<>(seatGraph.vertexSet());
 
-        return (int) seatList.stream()
-                             .filter(e -> e.isOccupied())
-                             .filter(e -> e.getStudent().getHealthIndicator() == 2)
-                             .count();
+        int result = (int) seatList.stream()
+                                   .filter(e -> e.isOccupied())
+                                   .filter(e -> e.getStudent().getHealthIndicator() == 2)
+                                   .count();
+
+        seatList.clear();
+
+        return result;
     }
 }

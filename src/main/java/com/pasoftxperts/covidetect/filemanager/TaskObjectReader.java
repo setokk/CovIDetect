@@ -34,7 +34,8 @@ public class TaskObjectReader
         try
         {
             FileInputStream fileIn = new FileInputStream(path);
-            ObjectInputStream objIn = new ObjectInputStream(new BufferedInputStream(fileIn));
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(fileIn);
+            ObjectInputStream objIn = new ObjectInputStream(bufferedInputStream);
 
             // Write object ArrayList
             try
@@ -44,6 +45,7 @@ public class TaskObjectReader
             catch (ClassNotFoundException e) { e.printStackTrace(); }
 
             objIn.close();
+            bufferedInputStream.close();
             fileIn.close();
         }
         catch (IOException e)
@@ -60,6 +62,27 @@ public class TaskObjectReader
 
     }
 
-    public Object getResult() { return result; }
+    public Object getResult() {
+        return result;
+    }
+
+    public void setResult(Object result) {
+        this.result = result;
+        this.path = null;
+    }
+
+    public String getPath() { return path; }
+
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (!(o instanceof TaskObjectReader))
+            return false;
+
+        TaskObjectReader otherTaskReader = (TaskObjectReader) o;
+
+        return (this.path.equals(otherTaskReader.getPath()));
+    }
 
 }

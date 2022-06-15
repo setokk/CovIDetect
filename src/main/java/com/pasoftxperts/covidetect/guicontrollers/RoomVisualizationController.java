@@ -232,7 +232,10 @@ public class RoomVisualizationController implements Initializable
             roomComboBox.valueProperty().addListener((observableValue, o, t1) ->
             {
                 if (studentListWindow != null)
+                {
                     studentListWindow.hide();
+                    studentListWindow = null;
+                }
 
                 datePicker.setValue(null);
                 dateLabel.setText("");
@@ -268,7 +271,10 @@ public class RoomVisualizationController implements Initializable
             datePicker.valueProperty().addListener((observable, oldValue, newValue) ->
             {
                 if (studentListWindow != null)
+                {
                     studentListWindow.hide();
+                    studentListWindow = null;
+                }
 
                 dateLabel.setText("");
                 hourSpanComboBox.setValue(null);
@@ -330,13 +336,16 @@ public class RoomVisualizationController implements Initializable
             // HOURSPAN COMBO BOX LISTENER
             hourSpanComboBox.valueProperty().addListener((observableValue, o, t1) ->
             {
+                if (studentListWindow != null)
+                {
+                    studentListWindow.hide();
+                    studentListWindow = null;
+                }
+
                 String hourSpanValue = (String) hourSpanComboBox.getValue();
 
                 if (hourSpanValue == null)
                     return;
-
-                if (studentListWindow != null)
-                    studentListWindow.hide();
 
 
                 // Parallel lists. (same index)
@@ -428,6 +437,7 @@ public class RoomVisualizationController implements Initializable
         studentListWindow.setTitle("Student ID List");
         studentListWindow.getIcons().add(new Image(getClass().getResourceAsStream("/com/pasoftxperts/covidetect/icons/covidDetectWindowIcon.png")));
         studentListWindow.setResizable(false);
+        studentListWindow.setAlwaysOnTop(true);
         studentListWindow.show();
     }
 
@@ -452,6 +462,14 @@ public class RoomVisualizationController implements Initializable
         window.setTitle("Statistical Analysis - CovIDetect©");
 
         window.show();
+
+        // Dereference objects
+        objectReader = null;
+        seatList = null;
+        seats = null;
+        room = null;
+
+        System.gc();
     }
 
     @FXML
@@ -481,6 +499,14 @@ public class RoomVisualizationController implements Initializable
         window.setTitle("CovIDetect© by PasoftXperts");
 
         window.show();
+
+        // Dereference objects
+        objectReader = null;
+        seatList = null;
+        seats = null;
+        room = null;
+
+        System.gc();
     }
 
     @FXML
@@ -504,6 +530,14 @@ public class RoomVisualizationController implements Initializable
         window.setTitle("Update Student's Covid Status - CovIDetect©");
 
         window.show();
+
+        // Dereference objects
+        objectReader = null;
+        seatList = null;
+        seats = null;
+        room = null;
+
+        System.gc();
     }
 
     @FXML
@@ -526,5 +560,13 @@ public class RoomVisualizationController implements Initializable
         previousWindow.hide();
 
         stage.show();
+
+        // Dereference objects
+        objectReader = null;
+        seatList = null;
+        seats = null;
+        room = null;
+
+        System.gc();
     }
 }

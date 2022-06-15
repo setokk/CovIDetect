@@ -260,11 +260,12 @@ public class UpdateCovidStatusController implements Initializable
                     break;
                 }
 
-                int daysBefore = dayDistanceBetween(timeStamps.get(j), targetTimeStamp);
+                int daysBefore = dayDistanceBetween(targetTimeStamp, timeStamps.get(j));
 
                 // We are 2 days or less before
-                if (daysBefore <= DAYS_TO_LOOK_BACK)
+                if (daysBefore <= DAYS_TO_LOOK_BACK && daysBefore >= 0)
                 {
+                    System.out.println(daysBefore);
                     seats = new ArrayList<>(timeStamps.get(j).getSeatGraph().vertexSet());
 
                     for (int k = 0; k < seats.size(); k++)
@@ -493,13 +494,13 @@ public class UpdateCovidStatusController implements Initializable
 
     /*
     |  Calculates the backwards day distance between currentTimeStamp and targetTimeStamp
-    |  Returns 100000 (arbitrary) if the days before are more than a month's length. (We only care about 1 or 0 month/year difference between the dates)
-    |  We use it to see if we are 5 days before the target timestamp to properly update the
+    |  Returns -1 (arbitrary) if the days before are more than a month's length. (We only care about 1 or 0 month/year difference between the dates)
+    |  We use it to see if we are 2 days before the target timestamp to properly update the
     |  covid status of the student, if they exist in that room and time.
     */
-    protected int dayDistanceBetween(TimeStamp currentTimeStamp, TimeStamp targetTimeStamp)
+    protected int dayDistanceBetween(TimeStamp targetTimeStamp, TimeStamp currentTimeStamp)
     {
-        int daysBefore = 100000;
+        int daysBefore = -1;
 
         int currYear = currentTimeStamp.getYear();
         Month currMonth = currentTimeStamp.getMonth();

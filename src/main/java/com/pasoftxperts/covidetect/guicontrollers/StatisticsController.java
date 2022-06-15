@@ -21,6 +21,7 @@ import com.pasoftxperts.covidetect.loginsession.LoginSession;
 import com.pasoftxperts.covidetect.statistics.StatisticalAnalysis;
 import com.pasoftxperts.covidetect.university.Room;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
@@ -49,6 +50,9 @@ import java.util.*;
 
 public class StatisticsController implements Initializable
 {
+    //
+    // GUI fields
+    //
     @FXML
     private Button statisticsButton;
 
@@ -105,6 +109,10 @@ public class StatisticsController implements Initializable
 
     private XYChart.Series<String, Number> series;
 
+    //
+    // Data Fields
+    //
+
     // Selected room name from room combo box list
     private String selectedRoom = null;
 
@@ -152,6 +160,22 @@ public class StatisticsController implements Initializable
 
     // Min, Max, Average
     private ArrayList<Double> minMaxAverage = new ArrayList<>(3);
+
+
+    //
+    // Listener fields
+    //
+    private ChangeListener roomListener;
+
+    private ChangeListener startDateListener;
+
+    private ChangeListener endDateListener;
+
+    private ChangeListener showByListener;
+
+    private ChangeListener dataCategoryListener;
+
+    private static ChangeListener statisticalMethodListener;
 
 
     @Override
@@ -210,7 +234,7 @@ public class StatisticsController implements Initializable
             //
             // ROOM COMBO BOX LISTENER
             //
-            roomComboBox.valueProperty().addListener((observableValue, o, t1) ->
+            roomListener = (observableValue, o, t1) ->
             {
                 // Set date picker selected values to null
                 startDatePicker.setValue(null);
@@ -223,7 +247,6 @@ public class StatisticsController implements Initializable
 
                 selectedRoom = (String) roomComboBox.getValue();
 
-                objectReaderList = new ArrayList<>();
 
                 minField.setText("Min:");
                 maxField.setText("Max:");
@@ -280,7 +303,9 @@ public class StatisticsController implements Initializable
                     objectReader = new ObjectReader(MainApplicationController.path + selectedRoom + ".ser");
                     objectReader.start();
                 }
-            });
+            };
+
+            roomComboBox.valueProperty().addListener(roomListener);
 
 
             //
@@ -288,7 +313,7 @@ public class StatisticsController implements Initializable
             //
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM,d,yyyy", Locale.US);
 
-            startDatePicker.valueProperty().addListener((observableValue, localDate, t1) ->
+            startDateListener = (observableValue, localDate, t1) ->
             {
                 if (startDatePicker.getValue() == null)
                     return;
@@ -311,13 +336,15 @@ public class StatisticsController implements Initializable
                 }
 
                 startDateString = formatter.format(startDate);
-            });
+            };
+
+            startDatePicker.valueProperty().addListener(startDateListener);
 
 
             //
             // END DATE LISTENER
             //
-            endDatePicker.valueProperty().addListener((observableValue, localDate, t1) ->
+            endDateListener = (observableValue, localDate, t1) ->
             {
                 if (endDatePicker.getValue() == null)
                     return;
@@ -340,42 +367,50 @@ public class StatisticsController implements Initializable
                         return;
                     }
                 }
-            });
+            };
+
+            endDatePicker.valueProperty().addListener(endDateListener);
 
 
             //
             // SHOW BY COMBO BOX LISTENER
             //
-            showByComboBox.valueProperty().addListener((observableValue, o, t1) ->
+            showByListener = (observableValue, o, t1) ->
             {
                 if (showByComboBox.getValue() == null)
                     return;
 
                 selectedShowByOption = (String) showByComboBox.getValue();
-            });
+            };
+
+            showByComboBox.valueProperty().addListener(showByListener);
 
 
             //
             // DATA CATEGORY COMBO BOX LISTENER
             //
-            dataCategoryComboBox.valueProperty().addListener((observableValue, o, t1) ->
+            dataCategoryListener = (observableValue, o, t1) ->
             {
                 if (dataCategoryComboBox.getValue() == null)
                     return;
 
                 selectedDataCategory = (String) dataCategoryComboBox.getValue();
-            });
+            };
+
+            dataCategoryComboBox.valueProperty().addListener(dataCategoryListener);
 
 
             // STATISTICAL METHODS COMBO BOX
-            methodsComboBox.valueProperty().addListener((observableValue, o, t1) ->
+            statisticalMethodListener = (observableValue, o, t1) ->
             {
                 if (methodsComboBox.getValue() == null)
                     return;
 
                 selectedStatisticalMethod = (String) methodsComboBox.getValue();
 
-            });
+            };
+
+            methodsComboBox.valueProperty().addListener(statisticalMethodListener);
 
 
             //
@@ -633,7 +668,24 @@ public class StatisticsController implements Initializable
 
         window.show();
 
+
+        // Dereference objects
+        roomComboBox.valueProperty().removeListener(roomListener);
+        startDatePicker.valueProperty().removeListener(startDateListener);
+        endDatePicker.valueProperty().removeListener(endDateListener);
+        showByComboBox.valueProperty().removeListener(showByListener);
+        dataCategoryComboBox.valueProperty().removeListener(dataCategoryListener);
+        methodsComboBox.valueProperty().removeListener(statisticalMethodListener);
+
         objectReaderList = null;
+        objectReader = null;
+        roomListener = null;
+        startDateListener = null;
+        endDateListener = null;
+        showByListener = null;
+        dataCategoryListener = null;
+        statisticalMethodListener = null;
+
         System.gc();
     }
 
@@ -659,7 +711,24 @@ public class StatisticsController implements Initializable
 
         window.show();
 
+
+        // Dereference objects
+        roomComboBox.valueProperty().removeListener(roomListener);
+        startDatePicker.valueProperty().removeListener(startDateListener);
+        endDatePicker.valueProperty().removeListener(endDateListener);
+        showByComboBox.valueProperty().removeListener(showByListener);
+        dataCategoryComboBox.valueProperty().removeListener(dataCategoryListener);
+        methodsComboBox.valueProperty().removeListener(statisticalMethodListener);
+
         objectReaderList = null;
+        objectReader = null;
+        roomListener = null;
+        startDateListener = null;
+        endDateListener = null;
+        showByListener = null;
+        dataCategoryListener = null;
+        statisticalMethodListener = null;
+
         System.gc();
     }
 
@@ -685,7 +754,24 @@ public class StatisticsController implements Initializable
 
         window.show();
 
+
+        // Dereference objects
+        roomComboBox.valueProperty().removeListener(roomListener);
+        startDatePicker.valueProperty().removeListener(startDateListener);
+        endDatePicker.valueProperty().removeListener(endDateListener);
+        showByComboBox.valueProperty().removeListener(showByListener);
+        dataCategoryComboBox.valueProperty().removeListener(dataCategoryListener);
+        methodsComboBox.valueProperty().removeListener(statisticalMethodListener);
+
         objectReaderList = null;
+        objectReader = null;
+        roomListener = null;
+        startDateListener = null;
+        endDateListener = null;
+        showByListener = null;
+        dataCategoryListener = null;
+        statisticalMethodListener = null;
+
         System.gc();
     }
 
@@ -710,7 +796,24 @@ public class StatisticsController implements Initializable
 
         stage.show();
 
+
+        // Dereference objects
+        roomComboBox.valueProperty().removeListener(roomListener);
+        startDatePicker.valueProperty().removeListener(startDateListener);
+        endDatePicker.valueProperty().removeListener(endDateListener);
+        showByComboBox.valueProperty().removeListener(showByListener);
+        dataCategoryComboBox.valueProperty().removeListener(dataCategoryListener);
+        methodsComboBox.valueProperty().removeListener(statisticalMethodListener);
+
         objectReaderList = null;
+        objectReader = null;
+        roomListener = null;
+        startDateListener = null;
+        endDateListener = null;
+        showByListener = null;
+        dataCategoryListener = null;
+        statisticalMethodListener = null;
+
         System.gc();
     }
 }

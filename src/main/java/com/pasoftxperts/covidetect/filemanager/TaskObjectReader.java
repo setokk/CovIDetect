@@ -40,9 +40,9 @@ public class TaskObjectReader
             // Write object ArrayList
             try
             {
-                result = (Object) objIn.readObject();
+                result = objIn.readObject();
             }
-            catch (ClassNotFoundException e) { e.printStackTrace(); }
+            catch (ClassNotFoundException e) { return; }
 
             objIn.close();
             bufferedInputStream.close();
@@ -64,11 +64,6 @@ public class TaskObjectReader
 
     public Object getResult() {
         return result;
-    }
-
-    public void setResult(Object result) {
-        this.result = result;
-        this.path = null;
     }
 
     public String getPath() { return path; }

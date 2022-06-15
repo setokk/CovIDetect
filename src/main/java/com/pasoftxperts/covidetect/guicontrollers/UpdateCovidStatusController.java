@@ -143,6 +143,8 @@ public class UpdateCovidStatusController implements Initializable
 
                 lastUpdatedLabel.setText("Last Updated: " + bufferedReader.readLine());
 
+                bufferedReader.close();
+
             } catch (IOException ex) { lastUpdatedLabel.setText("Last Updated: "); }
 
 
@@ -223,11 +225,11 @@ public class UpdateCovidStatusController implements Initializable
             rooms.add((Room) objectReader.getResult());
 
 
-
         // Find if the student exists,
         // and if they exist,
         // update the possible cases that surround him for the previous 2 days in every room
         String studentId = studentField.getText();
+
 
         // Indicates whether the student was found or not
         boolean found = false;
@@ -236,101 +238,31 @@ public class UpdateCovidStatusController implements Initializable
         // If it equals the number of rooms in total, it means the targetTimeStamp is out of bounds.
         int failedAttempts = 0;
 
-
-        for (int i = 0; i < rooms.size(); i++)
+        // We now check for the student for the past 2 days in every room
+        for (Room room : rooms)
         {
+            ArrayList<TimeStamp> timeStamps = room.getTimeStampList();
+
             // Count as failed attempt to find the student
-            if (rooms.get(i).getTimeStampList().size() == 0)
+            if (timeStamps.size() == 0)
                 failedAttempts++;
 
             int firstIndex = 0;
-            int lastIndex = rooms.get(i).getTimeStampList().size() - 1;
+            int lastIndex = room.getTimeStampList().size() - 1;
 
-            for (int j = 0; j < rooms.get(i).getTimeStampList().size(); j++)
+            for (int j = 0; j < timeStamps.size(); j++)
             {
-                TimeStamp currentTimeStamp = rooms.get(i).getTimeStampList().get(j);
-
                 // Check if target timestamp is in timestamps list
-                if ((targetTimeStamp.isAfter(rooms.get(i).getTimeStampList().get(lastIndex)))
-                        || (targetTimeStamp.isBefore(rooms.get(i).getTimeStampList().get(firstIndex))))
+                if ((targetTimeStamp.isAfter(room.getTimeStampList().get(lastIndex)))
+                        || (targetTimeStamp.isBefore(room.getTimeStampList().get(firstIndex))))
                 {
                     failedAttempts++;
                     break;
                 }
 
-                // We now are at the target date
-                if (currentTimeStamp.equals(targetTimeStamp))
-                {
-                    seats = new ArrayList<>(currentTimeStamp.getSeatGraph().vertexSet());
-
-                    for (int k = 0; k < seats.size(); k++)
-                    {
-                        if (seats.get(k).isOccupied() && seats.get(k).getStudent().getStudentId().equals(studentId))
-                        {
-                            found = true;
-
-                            if (seats.get(k).getStudent().getHealthIndicator() == 1)
-                            {
-                                statusLabel.setTextFill(Color.RED);
-                                statusLabel.setText("Student " + studentId + " is already\n registered as a covid case");
-                                return;
-                            }
-                            else
-                            {
-                                seats.get(k).getStudent().setHealthIndicator(1);
-                                DefaultUndirectedGraph<Seat, Integer> graph = SingleCaseNeighbourCalculator.calculateSingleCaseNeighbours
-                                                (seats.get(k),
-                                                seats,
-                                                DEFAULT_SEAT_ROWS,
-                                                DEFAULT_ROOM_CAPACITY/ DEFAULT_SEAT_ROWS);
-
-                                currentTimeStamp.addSeatGraph(graph);
-
-                                if (!modifiedRooms.contains(rooms.get(i)))
-                                    modifiedRooms.add(rooms.get(i));
-                            }
-                        }
-                    }
-
-                    seats.clear();
-
-                    break;
-                }
-            }
-        }
-
-
-        // Target date not found
-        if (failedAttempts == rooms.size())
-        {
-            statusLabel.setTextFill(Color.RED);
-            statusLabel.setText("Target Date was not found");
-            return;
-        }
-
-        // Student was not found
-        if (!found)
-        {
-            statusLabel.setTextFill(Color.RED);
-            statusLabel.setText("Student " + studentId + " was\n not found");
-            return;
-        }
-
-
-        // We now check for the student for the past 5 days in every room
-        for (Room room : rooms)
-        {
-            ArrayList<TimeStamp> timeStamps = room.getTimeStampList();
-
-            for (int j = 0; j < timeStamps.size(); j++)
-            {
-                // Break from loop. We only want to check before that timestamp
-                if (timeStamps.get(j).isAfter(targetTimeStamp) || timeStamps.get(j).equals(targetTimeStamp))
-                    break;
-
                 int daysBefore = dayDistanceBetween(timeStamps.get(j), targetTimeStamp);
 
-                // We are 5 days or less before
+                // We are 2 days or less before
                 if (daysBefore <= DAYS_TO_LOOK_BACK)
                 {
                     seats = new ArrayList<>(timeStamps.get(j).getSeatGraph().vertexSet());
@@ -339,6 +271,8 @@ public class UpdateCovidStatusController implements Initializable
                     {
                         if (seats.get(k).isOccupied() && seats.get(k).getStudent().getStudentId().equals(studentId))
                         {
+                            found = true;
+
                             if (!isCovidCase(seats.get(k).getStudent()))
                             {
                                 seats.get(k).getStudent().setHealthIndicator(1);
@@ -360,6 +294,23 @@ public class UpdateCovidStatusController implements Initializable
                     seats.clear();
                 }
             }
+        }
+
+
+        // Target date not found
+        if (failedAttempts == rooms.size())
+        {
+            statusLabel.setTextFill(Color.RED);
+            statusLabel.setText("Target Date was not found");
+            return;
+        }
+
+        // Student was not found
+        if (!found)
+        {
+            statusLabel.setTextFill(Color.RED);
+            statusLabel.setText("Student " + studentId + " was\n not found");
+            return;
         }
 
 
@@ -409,8 +360,6 @@ public class UpdateCovidStatusController implements Initializable
         datePicker.setValue(null);
         statusLabel.setTextFill(Color.GREEN);
         statusLabel.setText("Student covid case was\nsuccessfully updated");
-
-        targetTimeStamp = null;
     }
 
     @FXML
@@ -442,12 +391,12 @@ public class UpdateCovidStatusController implements Initializable
         window.show();
 
         // Dereference objects
-        objectReaderList.removeAll(objectReaderList);
-        readFiles.removeAll(readFiles);
-        modifiedRooms.removeAll(modifiedRooms);
         readFiles = null;
-        objectReaderList = null;
         modifiedRooms = null;
+        rooms = null;
+        objectReaderList = null;
+
+        System.gc();
     }
 
     @FXML
@@ -473,11 +422,12 @@ public class UpdateCovidStatusController implements Initializable
         window.show();
 
         // Dereference objects
-        objectReaderList.removeAll(objectReaderList);
-        readFiles.removeAll(readFiles);
         readFiles = null;
-        objectReaderList = null;
         modifiedRooms = null;
+        rooms = null;
+        objectReaderList = null;
+
+        System.gc();
     }
 
     @FXML
@@ -503,11 +453,12 @@ public class UpdateCovidStatusController implements Initializable
         window.show();
 
         // Dereference objects
-        objectReaderList.removeAll(objectReaderList);
-        readFiles.removeAll(readFiles);
         readFiles = null;
-        objectReaderList = null;
         modifiedRooms = null;
+        rooms = null;
+        objectReaderList = null;
+
+        System.gc();
     }
 
     @FXML
@@ -532,11 +483,12 @@ public class UpdateCovidStatusController implements Initializable
         stage.show();
 
         // Dereference objects
-        objectReaderList.removeAll(objectReaderList);
-        readFiles.removeAll(readFiles);
         readFiles = null;
-        objectReaderList = null;
         modifiedRooms = null;
+        rooms = null;
+        objectReaderList = null;
+
+        System.gc();
     }
 
     /*

@@ -21,7 +21,7 @@ This functionality provides the user with a visualization of a room and its covi
 
 The user can select a room, the date at which they wish to see the state of the room and the hours that a lecture occured (HourSpan).
 
-They can also click on the Student ID List button and see all the students that were seating as well as their health status (covid case, possible case, healthy).
+They can also click on the Student ID List button and see all the students that were sitting as well as their health status (covid case, possible case, healthy).
 
 ![alt text](https://i.postimg.cc/Dw079W73/student-List.png)
 

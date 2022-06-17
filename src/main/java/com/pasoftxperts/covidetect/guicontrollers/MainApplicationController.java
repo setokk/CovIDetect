@@ -13,6 +13,7 @@ package com.pasoftxperts.covidetect.guicontrollers;
 
 import com.pasoftxperts.covidetect.filemanager.RecursiveDeleter;
 import com.pasoftxperts.covidetect.guicontrollers.cachefxmlloader.CacheFXMLLoader;
+import com.pasoftxperts.covidetect.guicontrollers.scenechanger.SceneChanger;
 import com.pasoftxperts.covidetect.history.HistoryManager;
 import com.pasoftxperts.covidetect.loginsession.LoginSession;
 import com.pasoftxperts.covidetect.simulation.Simulation;
@@ -133,71 +134,28 @@ public class MainApplicationController implements Initializable
     @FXML
     protected void openStatistics(ActionEvent event) throws IOException
     {
-        String resourceName;
-
-        Stage window = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
-
-        double width = window.getWidth();
-        double height = window.getHeight();
-
-        if ((width >= 1600) && (height >= 900))
-            resourceName = "mainApplicationGUI-1600x900-statistics.fxml";
-        else
-            resourceName = "mainApplicationGUI-1000x600-statistics.fxml";
-
-        Parent visualizationParent = CacheFXMLLoader.load(resourceName);
-        window.getScene().setRoot(visualizationParent);
-
-        window.setTitle("Statistical Analysis - CovIDetect©");
-
-        window.show();
+        SceneChanger.changeScene(event,
+                "Statistical Analysis - CovIDetect©",
+                "mainApplicationGUI-1600x900-statistics.fxml",
+                "mainApplicationGUI-1000x600-statistics.fxml");
     }
 
     @FXML
     protected void openSeatsView(ActionEvent event) throws IOException
     {
-        String resourceName;
-
-        Stage window = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
-
-        double width = window.getWidth();
-        double height = window.getHeight();
-
-        if ((width >= 1600) && (height >= 900))
-            resourceName = "mainApplicationGUI-1600x900-viewSeats.fxml";
-        else
-            resourceName = "mainApplicationGUI-1000x600-viewSeats.fxml";
-
-
-        Parent visualizationParent = CacheFXMLLoader.load(resourceName);
-        window.getScene().setRoot(visualizationParent);
-
-        window.setTitle("Room Visualization - CovIDetect©");
-
-        window.show();
+        SceneChanger.changeScene(event,
+                "Room Visualization - CovIDetect©",
+                "mainApplicationGUI-1600x900-viewSeats.fxml",
+                "mainApplicationGUI-1000x600-viewSeats.fxml");
     }
 
     @FXML
     protected void openUpdateCovidCase(ActionEvent event) throws IOException
     {
-        String resourceName;
-
-        Stage window = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
-
-        double width = window.getWidth();
-        double height = window.getHeight();
-
-        if ((width >= 1600) && (height >= 900))
-            resourceName = "mainApplicationGUI-1600x900-updateStatus.fxml";
-        else
-            resourceName = "mainApplicationGUI-1000x600-updateStatus.fxml";
-
-        Parent visualizationParent = CacheFXMLLoader.load(resourceName);
-        window.getScene().setRoot(visualizationParent);
-
-        window.setTitle("Update Student's Covid Status - CovIDetect© - CovIDetect©");
-
-        window.show();
+        SceneChanger.changeScene(event,
+                "Update Student's Covid Status - CovIDetect©",
+                "mainApplicationGUI-1600x900-updateStatus.fxml",
+                "mainApplicationGUI-1000x600-updateStatus.fxml");
     }
 
     @FXML

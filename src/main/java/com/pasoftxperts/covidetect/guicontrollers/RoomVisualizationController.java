@@ -20,6 +20,7 @@ import com.pasoftxperts.covidetect.counters.PossibleCasesCounter;
 import com.pasoftxperts.covidetect.counters.StudentCounter;
 import com.pasoftxperts.covidetect.filemanager.TaskObjectReader;
 import com.pasoftxperts.covidetect.guicontrollers.cachefxmlloader.CacheFXMLLoader;
+import com.pasoftxperts.covidetect.guicontrollers.scenechanger.SceneChanger;
 import com.pasoftxperts.covidetect.loginsession.LoginSession;
 import com.pasoftxperts.covidetect.student.Student;
 import com.pasoftxperts.covidetect.time.HourSpan;
@@ -444,24 +445,10 @@ public class RoomVisualizationController implements Initializable
     @FXML
     protected void openStatistics(ActionEvent event) throws IOException
     {
-        String resourceName;
-
-        Stage window = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
-
-        double width = window.getWidth();
-        double height = window.getHeight();
-
-        if ((width >= 1600) && (height >= 900))
-            resourceName = "mainApplicationGUI-1600x900-statistics.fxml";
-        else
-            resourceName = "mainApplicationGUI-1000x600-statistics.fxml";
-
-        Parent visualizationParent = CacheFXMLLoader.load(resourceName);
-        window.getScene().setRoot(visualizationParent);
-
-        window.setTitle("Statistical Analysis - CovIDetect©");
-
-        window.show();
+        SceneChanger.changeScene(event,
+                "Statistical Analysis - CovIDetect©",
+                "mainApplicationGUI-1600x900-statistics.fxml",
+                "mainApplicationGUI-1000x600-statistics.fxml");
 
         // Dereference objects
         objectReader = null;
@@ -481,24 +468,10 @@ public class RoomVisualizationController implements Initializable
     @FXML
     protected void openHomePage(MouseEvent event) throws IOException
     {
-        String resourceName;
-
-        Stage window = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
-
-        double width = window.getWidth();
-        double height = window.getHeight();
-
-        if ((width >= 1600) && (height >= 900))
-            resourceName = "mainApplicationGUI-1600x900.fxml";
-        else
-            resourceName = "mainApplicationGUI-1000x600.fxml";
-
-        Parent visualizationParent = CacheFXMLLoader.load(resourceName);
-        window.getScene().setRoot(visualizationParent);
-
-        window.setTitle("CovIDetect© by PasoftXperts");
-
-        window.show();
+        SceneChanger.changeScene(event,
+                "CovIDetect© by PasoftXperts",
+                "mainApplicationGUI-1600x900.fxml",
+                "mainApplicationGUI-1000x600.fxml");
 
         // Dereference objects
         objectReader = null;
@@ -512,24 +485,10 @@ public class RoomVisualizationController implements Initializable
     @FXML
     protected void openUpdateCovidCase(ActionEvent event) throws IOException
     {
-        String resourceName;
-
-        Stage window = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
-
-        double width = window.getWidth();
-        double height = window.getHeight();
-
-        if ((width >= 1600) && (height >= 900))
-            resourceName = "mainApplicationGUI-1600x900-updateStatus.fxml";
-        else
-            resourceName = "mainApplicationGUI-1000x600-updateStatus.fxml";
-
-        Parent visualizationParent = CacheFXMLLoader.load(resourceName);
-        window.getScene().setRoot(visualizationParent);
-
-        window.setTitle("Update Student's Covid Status - CovIDetect©");
-
-        window.show();
+        SceneChanger.changeScene(event,
+                "Update Student's Covid Status - CovIDetect©",
+                "mainApplicationGUI-1600x900-updateStatus.fxml",
+                "mainApplicationGUI-1000x600-updateStatus.fxml");
 
         // Dereference objects
         objectReader = null;

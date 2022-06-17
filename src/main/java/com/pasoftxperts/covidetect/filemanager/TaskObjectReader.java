@@ -62,11 +62,15 @@ public class TaskObjectReader
 
     }
 
-    public Object getResult() {
+    public Object getResult()
+    {
         return result;
     }
 
-    public String getPath() { return path; }
+    public String getPath()
+    {
+        return path;
+    }
 
 
     @Override

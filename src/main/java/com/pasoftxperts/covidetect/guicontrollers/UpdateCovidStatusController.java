@@ -11,10 +11,12 @@
 
 package com.pasoftxperts.covidetect.guicontrollers;
 
+import com.pasoftxperts.covidetect.covidcaseupdater.CovidCaseUpdater;
 import com.pasoftxperts.covidetect.filemanager.FileWrapper;
 import com.pasoftxperts.covidetect.filemanager.TaskObjectReader;
 import com.pasoftxperts.covidetect.graphanalysis.SingleCaseNeighbourCalculator;
 import com.pasoftxperts.covidetect.guicontrollers.cachefxmlloader.CacheFXMLLoader;
+import com.pasoftxperts.covidetect.guicontrollers.scenechanger.SceneChanger;
 import com.pasoftxperts.covidetect.loginsession.LoginSession;
 import com.pasoftxperts.covidetect.time.TimeStamp;
 import com.pasoftxperts.covidetect.university.Room;
@@ -38,7 +40,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import org.jgrapht.graph.DefaultUndirectedGraph;
 
 import java.io.*;
 import java.net.URL;
@@ -47,14 +48,8 @@ import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-import static com.pasoftxperts.covidetect.graphanalysis.GraphNeighboursGenerator.isCovidCase;
-import static com.pasoftxperts.covidetect.guicontrollers.RoomVisualizationController.DEFAULT_ROOM_CAPACITY;
-import static com.pasoftxperts.covidetect.guicontrollers.RoomVisualizationController.DEFAULT_SEAT_ROWS;
-
 public class UpdateCovidStatusController implements Initializable
 {
-
-    public static final int DAYS_TO_LOOK_BACK = 2; // Number of days to look back for possible cases after finding a covid case
 
     @FXML
     private Button statisticsButton;
@@ -92,20 +87,16 @@ public class UpdateCovidStatusController implements Initializable
     @FXML
     private Label lastUpdatedLabel;
 
+    private ArrayList<String> roomNames;
+
     // Object Reader Threads List for reading rooms
     private List<TaskObjectReader> objectReaderList = new ArrayList<>();
-
-    private ArrayList<String> roomNames; // Room names
 
     List<Room> rooms = new ArrayList<>(); // All rooms available
 
     // Arraylist to save the rooms in which we found the student
     // (improves performance because we don't save ALL rooms after updating the status)
     List<Room> modifiedRooms = new ArrayList<>();
-
-    private List<Seat> seats; // Seat list
-
-    private List<Service> readFiles = new ArrayList<>();
 
     // Date Formatter to create a TimeStamp Object
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM,d,yyyy", Locale.US);
@@ -173,7 +164,8 @@ public class UpdateCovidStatusController implements Initializable
             {
                 int finalI = i;
 
-                readFiles.add(new Service() {
+                Service readFiles = new Service()
+                {
                     @Override
                     protected Task createTask()
                     {
@@ -188,9 +180,9 @@ public class UpdateCovidStatusController implements Initializable
                             }
                         };
                     }
-                });
+                };
 
-                readFiles.get(i).start();
+                readFiles.start();
             }
         });
     }
@@ -216,10 +208,6 @@ public class UpdateCovidStatusController implements Initializable
         }
 
 
-        // Target date
-        TimeStamp targetTimeStamp = new TimeStamp(formatter.format(datePicker.getValue()));
-
-
         // Get Results from Threads
         for (TaskObjectReader objectReader : objectReaderList)
             rooms.add((Room) objectReader.getResult());
@@ -230,81 +218,11 @@ public class UpdateCovidStatusController implements Initializable
         // update the possible cases that surround him for the previous 2 days in every room
         String studentId = studentField.getText();
 
-
-        // Indicates whether the student was found or not
-        boolean found = false;
-
-        // Indicates the number of times targetTimeStamp has failed to be in bounds for any room
-        // If it equals the number of rooms in total, it means the targetTimeStamp is out of bounds.
-        int failedAttempts = 0;
-
-        // We now check for the student for the past 2 days in every room
-        for (Room room : rooms)
-        {
-            ArrayList<TimeStamp> timeStamps = room.getTimeStampList();
-
-            // Count as failed attempt to find the student
-            if (timeStamps.size() == 0)
-                failedAttempts++;
-
-            int firstIndex = 0;
-            int lastIndex = room.getTimeStampList().size() - 1;
-
-            for (int j = 0; j < timeStamps.size(); j++)
-            {
-                // Check if target timestamp is in timestamps list
-                if ((targetTimeStamp.isAfter(room.getTimeStampList().get(lastIndex)))
-                        || (targetTimeStamp.isBefore(room.getTimeStampList().get(firstIndex))))
-                {
-                    failedAttempts++;
-                    break;
-                }
-
-                int daysBefore = dayDistanceBetween(targetTimeStamp, timeStamps.get(j));
-
-                // We are 2 days or less before
-                if (daysBefore <= DAYS_TO_LOOK_BACK && daysBefore >= 0)
-                {
-                    System.out.println(daysBefore);
-                    seats = new ArrayList<>(timeStamps.get(j).getSeatGraph().vertexSet());
-
-                    for (int k = 0; k < seats.size(); k++)
-                    {
-                        if (seats.get(k).isOccupied() && seats.get(k).getStudent().getStudentId().equals(studentId))
-                        {
-                            found = true;
-
-                            if (!isCovidCase(seats.get(k).getStudent()))
-                            {
-                                seats.get(k).getStudent().setHealthIndicator(1);
-
-                                DefaultUndirectedGraph<Seat, Integer> graph = SingleCaseNeighbourCalculator.calculateSingleCaseNeighbours
-                                                                                            (seats.get(k),
-                                                                                            seats,
-                                                                                            DEFAULT_SEAT_ROWS,
-                                                                                       DEFAULT_ROOM_CAPACITY/ DEFAULT_SEAT_ROWS);
-
-                                timeStamps.get(j).addSeatGraph(graph);
-
-                                if (!modifiedRooms.contains(room))
-                                    modifiedRooms.add(room);
-                            }
-                        }
-                    }
-
-                    seats.clear();
-                }
-            }
-        }
-
-
-        // Target date not found
-        if (failedAttempts == rooms.size())
-        {
-            statusLabel.setTextFill(Color.RED);
-            statusLabel.setText("Target Date was not found");
-            return;
-        }
+        // Get result if student was found or not
+        boolean found = CovidCaseUpdater.updateStudentCovidCase(studentId,
+                                                                formatter.format(datePicker.getValue()),
+                                                                rooms,
+                                                                modifiedRooms);
 
         // Student was not found
         if (!found)
@@ -337,6 +255,7 @@ public class UpdateCovidStatusController implements Initializable
         };
 
         writeRooms.start();
+
 
         // Get date
         lastUpdatedLabel.setText("Last Updated: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy, HH:mm")));
@@ -372,94 +291,31 @@ public class UpdateCovidStatusController implements Initializable
     @FXML
     protected void openSeatsView(ActionEvent event) throws IOException
     {
-        String resourceName;
+        SceneChanger.changeScene(event,
+                "Room Visualization - CovIDetect©",
+                "mainApplicationGUI-1600x900-viewSeats.fxml",
+                "mainApplicationGUI-1000x600-viewSeats.fxml");
 
-        Stage window = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
-
-        double width = window.getWidth();
-        double height = window.getHeight();
-
-        if ((width >= 1600) && (height >= 900))
-            resourceName = "mainApplicationGUI-1600x900-viewSeats.fxml";
-        else
-            resourceName = "mainApplicationGUI-1000x600-viewSeats.fxml";
-
-        Parent visualizationParent = CacheFXMLLoader.load(resourceName);
-        window.getScene().setRoot(visualizationParent);
-
-        window.setTitle("Room Visualization - CovIDetect©");
-
-        window.show();
-
-        // Dereference objects
-        readFiles = null;
-        modifiedRooms = null;
-        rooms = null;
-        objectReaderList = null;
-
-        System.gc();
     }
 
     @FXML
     protected void openHomePage(MouseEvent event) throws IOException
     {
-        String resourceName;
+        SceneChanger.changeScene(event,
+                "CovIDetect© by PasoftXperts",
+                "mainApplicationGUI-1600x900.fxml",
+                "mainApplicationGUI-1000x600.fxml");
 
-        Stage window = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
-
-        double width = window.getWidth();
-        double height = window.getHeight();
-
-        if ((width >= 1600) && (height >= 900))
-            resourceName = "mainApplicationGUI-1600x900.fxml";
-        else
-            resourceName = "mainApplicationGUI-1000x600.fxml";
-
-        Parent visualizationParent = CacheFXMLLoader.load(resourceName);
-        window.getScene().setRoot(visualizationParent);
-
-        window.setTitle("CovIDetect© by PasoftXperts");
-
-        window.show();
-
-        // Dereference objects
-        readFiles = null;
-        modifiedRooms = null;
-        rooms = null;
-        objectReaderList = null;
-
-        System.gc();
     }
 
     @FXML
     protected void openStatistics(ActionEvent event) throws IOException
     {
-        String resourceName;
+        SceneChanger.changeScene(event,
+                "Statistical Analysis - CovIDetect©",
+                "mainApplicationGUI-1600x900-statistics.fxml",
+                "mainApplicationGUI-1000x600-statistics.fxml");
 
-        Stage window = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
-
-        double width = window.getWidth();
-        double height = window.getHeight();
-
-        if ((width >= 1600) && (height >= 900))
-            resourceName = "mainApplicationGUI-1600x900-statistics.fxml";
-        else
-            resourceName = "mainApplicationGUI-1000x600-statistics.fxml";
-
-        Parent visualizationParent = CacheFXMLLoader.load(resourceName);
-        window.getScene().setRoot(visualizationParent);
-
-        window.setTitle("Statistical Analysis - CovIDetect©");
-
-        window.show();
-
-        // Dereference objects
-        readFiles = null;
-        modifiedRooms = null;
-        rooms = null;
-        objectReaderList = null;
-
-        System.gc();
     }
 
     @FXML
@@ -482,47 +338,5 @@ public class UpdateCovidStatusController implements Initializable
         previousWindow.hide();
 
         stage.show();
-
-        // Dereference objects
-        readFiles = null;
-        modifiedRooms = null;
-        rooms = null;
-        objectReaderList = null;
-
-        System.gc();
-    }
-
-    /*
-    |  Calculates the backwards day distance between currentTimeStamp and targetTimeStamp
-    |  Returns -1 (arbitrary) if the days before are more than a month's length. (We only care about 1 or 0 month/year difference between the dates)
-    |  We use it to see if we are 2 days before the target timestamp to properly update the
-    |  covid status of the student, if they exist in that room and time.
-    */
-    protected int dayDistanceBetween(TimeStamp targetTimeStamp, TimeStamp currentTimeStamp)
-    {
-        int daysBefore = -1;
-
-        int currYear = currentTimeStamp.getYear();
-        Month currMonth = currentTimeStamp.getMonth();
-        int currDay = currentTimeStamp.getDay().getDayNumber();
-
-        int targetYear = targetTimeStamp.getYear();
-        Month targetMonth = targetTimeStamp.getMonth();
-        int targetDay = targetTimeStamp.getDay().getDayNumber();
-
-        // If same year, same month
-        if ((currYear == targetYear) && (currMonth.getValue() == targetMonth.getValue()))
-            daysBefore = targetDay - currDay;
-
-        // If 1 month difference and either same year or next year
-        if (targetMonth.getValue() - currMonth.getValue() == 1)
-        {
-            if ((targetYear == currYear) || (targetYear - currYear == 1))
-            {
-                daysBefore = currMonth.length((currYear%4==0) || (currYear%400==0)) - currDay + targetDay;
-            }
-        }
-
-        return daysBefore;
     }
 }

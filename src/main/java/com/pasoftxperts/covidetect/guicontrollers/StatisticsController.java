@@ -15,6 +15,7 @@ import com.pasoftxperts.covidetect.filemanager.ObjectReader;
 import com.pasoftxperts.covidetect.filemanager.TaskObjectReader;
 import com.pasoftxperts.covidetect.guicontrollers.cachefxmlloader.CacheFXMLLoader;
 import com.pasoftxperts.covidetect.guicontrollers.popupwindow.PopupWindow;
+import com.pasoftxperts.covidetect.guicontrollers.scenechanger.SceneChanger;
 import com.pasoftxperts.covidetect.history.HistoryManager;
 import com.pasoftxperts.covidetect.history.StatisticsValues;
 import com.pasoftxperts.covidetect.loginsession.LoginSession;
@@ -649,130 +650,29 @@ public class StatisticsController implements Initializable
     @FXML
     protected void openSeatsView(ActionEvent event) throws IOException
     {
-        String resourceName;
-
-        Stage window = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
-
-        double width = window.getWidth();
-        double height = window.getHeight();
-
-        if ((width >= 1600) && (height >= 900))
-            resourceName = "mainApplicationGUI-1600x900-viewSeats.fxml";
-        else
-            resourceName = "mainApplicationGUI-1000x600-viewSeats.fxml";
-
-        Parent visualizationParent = CacheFXMLLoader.load(resourceName);
-        window.getScene().setRoot(visualizationParent);
-
-        window.setTitle("Room Visualization - CovIDetect©");
-
-        window.show();
-
-
-        // Dereference objects
-        roomComboBox.valueProperty().removeListener(roomListener);
-        startDatePicker.valueProperty().removeListener(startDateListener);
-        endDatePicker.valueProperty().removeListener(endDateListener);
-        showByComboBox.valueProperty().removeListener(showByListener);
-        dataCategoryComboBox.valueProperty().removeListener(dataCategoryListener);
-        methodsComboBox.valueProperty().removeListener(statisticalMethodListener);
-
-        objectReaderList = null;
-        objectReader = null;
-        roomListener = null;
-        startDateListener = null;
-        endDateListener = null;
-        showByListener = null;
-        dataCategoryListener = null;
-        statisticalMethodListener = null;
-
-        System.gc();
+        SceneChanger.changeScene(event,
+                "Room Visualization - CovIDetect©",
+                "mainApplicationGUI-1600x900-viewSeats.fxml",
+                "mainApplicationGUI-1000x600-viewSeats.fxml");
     }
 
     @FXML
     protected void openHomePage(MouseEvent event) throws IOException
     {
-        String resourceName;
-
-        Stage window = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
-
-        double width = window.getWidth();
-        double height = window.getHeight();
-
-        if ((width >= 1600) && (height >= 900))
-            resourceName = "mainApplicationGUI-1600x900.fxml";
-        else
-            resourceName = "mainApplicationGUI-1000x600.fxml";
-
-        Parent visualizationParent = CacheFXMLLoader.load(resourceName);
-        window.getScene().setRoot(visualizationParent);
-
-        window.setTitle("CovIDetect© by PasoftXperts");
-
-        window.show();
-
-
-        // Dereference objects
-        roomComboBox.valueProperty().removeListener(roomListener);
-        startDatePicker.valueProperty().removeListener(startDateListener);
-        endDatePicker.valueProperty().removeListener(endDateListener);
-        showByComboBox.valueProperty().removeListener(showByListener);
-        dataCategoryComboBox.valueProperty().removeListener(dataCategoryListener);
-        methodsComboBox.valueProperty().removeListener(statisticalMethodListener);
-
-        objectReaderList = null;
-        objectReader = null;
-        roomListener = null;
-        startDateListener = null;
-        endDateListener = null;
-        showByListener = null;
-        dataCategoryListener = null;
-        statisticalMethodListener = null;
-
-        System.gc();
+        SceneChanger.changeScene(event,
+                "CovIDetect© by PasoftXperts",
+                "mainApplicationGUI-1600x900.fxml",
+                "mainApplicationGUI-1000x600.fxml");
     }
 
     @FXML
     protected void openUpdateCovidCase(ActionEvent event) throws IOException
     {
-        String resourceName;
+        SceneChanger.changeScene(event,
+                "Update Student's Covid Status - CovIDetect©",
+                "mainApplicationGUI-1600x900-updateStatus.fxml",
+                "mainApplicationGUI-1000x600-updateStatus.fxml");
 
-        Stage window = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
-
-        double width = window.getWidth();
-        double height = window.getHeight();
-
-        if ((width >= 1600) && (height >= 900))
-            resourceName = "mainApplicationGUI-1600x900-updateStatus.fxml";
-        else
-            resourceName = "mainApplicationGUI-1000x600-updateStatus.fxml";
-
-        Parent visualizationParent = CacheFXMLLoader.load(resourceName);
-        window.getScene().setRoot(visualizationParent);
-
-        window.setTitle("Update Student's Covid Status - CovIDetect©");
-
-        window.show();
-
-
-        // Dereference objects
-        roomComboBox.valueProperty().removeListener(roomListener);
-        startDatePicker.valueProperty().removeListener(startDateListener);
-        endDatePicker.valueProperty().removeListener(endDateListener);
-        showByComboBox.valueProperty().removeListener(showByListener);
-        dataCategoryComboBox.valueProperty().removeListener(dataCategoryListener);
-        methodsComboBox.valueProperty().removeListener(statisticalMethodListener);
-
-        objectReaderList = null;
-        objectReader = null;
-        roomListener = null;
-        startDateListener = null;
-        endDateListener = null;
-        showByListener = null;
-        dataCategoryListener = null;
-        statisticalMethodListener = null;
-
-        System.gc();
     }
 
     @FXML
@@ -795,25 +695,5 @@ public class StatisticsController implements Initializable
         previousWindow.hide();
 
         stage.show();
-
-
-        // Dereference objects
-        roomComboBox.valueProperty().removeListener(roomListener);
-        startDatePicker.valueProperty().removeListener(startDateListener);
-        endDatePicker.valueProperty().removeListener(endDateListener);
-        showByComboBox.valueProperty().removeListener(showByListener);
-        dataCategoryComboBox.valueProperty().removeListener(dataCategoryListener);
-        methodsComboBox.valueProperty().removeListener(statisticalMethodListener);
-
-        objectReaderList = null;
-        objectReader = null;
-        roomListener = null;
-        startDateListener = null;
-        endDateListener = null;
-        showByListener = null;
-        dataCategoryListener = null;
-        statisticalMethodListener = null;
-
-        System.gc();
     }
 }

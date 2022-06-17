@@ -7,18 +7,6 @@ CovIDetect is a dashboard application for universities that aims to facilitate t
 ![alt text](https://i.postimg.cc/3NsTXW5P/main-Screen.png)
 
 
-## Login/Register
-
-
-Users can log in with an academic email (in this case @uom.edu.gr, @uom.gr).
-
-![alt text](https://i.postimg.cc/WbqpdcLB/login.png)
-
-
-
-Or register with one
-
-![alt text](https://i.postimg.cc/VsCXX6tg/register.png)
 ## Functionalities
 The app provides 3 main functionalities:
 #### • Room Visualization

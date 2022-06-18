@@ -52,7 +52,9 @@ This functionality provides the user with the ability to visualize statistical d
 
 #### ‣ By Professor
 
+
 ![alt text](https://i.postimg.cc/fWpMvxgP/statistical-Analysis.png)
+
 
 The user can select a specific range of dates (From, To) for which they wish to see statistical data for.
 
@@ -80,3 +82,6 @@ The extra argument ```-Xmx220M``` is needed due to the memory increasing over ev
 
 The JVM, while considering some objects eligible for garbage collection, doesn't give back the memory to the OS as it does not deem it necessary (probably because they are Services and it thinks that they might be used again). 
 No "OutOfMemoryError" occured using the extra max heap size argument
+
+## Importing project on IDE
+This project is an IntelliJ IDEA JavaFX project."OutOfMemoryError" occured using the extra max heap size argument

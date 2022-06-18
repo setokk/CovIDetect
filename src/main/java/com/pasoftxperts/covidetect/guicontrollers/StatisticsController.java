@@ -14,6 +14,7 @@ package com.pasoftxperts.covidetect.guicontrollers;
 import com.pasoftxperts.covidetect.filemanager.ObjectReader;
 import com.pasoftxperts.covidetect.filemanager.TaskObjectReader;
 import com.pasoftxperts.covidetect.guicontrollers.cachefxmlloader.CacheFXMLLoader;
+import com.pasoftxperts.covidetect.guicontrollers.fileschecker.FilesChecker;
 import com.pasoftxperts.covidetect.guicontrollers.popupwindow.PopupWindow;
 import com.pasoftxperts.covidetect.guicontrollers.scenechanger.SceneChanger;
 import com.pasoftxperts.covidetect.history.HistoryManager;
@@ -42,6 +43,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
@@ -220,12 +222,21 @@ public class StatisticsController implements Initializable
 
 
             // Read room names
-            TaskObjectReader taskObjectReader = new TaskObjectReader(MainApplicationController.path + "roomNames.ser");
-            taskObjectReader.readObjectFile();
+            ArrayList<String> roomNames = new ArrayList<>();
 
-            ArrayList<String> roomNames = (ArrayList<String>) taskObjectReader.getResult();
+            // Get list of files in main folder (simulation files)
+            new File(MainApplicationController.PATH).mkdirs();
+            File mainFolder = new File(MainApplicationController.PATH);
+
+            File[] listOfFiles = mainFolder.listFiles();
+
+            for (File file : listOfFiles)
+            {
+                if (file.getName().contains("Room") && file.getName().contains(".ser"))
+                    roomNames.add(file.getName().substring(0, file.getName().lastIndexOf('.'))); // Remove the .ser extension
+            }
+
             roomNames.add("All Rooms");
-
             Collections.sort(roomNames);
 
             // Initialize room combo box
@@ -237,7 +248,7 @@ public class StatisticsController implements Initializable
             //
             roomListener = (observableValue, o, t1) ->
             {
-                // Set date picker selected values to null
+                // Set date picker selected values to null (reset the values)
                 startDatePicker.setValue(null);
                 endDatePicker.setValue(null);
                 endDateString = null;
@@ -264,7 +275,7 @@ public class StatisticsController implements Initializable
                     {
                         if (!name.equals("All Rooms"))
                         {
-                            objectReaderList.add(new TaskObjectReader(MainApplicationController.path + name + ".ser"));
+                            objectReaderList.add(new TaskObjectReader(MainApplicationController.PATH + name + ".ser"));
                         }
                     }
 
@@ -301,7 +312,7 @@ public class StatisticsController implements Initializable
                 else
                 {
                     // Load only one object
-                    objectReader = new ObjectReader(MainApplicationController.path + selectedRoom + ".ser");
+                    objectReader = new ObjectReader(MainApplicationController.PATH + selectedRoom + ".ser");
                     objectReader.start();
                 }
             };
@@ -474,6 +485,17 @@ public class StatisticsController implements Initializable
                 //
                 HistoryManager.setSelectedHistoryStatus(false);
             }
+
+            // Check if simulation files exist
+            if (!FilesChecker.checkSimulationFiles())
+            {
+                try
+                {
+                    PopupWindow.display("Simulation files not found. Please run simulation from the home page.");
+                } catch (IOException e) {
+                    System.exit(1);
+                }
+            }
         });
     }
 
@@ -501,23 +523,20 @@ public class StatisticsController implements Initializable
         // Rooms List to apply statistical analysis to
         ArrayList<Room> rooms = new ArrayList<>();
 
+
+        // Load the Rooms
         if (!selectedRoom.equals("All Rooms")) // Means that the user selected only one room
         {
-            rooms.add((Room) objectReader.getResult());
+            rooms.add((Room) objectReader.getResult().orElse(new Room("No Room Loaded", 15, 5)));
         }
         else
         {
             for (TaskObjectReader reader : objectReaderList)
-                rooms.add((Room) reader.getResult());
+                rooms.add((Room) reader.getResult().orElse(new Room("No Room Loaded", 15, 5)));
         }
 
-        // Check if any of the rooms is null (user immediately pressed proceed again after loading history)
-        for (Room room : rooms)
-        {
-            if (room == null)
-                return;
-        }
 
+        // Clear line chart data
         lineChart.getData().clear();
         lineChart.setTitle(selectedDataCategory);
         series = new XYChart.Series<String, Number>();

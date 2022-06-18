@@ -455,7 +455,7 @@
       </VBox>
       <AnchorPane layoutX="-4.0" layoutY="-5.0" prefHeight="43.0" prefWidth="605.0" style="-fx-background-color: #3463e4;">
          <children>
-            <Label layoutX="240.0" layoutY="6.0" prefHeight="33.0" prefWidth="115.0" text="Student ID List" textFill="WHITE">
+            <Label fx:id="studentWindowLabel" layoutX="163.0" layoutY="5.0" prefHeight="33.0" prefWidth="437.0" text="Student ID List" textFill="WHITE">
                <font>
                   <Font name="Corbel Light" size="19.0" />
                </font>

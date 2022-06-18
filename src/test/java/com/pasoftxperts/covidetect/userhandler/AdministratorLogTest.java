@@ -15,10 +15,8 @@ class AdministratorLogTest
         Administrator admin = new Administrator("testemail@test.com", "junittest");
 
         AdministratorLog.addAdmin(admin);
-        AdministratorLog.updateAdminLog();
 
         AdministratorLog.removeAdmin(admin);
-        AdministratorLog.readAdminLog();
 
         String testEmail = "TTestemail@test.com";
 

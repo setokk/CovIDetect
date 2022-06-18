@@ -59,7 +59,7 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
                 TaskObjectReader taskObjectReader = new TaskObjectReader(System.getProperty("user.dir") + "/university of macedonia/applied informatics/professors/professorNames.ser");
                 taskObjectReader.readObjectFile();
 
-                ArrayList<String> nameList = (ArrayList<String>) taskObjectReader.getResult();
+                ArrayList<String> nameList = (ArrayList<String>) taskObjectReader.getResult().orElse(new ArrayList<String>(0));
 
                 for (int i = 0; i < nameList.size(); i++)
                     showByElements.add(nameList.get(i));
@@ -282,9 +282,7 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
                 TaskObjectReader taskObjectReader = new TaskObjectReader(path);
                 taskObjectReader.readObjectFile();
 
-                ArrayList<String> nameList = (ArrayList<String>) taskObjectReader.getResult();
-
-                taskObjectReader = null;
+                ArrayList<String> nameList = (ArrayList<String>) taskObjectReader.getResult().orElse(new ArrayList<String>(0));
 
                 for (int i = 0; i < nameList.size(); i++)
                     showByElements.add(nameList.get(i));

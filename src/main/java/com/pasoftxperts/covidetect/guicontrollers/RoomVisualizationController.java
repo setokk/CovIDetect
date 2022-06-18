@@ -4,7 +4,7 @@
  |
  |
  | Class Description:
- |
+ | This class is the controller of the room visualization window
  |
  |
 */
@@ -18,8 +18,10 @@ import com.pasoftxperts.covidetect.counters.CovidCasesCounter;
 import com.pasoftxperts.covidetect.counters.FreeSeatsCounter;
 import com.pasoftxperts.covidetect.counters.PossibleCasesCounter;
 import com.pasoftxperts.covidetect.counters.StudentCounter;
-import com.pasoftxperts.covidetect.filemanager.TaskObjectReader;
 import com.pasoftxperts.covidetect.guicontrollers.cachefxmlloader.CacheFXMLLoader;
+import com.pasoftxperts.covidetect.guicontrollers.dataholder.DataHolder;
+import com.pasoftxperts.covidetect.guicontrollers.fileschecker.FilesChecker;
+import com.pasoftxperts.covidetect.guicontrollers.popupwindow.PopupWindow;
 import com.pasoftxperts.covidetect.guicontrollers.scenechanger.SceneChanger;
 import com.pasoftxperts.covidetect.loginsession.LoginSession;
 import com.pasoftxperts.covidetect.student.Student;
@@ -49,6 +51,7 @@ import javafx.stage.Stage;
 import org.jgrapht.graph.DefaultUndirectedGraph;
 
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -123,8 +126,15 @@ public class RoomVisualizationController implements Initializable
     private Button studentListButton;
 
 
+    //
+    // Non GUI fields
+    //
+
     // Student ID List Window
     private Stage studentListWindow;
+
+    // Seat list from graph set
+    private static List<Seat> seats = null;
 
     // Seat list for grid pane
     private ArrayList<ImageView> seatList = new ArrayList<>();
@@ -132,17 +142,13 @@ public class RoomVisualizationController implements Initializable
     // File reader for rooms
     private ObjectReader objectReader = null;
 
-    // Selected Room name in combobox
+    // Selected Room name in ComboBox
     private String roomName = null;
 
-    // Selected timestamp list (same date can have more than 1 hourspan)
     private List<TimeStamp> timeStampList = null;
 
-    // List of hourspan names
+    // List of HourSpan names
     private List<String> hourSpanNames = null;
-
-    // Seat list from graph set
-    public static List<Seat> seats = null;
 
     // Selected Room
     private Room room;
@@ -152,7 +158,7 @@ public class RoomVisualizationController implements Initializable
     {
         usernameLabel.setText("Welcome, " + LoginSession.getUsername());
 
-        // Initialize room seats
+        // Set width and height of a seat based on screen resolution
         int widthRatio;
         int heightRatio;
 
@@ -251,6 +257,7 @@ public class RoomVisualizationController implements Initializable
 
                 courseLabel.setText("");
 
+
                 // Initiαlize seats
                 for (int i = 0; i < DEFAULT_ROOM_CAPACITY; i++)
                     seatList.get(i).setImage(freeSeatImage);
@@ -263,7 +270,7 @@ public class RoomVisualizationController implements Initializable
                 roomLabel.setText(roomName);
 
                 // Open .ser file for specific room
-                objectReader = new ObjectReader(MainApplicationController.path + roomName + ".ser");
+                objectReader = new ObjectReader(MainApplicationController.PATH + roomName + ".ser");
                 objectReader.start();
             });
 
@@ -286,6 +293,7 @@ public class RoomVisualizationController implements Initializable
                 covidCases.setText("Covid Cases:");
                 possibleCases.setText("Possible Cases:");
                 freeSeats.setText("Free Seats:");
+
 
                 // Initiαlize seats
                 for (int i = 0; i < DEFAULT_ROOM_CAPACITY; i++)
@@ -310,7 +318,8 @@ public class RoomVisualizationController implements Initializable
                 if (objectReader.getResult() == null)
                     return;
 
-                room = (Room) objectReader.getResult();
+                // Load Room
+                room = (Room) objectReader.getResult().orElse(new Room("No Room Loaded", 15, 5));
                 timeStampList = new ArrayList<>();
 
                 for (TimeStamp timeStamp : room.getTimeStampList())
@@ -367,7 +376,7 @@ public class RoomVisualizationController implements Initializable
                 seats = new ArrayList<>(seatGraph.vertexSet());
 
 
-                // Create a image for each case
+                // Create an image for each case
                 Image takenSeatImage = new Image(RunApplication.class.getResourceAsStream("/com/pasoftxperts/covidetect/icons/takenSeat.png"));
                 Image covidCaseImage = new Image(RunApplication.class.getResourceAsStream("/com/pasoftxperts/covidetect/icons/covidSeat.png"));
                 Image possibleCaseImage = new Image(RunApplication.class.getResourceAsStream("/com/pasoftxperts/covidetect/icons/possibleCaseSeat.png"));
@@ -391,23 +400,57 @@ public class RoomVisualizationController implements Initializable
                     }
                 }
 
-                dateLabel.setText(timeStamp.getDateToString());
-
                 totalStudents.setText("Total Students: " + StudentCounter.countStudents(seatGraph));
                 covidCases.setText("Covid Cases: " + CovidCasesCounter.countCovidCases(seatGraph));
                 possibleCases.setText("Possible Cases: " + PossibleCasesCounter.countPossibleCases(seatGraph));
                 freeSeats.setText("Free Seats: " + FreeSeatsCounter.countFreeSeats(seatGraph));
+
+                dateLabel.setText(timeStamp.getDateToString());
+
+
+                // We need to pass the seat list and the date to the StudentListWindowController
+                // We use a singleton class which will hold that information everytime a new room state
+                // is shown
+
+                // We create an ArrayList of objects (we need to store 2 values)
+                List<Object> dataList = new ArrayList<>(2);
+                dataList.add(dateLabel.getText()); // We add the date
+                dataList.add(seats); // We add the seats
+
+                DataHolder dataHolder = DataHolder.getInstance(); // Get the singleton instance
+                dataHolder.setObjectData(dataList); // Set the data
             });
 
 
             // Read room names
-            TaskObjectReader taskObjectReader = new TaskObjectReader(MainApplicationController.path + "roomNames.ser");
-            taskObjectReader.readObjectFile();
+            ArrayList<String> roomNames = new ArrayList<>();
 
-            ArrayList<String> roomNames = (ArrayList<String>) taskObjectReader.getResult();
+            // Get list of files in main folder (simulation files)
+            new File(MainApplicationController.PATH).mkdirs();
+            File mainFolder = new File(MainApplicationController.PATH);
+
+            File[] listOfFiles = mainFolder.listFiles();
+
+            for (File file : listOfFiles)
+            {
+                if (file.getName().contains("Room") && file.getName().contains(".ser"))
+                    roomNames.add(file.getName().substring(0, file.getName().lastIndexOf('.'))); // Remove the .ser extension
+            }
 
             // Initialize room combo box
             roomComboBox.setItems(FXCollections.observableList(roomNames));
+
+
+            // Check if simulation files exist
+            if (!FilesChecker.checkSimulationFiles())
+            {
+                try
+                {
+                    PopupWindow.display("Simulation files not found. Please run simulation from the home page.");
+                } catch (IOException e) {
+                    System.exit(1);
+                }
+            }
         });
     }
 
@@ -449,14 +492,6 @@ public class RoomVisualizationController implements Initializable
                 "Statistical Analysis - CovIDetect©",
                 "mainApplicationGUI-1600x900-statistics.fxml",
                 "mainApplicationGUI-1000x600-statistics.fxml");
-
-        // Dereference objects
-        objectReader = null;
-        seatList = null;
-        seats = null;
-        room = null;
-
-        System.gc();
     }
 
     @FXML
@@ -472,14 +507,6 @@ public class RoomVisualizationController implements Initializable
                 "CovIDetect© by PasoftXperts",
                 "mainApplicationGUI-1600x900.fxml",
                 "mainApplicationGUI-1000x600.fxml");
-
-        // Dereference objects
-        objectReader = null;
-        seatList = null;
-        seats = null;
-        room = null;
-
-        System.gc();
     }
 
     @FXML
@@ -489,14 +516,6 @@ public class RoomVisualizationController implements Initializable
                 "Update Student's Covid Status - CovIDetect©",
                 "mainApplicationGUI-1600x900-updateStatus.fxml",
                 "mainApplicationGUI-1000x600-updateStatus.fxml");
-
-        // Dereference objects
-        objectReader = null;
-        seatList = null;
-        seats = null;
-        room = null;
-
-        System.gc();
     }
 
     @FXML
@@ -519,13 +538,5 @@ public class RoomVisualizationController implements Initializable
         previousWindow.hide();
 
         stage.show();
-
-        // Dereference objects
-        objectReader = null;
-        seatList = null;
-        seats = null;
-        room = null;
-
-        System.gc();
     }
 }

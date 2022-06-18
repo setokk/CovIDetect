@@ -5,7 +5,7 @@
  |
  | Class Description:
  |
- | We create an arraylist of objects and add GUI field values to them in a specific order (from top left to bottom - top right to bottom)
+ | We create an arraylist of objects and add GUI field values to them in a specific order (from top left to bottom and after -> top right to bottom)
  | Thus, we can save the values to a file and load them back when a user selects the history option
  | Example,
  | In the statistics GUI, we will add them in this order:
@@ -22,13 +22,11 @@ public class StatisticsValues implements Serializable
 {
     private ArrayList<Object> fieldValues = new ArrayList<>();
 
-    public void addValue(Object value)
-    {
+    public void addValue(Object value) {
         fieldValues.add(value);
     }
 
-    public ArrayList<Object> getFieldValues()
-    {
+    public ArrayList<Object> getFieldValues() {
         return fieldValues;
     }
 }

@@ -86,8 +86,7 @@ public class TimeStamp implements Serializable
     }
 
 
-    public String getDayName()
-    {
+    public String getDayName() {
         return convertDayToText(year, month, day.getDayNumber());
     }
 

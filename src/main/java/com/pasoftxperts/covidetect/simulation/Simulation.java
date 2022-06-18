@@ -145,8 +145,9 @@ public class Simulation
 
         while (year <= END_YEAR)
         {
-            // We need to keep track of which semester we are talking about
+            // We need to keep track of which semester we are currently
             String semester = "";
+            String prevSemester = ""; // Will help us know if we transitioned to a new semester
 
             for (int i = 0; i < months.size(); i++)
             {
@@ -162,9 +163,13 @@ public class Simulation
                 {
                     case FEBRUARY -> {
                         semester = "Spring";
+                        prevSemester = "Fall";
                         startDay = 24;
                     }
-                    case OCTOBER -> semester = "Fall";
+                    case OCTOBER -> {
+                        semester = "Fall";
+                        prevSemester = "Spring";
+                    }
                     case JUNE -> endDay = 10;
                     case JANUARY -> {
                         endDay = 24;
@@ -194,7 +199,11 @@ public class Simulation
                         if (semester.equals("Fall"))
                         {
                             // -1 means that a new semester has come
-                            roomIdCounter = -1;
+                            if (prevSemester.equals("Spring"))
+                            {
+                                roomIdCounter = -1;
+                                prevSemester = "Fall"; // Reset it to "Fall" so that we won't assign -1 to the room counter again in the same semester
+                            }
 
                             ArrayList<HourSpan> currentHourSpans = fallSemesterCurriculum.get(index);
 
@@ -290,7 +299,7 @@ public class Simulation
 
                     // With a certain low probability, pick a number of students that are going to be a covid case
                     // from studentList
-                    double probability = 0.04;
+                    double probability = 0.03;
 
                     for (int k = 0; k < studentList.size(); k++)
                     {
@@ -334,9 +343,7 @@ public class Simulation
             }
         }
 
-
         FileWrapper.saveFilesByRoom(university.getUniversityName(), appliedInformatics.getDepartmentName(), roomList);
-        FileWrapper.saveRoomNames(university.getUniversityName(), appliedInformatics.getDepartmentName());
 
         FileWrapper.saveProfessorNames(university.getUniversityName(), appliedInformatics.getDepartmentName(), professorNameList);
 

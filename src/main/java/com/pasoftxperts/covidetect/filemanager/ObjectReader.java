@@ -17,6 +17,7 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.Optional;
 
 public class ObjectReader extends Thread
 {
@@ -40,18 +41,30 @@ public class ObjectReader extends Thread
             // Write object ArrayList
             try
             {
-                result = (Object) objIn.readObject();
+                result = objIn.readObject();
             }
             catch (ClassNotFoundException e)
             {
-                PopupWindow.display("Could not read object file");
+                PopupWindow.display("Simulation files not found. Please run simulation from the home page.");
             }
 
             objIn.close();
             fileIn.close();
         }
-        catch (IOException e) { e.printStackTrace(); }
+        catch (IOException e)
+        {
+            try
+            {
+                PopupWindow.display("Simulation files not found. Please run simulation from the home page.");
+            }
+            catch (IOException ex)
+            {
+                System.exit(1);
+            }
+        }
     }
 
-    public Object getResult() { return result; }
+    public Optional<Object> getResult() {
+        return Optional.ofNullable(result);
+    }
 }

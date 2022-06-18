@@ -17,6 +17,7 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.Optional;
 
 public class TaskObjectReader
 {
@@ -42,7 +43,10 @@ public class TaskObjectReader
             {
                 result = objIn.readObject();
             }
-            catch (ClassNotFoundException e) { return; }
+            catch (ClassNotFoundException e)
+            {
+                PopupWindow.display("Simulation files not found. Please run simulation from the home page.");
+            }
 
             objIn.close();
             bufferedInputStream.close();
@@ -52,7 +56,7 @@ public class TaskObjectReader
         {
             try
             {
-                PopupWindow.display("Could not read room file");
+                PopupWindow.display("Simulation files not found. Please run simulation from the home page.");
             }
             catch (IOException ex)
             {
@@ -62,13 +66,11 @@ public class TaskObjectReader
 
     }
 
-    public Object getResult()
-    {
-        return result;
+    public Optional<Object> getResult() {
+        return Optional.ofNullable(result);
     }
 
-    public String getPath()
-    {
+    public String getPath() {
         return path;
     }
 

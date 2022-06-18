@@ -87,7 +87,7 @@ public class MainApplicationController implements Initializable
 
     public static String selectedHistoryOption = null; // Indicates whether the user has selected to load statistics from history
 
-    public static final String path = System.getProperty("user.dir") + "/university of macedonia/applied informatics/"; // Path in which all the simulation files are saved
+    public static final String PATH = System.getProperty("user.dir") + "/university of macedonia/applied informatics/"; // Path in which all the simulation files are saved
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
@@ -117,6 +117,7 @@ public class MainApplicationController implements Initializable
             // We go through the files
             File folder = new File(HistoryManager.HISTORY_PATH + LoginSession.getUsername());
             List<File> listOfFiles = Arrays.asList(folder.listFiles());
+
 
             // Sort based on the last date modified
             Collections.sort(listOfFiles, (a, b) -> a.lastModified() > b.lastModified() ? -1 : a.lastModified() == b.lastModified() ? 0 : 1);
@@ -239,7 +240,7 @@ public class MainApplicationController implements Initializable
             RecursiveDeleter.deleteDirectoryRecursively(HistoryManager.HISTORY_PATH);
 
             // Delete the last updated date file for update covid status
-            RecursiveDeleter.deleteDirectoryRecursively(path + "lastupdate/");
+            RecursiveDeleter.deleteDirectoryRecursively(PATH + "lastupdate/");
 
             // Go back to the home page
             String name;

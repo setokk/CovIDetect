@@ -56,6 +56,8 @@ import java.util.ArrayList;
 
 public class Curriculum
 {
+
+
     // We create two lists that keep track of the curriculum for fall and spring semesters.
     // Each table will have 7 rows representing [Monday - Sunday] with values 0-6.
     public static ArrayList<String> initializeCurriculum(ArrayList<ArrayList<HourSpan>> fallSemesterCurriculum,

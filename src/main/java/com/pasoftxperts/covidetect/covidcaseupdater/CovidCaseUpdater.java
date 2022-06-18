@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.pasoftxperts.covidetect.graphanalysis.GraphNeighboursGenerator.isCovidCase;
-import static com.pasoftxperts.covidetect.guicontrollers.RoomVisualizationController.DEFAULT_ROOM_CAPACITY;
-import static com.pasoftxperts.covidetect.guicontrollers.RoomVisualizationController.DEFAULT_SEAT_ROWS;
 
 public class CovidCaseUpdater
 {
@@ -52,7 +50,6 @@ public class CovidCaseUpdater
 
                     for (int k = 0; k < seats.size(); k++)
                     {
-
                         if (seats.get(k).isOccupied() && seats.get(k).getStudent().getStudentId().equals(studentId))
                         {
                             found = true;
@@ -64,8 +61,8 @@ public class CovidCaseUpdater
                                 DefaultUndirectedGraph<Seat, Integer> graph = SingleCaseNeighbourCalculator.calculateSingleCaseNeighbours
                                                (seats.get(k),
                                                 seats,
-                                                DEFAULT_SEAT_ROWS,
-                                                DEFAULT_ROOM_CAPACITY/ DEFAULT_SEAT_ROWS);
+                                                room.getSeatRows(),
+                                                room.getCapacity() / room.getSeatRows());
 
                                 timeStamps.get(j).addSeatGraph(graph);
 
@@ -77,6 +74,9 @@ public class CovidCaseUpdater
 
                     seats.clear();
                 }
+
+                if (timeStamps.get(j).isAfter(targetTimeStamp))
+                    break;
             }
         }
 

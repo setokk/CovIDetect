@@ -86,6 +86,9 @@ public class RoomVisualizationController implements Initializable
     private Label logoutLabel;
 
     @FXML
+    private ImageView memberInfoIcon;
+
+    @FXML
     private Label usernameLabel;
 
     @FXML
@@ -125,6 +128,8 @@ public class RoomVisualizationController implements Initializable
     @FXML
     private Button studentListButton;
 
+    // Member info stage
+    private Stage memberInfoStage = null;
 
     //
     // Non GUI fields
@@ -526,7 +531,7 @@ public class RoomVisualizationController implements Initializable
         Stage stage = new Stage();
 
         Parent parent = CacheFXMLLoader.load("loginGUI.fxml");
-        Scene scene = new Scene(parent);
+        Scene scene = new Scene(parent, 600, 500);
 
         stage.setScene(scene);
         stage.setTitle("CovIDetect Login");
@@ -538,5 +543,31 @@ public class RoomVisualizationController implements Initializable
         previousWindow.hide();
 
         stage.show();
+    }
+
+    @FXML
+    protected void openMemberInfoWindow() throws IOException
+    {
+        // Can't open window more than once
+        if (memberInfoStage != null)
+            return;
+
+        memberInfoStage = new Stage();
+
+        Parent parent = CacheFXMLLoader.load("membersInfoWindow.fxml");
+        Scene scene = new Scene(parent);
+
+        memberInfoStage.setScene(scene);
+        memberInfoStage.setAlwaysOnTop(true);
+        memberInfoStage.getIcons().add(new Image(getClass().getResourceAsStream("/com/pasoftxperts/covidetect/icons/covidDetectWindowIcon.png")));
+        memberInfoStage.setResizable(false);
+        memberInfoStage.setTitle("Project Members Info");
+        memberInfoStage.setOnCloseRequest(windowEvent ->
+        {
+            memberInfoStage.hide();
+            memberInfoStage = null;
+        });
+
+        memberInfoStage.show();
     }
 }

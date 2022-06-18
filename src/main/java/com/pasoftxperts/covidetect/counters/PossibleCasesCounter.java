@@ -4,7 +4,7 @@
  |
  |
  | Class Description:
- | This class counts the possible covid cases of a room
+ | This class counts the possible covid cases of a room at a specific date (TimeStamp)
  |
  |
 */

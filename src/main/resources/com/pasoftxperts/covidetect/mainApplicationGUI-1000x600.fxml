@@ -10,11 +10,11 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: white;" stylesheets="@mainApplicationStyles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pasoftxperts.covidetect.guicontrollers.MainApplicationController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: white;" stylesheets="@styles/mainApplicationStyles-1000x600.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pasoftxperts.covidetect.guicontrollers.MainApplicationController">
    <children>
-      <AnchorPane prefHeight="69.0" prefWidth="1000.0" styleClass="menu">
+      <AnchorPane prefHeight="69.0" prefWidth="1000.0" styleClass="menu" stylesheets="@styles/mainApplicationStyles-1000x600.css">
          <children>
-            <Label id="logoLabel" layoutX="14.0" layoutY="18.0" prefHeight="31.0" prefWidth="112.0" stylesheets="@mainApplicationStyles.css" text="   CovIDetect" textFill="WHITE">
+            <Label id="logoLabel" layoutX="14.0" layoutY="18.0" prefHeight="31.0" prefWidth="112.0" stylesheets="@styles/mainApplicationStyles-1000x600.css" text="   CovIDetect" textFill="WHITE">
                <font>
                   <Font name="Corbel Light" size="22.0" />
                </font>
@@ -27,7 +27,7 @@
                   <Image url="@icons/seatVisualizationIcon.png" />
                </image>
             </ImageView>
-            <Button id="seatButton" fx:id="viewSeatButton" layoutX="214.0" layoutY="18.0" mnemonicParsing="false" onAction="#openSeatsView" prefHeight="35.0" prefWidth="149.0" stylesheets="@mainApplicationStyles.css" text="Room Visualization" textFill="WHITE">
+            <Button id="seatButton" fx:id="viewSeatButton" layoutX="214.0" layoutY="18.0" mnemonicParsing="false" onAction="#openSeatsView" prefHeight="35.0" prefWidth="149.0" stylesheets="@styles/mainApplicationStyles-1000x600.css" text="Room Visualization" textFill="WHITE">
                <font>
                   <Font name="Corbel Light" size="16.0" />
                </font>
@@ -35,7 +35,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button id="seatButton" fx:id="updateCovidStatusButton" layoutX="419.0" layoutY="17.0" mnemonicParsing="false" onAction="#openUpdateCovidCase" prefHeight="35.0" prefWidth="161.0" stylesheets="@mainApplicationStyles.css" text="Update Covid Status" textFill="WHITE">
+            <Button id="seatButton" fx:id="updateCovidStatusButton" layoutX="419.0" layoutY="17.0" mnemonicParsing="false" onAction="#openUpdateCovidCase" prefHeight="35.0" prefWidth="161.0" stylesheets="@styles/mainApplicationStyles-1000x600.css" text="Update Covid Status" textFill="WHITE">
                <font>
                   <Font name="Corbel Light" size="16.0" />
                </font>
@@ -48,7 +48,7 @@
                   <Image url="@icons/updateIcon.png" />
                </image>
             </ImageView>
-            <Button id="seatButton" fx:id="statisticsButton" layoutX="623.0" layoutY="16.0" mnemonicParsing="false" onAction="#openStatistics" prefHeight="35.0" prefWidth="142.0" stylesheets="@mainApplicationStyles.css" text="Statistical Analysis" textFill="WHITE">
+            <Button id="seatButton" fx:id="statisticsButton" layoutX="623.0" layoutY="16.0" mnemonicParsing="false" onAction="#openStatistics" prefHeight="35.0" prefWidth="142.0" stylesheets="@styles/mainApplicationStyles-1000x600.css" text="Statistical Analysis" textFill="WHITE">
                <font>
                   <Font name="Corbel Light" size="16.0" />
                </font>
@@ -71,7 +71,7 @@
                   <Font name="Corbel Light" size="14.0" />
                </font>
             </Label>
-            <Label id="logoutLabel" fx:id="logoutLabel" ellipsisString="Logout" layoutX="865.0" layoutY="35.0" onMouseClicked="#logout" prefHeight="16.0" prefWidth="41.0" style="-fx-cursor: hand;" stylesheets="@mainApplicationStyles.css" text=" Logout&#10;" textFill="WHITE">
+            <Label id="logoutLabel" fx:id="logoutLabel" ellipsisString="Logout" layoutX="865.0" layoutY="35.0" onMouseClicked="#logout" prefHeight="16.0" prefWidth="41.0" style="-fx-cursor: hand;" stylesheets="@styles/mainApplicationStyles-1000x600.css" text=" Logout&#10;" textFill="WHITE">
                <font>
                   <Font name="Corbel Light" size="11.0" />
                </font>
@@ -81,23 +81,31 @@
                   <Image url="@icons/logoutIcon.png" />
                </image>
             </ImageView>
+            <ImageView fx:id="memberInfoIcon" fitHeight="28.0" fitWidth="14.0" layoutX="138.0" layoutY="28.0" onMouseClicked="#openMemberInfoWindow" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/infoIconWhite.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="-8.0" layoutY="69.0" prefHeight="69.0" prefWidth="1008.0" style="-fx-background-color: #323232;">
+      <AnchorPane layoutX="-8.0" layoutY="69.0" prefHeight="69.0" prefWidth="1008.0" style="-fx-background-color: #323232;" stylesheets="@styles/mainApplicationStyles-1000x600.css">
          <children>
-            <Label layoutX="378.0" layoutY="13.0" styleClass="generalLabel" stylesheets="@mainApplicationStyles.css" text="Dashboard Panel" textFill="WHITE">
+            <Label layoutX="378.0" layoutY="13.0" styleClass="generalLabel" stylesheets="@styles/mainApplicationStyles-1000x600.css" text="Dashboard Panel" textFill="WHITE">
                <font>
                   <Font name="Corbel Light" size="37.0" />
                </font>
             </Label>
          </children>
       </AnchorPane>
-      <ListView fx:id="historyListView" layoutX="652.0" layoutY="215.0" prefHeight="285.0" prefWidth="315.0" style="-fx-font-size: 12px;" stylesheets="@mainApplicationStyles-1000x600.css">
+      <ListView fx:id="historyListView" layoutX="652.0" layoutY="215.0" prefHeight="285.0" prefWidth="315.0" style="-fx-font-size: 12px;" stylesheets="@styles/mainApplicationStyles-1000x600.css">
          <cursor>
             <Cursor fx:constant="CROSSHAIR" />
          </cursor>
       </ListView>
-      <Label id="historyLabel" layoutX="792.0" layoutY="175.0" prefHeight="45.0" prefWidth="54.0" style="-fx-text-fill: #323232;" text="History">
+      <Label id="historyLabel" layoutX="792.0" layoutY="175.0" prefHeight="45.0" prefWidth="54.0" style="-fx-text-fill: #323232;" stylesheets="@styles/mainApplicationStyles-1000x600.css" text="History">
          <font>
             <Font name="Corbel Light" size="17.0" />
          </font>
@@ -107,7 +115,7 @@
             <Image url="@icons/historyIcon.png" />
          </image>
       </ImageView>
-      <Button id="simulationButton" fx:id="runSimulationButton" layoutX="453.0" layoutY="537.0" mnemonicParsing="false" onAction="#runSimulationProgress" prefHeight="35.0" prefWidth="142.0" stylesheets="@mainApplicationStyles.css" text="Run Simulation">
+      <Button id="simulationButton" fx:id="runSimulationButton" layoutX="453.0" layoutY="537.0" mnemonicParsing="false" onAction="#runSimulationProgress" prefHeight="35.0" prefWidth="142.0" stylesheets="@styles/mainApplicationStyles-1000x600.css" text="Run Simulation">
          <font>
             <Font name="Corbel Light" size="17.0" />
          </font>
@@ -115,7 +123,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <AnchorPane fx:id="simulationMessageHover" layoutX="595.0" layoutY="511.0" prefHeight="26.0" prefWidth="161.0" style="-fx-background-color: #323232; -fx-opacity: 0.7;">
+      <AnchorPane fx:id="simulationMessageHover" layoutX="595.0" layoutY="511.0" prefHeight="26.0" prefWidth="161.0" style="-fx-background-color: #323232; -fx-opacity: 0.7;" stylesheets="@styles/mainApplicationStyles-1000x600.css">
          <children>
             <Label id="historyLabel" fx:id="simulationLabel" layoutX="12.0" layoutY="3.0" prefHeight="23.0" prefWidth="141.0" text="Can only run 1 time per instance" textAlignment="CENTER" textFill="WHITE">
                <font>
@@ -124,12 +132,12 @@
             </Label>
          </children>
       </AnchorPane>
-      <Label id="historyLabel" layoutX="932.0" layoutY="554.0" prefHeight="30.0" prefWidth="54.0" style="-fx-text-fill: #323232;" text="v.0.65">
+      <Label id="historyLabel" layoutX="932.0" layoutY="554.0" prefHeight="30.0" prefWidth="54.0" style="-fx-text-fill: #323232;" stylesheets="@styles/mainApplicationStyles-1000x600.css" text="v.0.65">
          <font>
             <Font name="Corbel Light" size="16.0" />
          </font>
       </Label>
-      <BorderPane fx:id="mainBorderPane" layoutX="95.0" layoutY="220.0" prefHeight="250.0" prefWidth="450.0">
+      <BorderPane fx:id="mainBorderPane" layoutX="95.0" layoutY="220.0" prefHeight="250.0" prefWidth="450.0" stylesheets="@styles/mainApplicationStyles-1000x600.css">
          <center>
             <AnchorPane prefHeight="200.0" prefWidth="345.0" style="-fx-background-color: #323232;" BorderPane.alignment="CENTER" />
          </center>

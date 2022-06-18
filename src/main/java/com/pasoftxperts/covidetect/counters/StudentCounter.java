@@ -4,7 +4,7 @@
  |
  |
  | Class Description:
- | This class counts the students (taken seats) of a room
+ | This class counts the students (taken seats) of a room at a specific date (TimeStamp)
  |
  |
 */

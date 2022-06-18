@@ -21,6 +21,7 @@ import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -35,6 +36,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.File;
 import java.io.IOException;
@@ -69,6 +71,9 @@ public class MainApplicationController implements Initializable
     private Label logoutLabel;
 
     @FXML
+    private ImageView memberInfoIcon;
+
+    @FXML
     private ListView historyListView;
 
     @FXML
@@ -79,6 +84,9 @@ public class MainApplicationController implements Initializable
 
     @FXML
     private AnchorPane simulationMessageHover;
+
+    // Member info stage
+    private Stage memberInfoStage = null;
 
     //
     // FLAGS
@@ -167,7 +175,7 @@ public class MainApplicationController implements Initializable
         Stage stage = new Stage();
 
         Parent parent = CacheFXMLLoader.load("loginGUI.fxml");
-        Scene scene = new Scene(parent);
+        Scene scene = new Scene(parent, 600, 500);
 
         stage.setScene(scene);
         stage.setTitle("CovIDetect Login");
@@ -182,14 +190,42 @@ public class MainApplicationController implements Initializable
     }
 
     @FXML
+    protected void openMemberInfoWindow() throws IOException
+    {
+        // Can't open window more than once
+        if (memberInfoStage != null)
+            return;
+
+        memberInfoStage = new Stage();
+
+        Parent parent = CacheFXMLLoader.load("membersInfoWindow.fxml");
+        Scene scene = new Scene(parent);
+
+        memberInfoStage.setScene(scene);
+        memberInfoStage.setAlwaysOnTop(true);
+        memberInfoStage.getIcons().add(new Image(getClass().getResourceAsStream("/com/pasoftxperts/covidetect/icons/covidDetectWindowIcon.png")));
+        memberInfoStage.setResizable(false);
+        memberInfoStage.setTitle("Project Members Info");
+        memberInfoStage.setOnCloseRequest(windowEvent ->
+        {
+            memberInfoStage.hide();
+            memberInfoStage = null;
+        });
+
+        memberInfoStage.show();
+    }
+
+    // Load history of statistical report
+    @FXML
     protected void loadHistory()
     {
         selectedHistoryOption = (String) historyListView.getSelectionModel().getSelectedItem();
 
+        // Check if anything is selected
         if (selectedHistoryOption == null)
             return;
 
-        // Set history status to true
+        // Set history status to true (flag that indicated to statistical controller that it should load from history)
         HistoryManager.setSelectedHistoryStatus(true);
 
         // Open Statistics page with history status set to true

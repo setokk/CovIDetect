@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: #3463e4;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane layoutX="12.0" layoutY="13.0" prefHeight="474.0" prefWidth="777.0" style="-fx-background-color: #323232;" stylesheets="@styles/membersInfoStyles.css">
+         <children>
+            <Label layoutX="34.0" layoutY="24.0" styleClass="g" text="Kostandin Kote" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="17.0" />
+               </font>
+            </Label>
+            <Label layoutX="34.0" layoutY="45.0" styleClass="g" text="Programmer" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="34.0" layoutY="102.0" styleClass="g" text="Xenofon Taoukstis" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="17.0" />
+               </font>
+            </Label>
+            <Label layoutX="34.0" layoutY="123.0" styleClass="g" text="System Designer / Analyst" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="34.0" layoutY="175.0" styleClass="g" text="Stavroula Tsoni  " textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="17.0" />
+               </font>
+            </Label>
+            <Label layoutX="34.0" layoutY="196.0" styleClass="g" text="Project Manager" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="34.0" layoutY="256.0" styleClass="g" text="Viktoria Limenidou" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="17.0" />
+               </font>
+            </Label>
+            <Label layoutX="34.0" layoutY="277.0" styleClass="g" text="System Designer / Analyst" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="33.0" layoutY="334.0" styleClass="g" text="Theodora Katseisvili" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="17.0" />
+               </font>
+            </Label>
+            <Label layoutX="33.0" layoutY="355.0" styleClass="g" text="Tester" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="33.0" layoutY="411.0" styleClass="g" text="Nikolaos Papadopoulos" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="17.0" />
+               </font>
+            </Label>
+            <Label layoutX="33.0" layoutY="432.0" styleClass="g" text="Programmer" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="605.0" layoutY="24.0" styleClass="g" text="Fotis Kuriakidis" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="17.0" />
+               </font>
+            </Label>
+            <Label layoutX="605.0" layoutY="45.0" styleClass="g" text="Multiple Activities" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="605.0" layoutY="102.0" styleClass="g" text="Eleni Senepremte" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="17.0" />
+               </font>
+            </Label>
+            <Label layoutX="605.0" layoutY="123.0" styleClass="g" text="Project Manager" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="605.0" layoutY="175.0" styleClass="g" text="Aristotelis Charisiadis" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="17.0" />
+               </font>
+            </Label>
+            <Label layoutX="605.0" layoutY="196.0" styleClass="g" text="Tester" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="605.0" layoutY="256.0" styleClass="g" text="Konstantina Lafioti" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="17.0" />
+               </font>
+            </Label>
+            <Label layoutX="605.0" layoutY="277.0" styleClass="g" text="Multiple Activities" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="604.0" layoutY="334.0" styleClass="g" text="Sofoklis Panteris" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="17.0" />
+               </font>
+            </Label>
+            <Label layoutX="604.0" layoutY="355.0" styleClass="g" text="Multiple Activities" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="604.0" layoutY="411.0" styleClass="g" text="Athanasia Adamidou" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="17.0" />
+               </font>
+            </Label>
+            <Label layoutX="604.0" layoutY="432.0" styleClass="g" text="Project Manager" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="280.0" layoutY="21.0" text="PROJECT MEMBERS" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="23.0" />
+               </font>
+            </Label>
+            <Label layoutX="289.0" layoutY="138.0" styleClass="g" text="Alexander Chatzigeorgiou" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="17.0" />
+               </font>
+            </Label>
+            <Label layoutX="318.0" layoutY="161.0" styleClass="g" text="External Consultant&#10;(Professor)" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="15.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="78.0" fitWidth="112.0" layoutX="311.0" layoutY="364.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/members/uomlogo.png" />
+               </image>
+            </ImageView>
+            <Hyperlink layoutX="267.0" layoutY="268.0" text="https://github.com/setokk/CovIDetect">
+               <font>
+                  <Font name="Corbel Light" size="14.0" />
+               </font>
+            </Hyperlink>
+            <Label layoutX="305.0" layoutY="250.0" styleClass="g" text="GitHub Repository Link:" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="334.0" layoutY="295.0" styleClass="g" text="GPL-3.0 License" textFill="WHITE">
+               <font>
+                  <Font name="Corbel Light" size="13.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

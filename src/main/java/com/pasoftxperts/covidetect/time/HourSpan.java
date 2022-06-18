@@ -30,13 +30,21 @@ public class HourSpan implements Serializable
         this.course = course;
     }
 
-    public int getStartHour() { return startHour; }
+    public int getStartHour() {
+        return startHour;
+    }
 
-    public int getEndHour() { return endHour; }
+    public int getEndHour() {
+        return endHour;
+    }
 
-    public Course getCourse() { return course; }
+    public Course getCourse() {
+        return course;
+    }
 
-    public void setCourse(Course course) { this.course = course; }
+    public void setCourse(Course course) {
+        this.course = course;
+    }
 
     public static boolean hourOutOfBounds(int hour)
     {

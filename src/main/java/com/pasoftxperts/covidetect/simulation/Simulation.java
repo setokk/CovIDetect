@@ -194,7 +194,7 @@ public class Simulation
                             !TimeStamp.convertDayToText(year, months.get(i), day).equals("Sunday"))
                     {
                         // We get the index for the Semester Curriculum table
-                        index = TimeStamp.getDayValueOfWeek(year, months.get(i), day);
+                        index = TimeStamp.getDayOfWeekIndex(year, months.get(i), day);
 
                         if (semester.equals("Fall"))
                         {

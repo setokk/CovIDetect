@@ -1,3 +1,45 @@
+/*
+ | Author: setokk
+ | LinkedIn: https://www.linkedin.com/in/kostandin-kote-255382223/
+ |
+ |
+ | Class Description:
+ | This class represents a date at which a lecture took place
+ | It also holds a graph of the Seats at the specific date
+ |
+ |
+ | Design:
+ | This class hold information about:
+ | - The Year of the date (int year)
+ | - The Month of the date (Month month)
+ | - The Day of the date (Day day)
+ | - The status of the seats in a room using a graph of Seat objects (DefaultUndirectedGraph<Seat, Integer> seatGraph)
+ |
+ |
+ | Method Documentation:
+ |     [*] public String getDateToString()
+ |         Returns this TimeStamp's date to string in format "EEEE, MMMM d, yyyy" (ex. Monday, March 23, 2022)
+ |
+ |     [*] public static String convertDayToText(int year, Month month, int dayNumber)
+ |         Takes a year, month and day number as input
+ |         Returns the name of the day
+ |
+ |     [*] public static int getDayOfWeekIndex(int year, Month month, int dayNumber)
+ |         Takes a year, month and day number as input
+ |         Returns the index of the day of week (ex. Monday -> 0, Friday -> 4)
+ |         If the day is Saturday or Sunday, returns -1
+ |
+ |     [*] public boolean isBefore(TimeStamp other)
+ |         Returns true if this TimeStamp is before another TimeStamp
+ |         Otherwise, returns false
+ |
+ |     [*] public boolean isAfter(TimeStamp other)
+ |         Returns true if this TimeStamp is after another TimeStamp
+ |         Otherwise, returns false
+ |
+ |
+*/
+
 package com.pasoftxperts.covidetect.time;
 
 import com.pasoftxperts.covidetect.university.Seat;
@@ -17,12 +59,13 @@ public class TimeStamp implements Serializable
 {
     public static final String DATE_FORMAT = "EEEE, MMMM d, yyyy";
 
-    private int year;
-    private Month month;
-    private Day day;
+    private final int year;
+    private final Month month;
+    private final Day day;
     private DefaultUndirectedGraph<Seat, Integer> seatGraph;
 
 
+    // Default constructor
     public TimeStamp(int year, Month month, Day day)
     {
         this.year = year;
@@ -68,7 +111,7 @@ public class TimeStamp implements Serializable
 
         this.month = Month.of(monthNames.indexOf(dateSubstrings.get(0)) + 1);
         this.day = new Day(Integer.parseInt(dateSubstrings.get(1)));
-        this.year = Integer.parseInt(date.substring(startIndex, date.length()));
+        this.year = Integer.parseInt(date.substring(startIndex));
     }
 
 
@@ -80,14 +123,8 @@ public class TimeStamp implements Serializable
         Date date = calendar.getTime();
 
         Format f = new SimpleDateFormat(DATE_FORMAT, Locale.US);
-        String dateToString = f.format(date);
 
-        return dateToString;
-    }
-
-
-    public String getDayName() {
-        return convertDayToText(year, month, day.getDayNumber());
+        return f.format(date);
     }
 
 
@@ -103,36 +140,46 @@ public class TimeStamp implements Serializable
     }
 
 
-    public static int getDayValueOfWeek(int year, Month month, int dayNumber)
+    public static int getDayOfWeekIndex(int year, Month month, int dayNumber)
     {
-        switch (convertDayToText(year, month, dayNumber))
-        {
-            case "Monday":
-                return 0;
-            case "Tuesday":
-                return 1;
-            case "Wednesday":
-                return 2;
-            case "Thursday":
-                return 3;
-            case "Friday":
-                return 4;
-            default:
-                return -1;
-        }
+        return switch (convertDayToText(year, month, dayNumber)) {
+            case "Monday" -> 0;
+            case "Tuesday" -> 1;
+            case "Wednesday" -> 2;
+            case "Thursday" -> 3;
+            case "Friday" -> 4;
+            default -> -1;
+        };
     }
 
-    public String getMonthName() { return month.getDisplayName(TextStyle.FULL, Locale.US); }
 
-    public int getYear() { return year; }
+    public int getYear() {
+        return year;
+    }
 
-    public Month getMonth() { return month; }
+    public Month getMonth() {
+        return month;
+    }
 
-    public Day getDay() { return day; }
+    public Day getDay() {
+        return day;
+    }
 
-    public DefaultUndirectedGraph<Seat, Integer> getSeatGraph() { return seatGraph; }
+    public String getMonthName() {
+        return month.getDisplayName(TextStyle.FULL, Locale.US);
+    }
 
-    public void addSeatGraph(DefaultUndirectedGraph<Seat, Integer> graph) { this.seatGraph = graph; }
+    public String getDayName() {
+        return convertDayToText(year, month, day.getDayNumber());
+    }
+
+    public DefaultUndirectedGraph<Seat, Integer> getSeatGraph() {
+        return seatGraph;
+    }
+
+    public void addSeatGraph(DefaultUndirectedGraph<Seat, Integer> graph) {
+        this.seatGraph = graph;
+    }
 
 
     @Override
@@ -148,7 +195,7 @@ public class TimeStamp implements Serializable
         return false;
     }
 
-
+    // Returns if this TimeStamp is before another TimeStamp object
     public boolean isBefore(TimeStamp other)
     {
         return ((this.getYear() < other.getYear())
@@ -161,7 +208,7 @@ public class TimeStamp implements Serializable
                 && (this.getDay().getDayNumber() < other.getDay().getDayNumber())));
     }
 
-
+    // Returns if this TimeStamp is after another TimeStamp object
     public boolean isAfter(TimeStamp other)
     {
         return ((this.getYear() > other.getYear())

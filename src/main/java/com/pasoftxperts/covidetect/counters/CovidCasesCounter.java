@@ -4,7 +4,7 @@
  |
  |
  | Class Description:
- | This class counts the covid cases of a room
+ | This class counts the covid cases of a room at a specific date (TimeStamp)
  |
  |
 */
@@ -17,6 +17,8 @@ import org.jgrapht.graph.DefaultUndirectedGraph;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.pasoftxperts.covidetect.graphanalysis.GraphNeighboursGenerator.isCovidCase;
+
 public class CovidCasesCounter
 {
     public static int countCovidCases(DefaultUndirectedGraph<Seat, Integer> seatGraph)
@@ -25,7 +27,7 @@ public class CovidCasesCounter
 
         int result = (int) seatList.stream()
                                    .filter(e -> e.isOccupied())
-                                   .filter(e -> e.getStudent().getHealthIndicator() == 1)
+                                   .filter(e -> isCovidCase(e.getStudent()))
                                    .count();
 
         seatList.clear();

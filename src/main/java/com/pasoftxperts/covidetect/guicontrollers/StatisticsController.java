@@ -40,6 +40,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
@@ -70,6 +71,9 @@ public class StatisticsController implements Initializable
 
     @FXML
     private Label logoutLabel;
+
+    @FXML
+    private ImageView memberInfoIcon;
 
     @FXML
     private Label usernameLabel;
@@ -110,11 +114,14 @@ public class StatisticsController implements Initializable
     @FXML
     private Label statMethodLabel;
 
-    private XYChart.Series<String, Number> series;
+    // Member info stage
+    private Stage memberInfoStage = null;
+
 
     //
     // Data Fields
     //
+    private XYChart.Series<String, Number> series;
 
     // Selected room name from room combo box list
     private String selectedRoom = null;
@@ -714,5 +721,31 @@ public class StatisticsController implements Initializable
         previousWindow.hide();
 
         stage.show();
+    }
+
+    @FXML
+    protected void openMemberInfoWindow() throws IOException
+    {
+        // Can't open window more than once
+        if (memberInfoStage != null)
+            return;
+
+        memberInfoStage = new Stage();
+
+        Parent parent = CacheFXMLLoader.load("membersInfoWindow.fxml");
+        Scene scene = new Scene(parent);
+
+        memberInfoStage.setScene(scene);
+        memberInfoStage.setAlwaysOnTop(true);
+        memberInfoStage.getIcons().add(new Image(getClass().getResourceAsStream("/com/pasoftxperts/covidetect/icons/covidDetectWindowIcon.png")));
+        memberInfoStage.setResizable(false);
+        memberInfoStage.setTitle("Project Members Info");
+        memberInfoStage.setOnCloseRequest(windowEvent ->
+        {
+            memberInfoStage.hide();
+            memberInfoStage = null;
+        });
+
+        memberInfoStage.show();
     }
 }

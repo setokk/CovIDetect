@@ -1,4 +1,3 @@
-
 # CovIDetect
 
 CovIDetect is a dashboard application for universities that aims to facilitate the process of managing covid cases and provide statistical insight on attandance rates as well as covid cases.
@@ -63,6 +62,12 @@ They can also select the data category (Attendance Rates, Covid Case Stats) as w
 # Setup
 This version of the software is available only for Windows platforms that have Java installed. Linux versions will be released in the future.
 
+## Requirements
+This project requires:
+* Java SE Development Kit 18 which can be found here: https://www.oracle.com/java/technologies/javase/jdk18-archive-downloads.html
+
+* JavaFX which can be found here: https://openjfx.io/
+
 #### No additional files are needed to run the app. 
 #### However, an academic email is required to log in (@uom.edu.gr, @uom.gr in this case).
 #### In case there are problems with the academic email showing up as non existing (problem with the free email verification api (https://mailboxlayer.com/) or the user does not have an academic email, they can use this email: ics21056@uom.edu.gr
@@ -84,4 +89,4 @@ The JVM, while considering some objects eligible for garbage collection, doesn't
 No "OutOfMemoryError" occured using the extra max heap size argument
 
 ## Importing project on IDE
-This project is an IntelliJ IDEA JavaFX project."OutOfMemoryError" occured using the extra max heap size argument
+This project is an IntelliJ IDEA JavaFX project.

@@ -1,3 +1,4 @@
+
 # CovIDetect
 
 CovIDetect is a dashboard application for universities that aims to facilitate the process of managing covid cases and provide statistical insight on attandance rates as well as covid cases.
@@ -73,7 +74,7 @@ This project requires:
 #### In case there are problems with the academic email showing up as non existing (problem with the free email verification api (https://mailboxlayer.com/) or the user does not have an academic email, they can use this email: ics21056@uom.edu.gr
 
 ## Running the app
-In the executable file folder, there is a CovIDetect.jar file which is all what's needed.
+In the jarfile folder, there is a CovIDetect.jar file which is all what's needed.
 
 * Note that the folders and files of the app during execution are created at the same path that the .jar file is, so it is advised that the .jar be put in a folder.
 

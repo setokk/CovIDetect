@@ -65,7 +65,7 @@ This version of the software is available only for Windows platforms that have J
 
 ## Requirements
 This project requires:
-* Java SE Development Kit 18 which can be found here: https://www.oracle.com/java/technologies/javase/jdk18-archive-downloads.html
+* Java SE Development Kit 17.0.1 and above which can be found here: https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html
 
 * JavaFX which can be found here: https://openjfx.io/
 

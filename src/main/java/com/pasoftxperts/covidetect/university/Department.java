@@ -1,3 +1,15 @@
+/*
+ | Author: setokk
+ | LinkedIn: https://www.linkedin.com/in/kostandin-kote-255382223/
+ |
+ |
+ | Class Description:
+ | This class represents a department.
+ | Each department has a department id, a department name, a list of rooms and a number of total courses.
+ |
+ |
+*/
+
 package com.pasoftxperts.covidetect.university;
 
 import java.util.ArrayList;

@@ -1,3 +1,15 @@
+/*
+ | Author: setokk
+ | LinkedIn: https://www.linkedin.com/in/kostandin-kote-255382223/
+ |
+ |
+ | Class Description:
+ | This class represents an admin (user).
+ | Each user has an email and a password.
+ |
+ |
+*/
+
 package com.pasoftxperts.covidetect.userhandler;
 
 import java.io.Serializable;

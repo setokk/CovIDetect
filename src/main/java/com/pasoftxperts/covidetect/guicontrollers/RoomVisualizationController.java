@@ -4,7 +4,7 @@
  |
  |
  | Class Description:
- | This class is the controller of the room visualization window
+ | This class is the GUI controller of the room visualization scene.
  |
  |
 */

@@ -1,3 +1,15 @@
+/*
+ | Author: setokk
+ | LinkedIn: https://www.linkedin.com/in/kostandin-kote-255382223/
+ |
+ |
+ | Class Description:
+ | This class represents a room. Each room has a room id, a capacity, the total seat rows of the room
+ | and a list of TimeStamps (dates at which lectures have occurred).
+ |
+ |
+*/
+
 package com.pasoftxperts.covidetect.university;
 
 import com.pasoftxperts.covidetect.time.TimeStamp;

@@ -1,3 +1,19 @@
+/*
+ | Author: setokk
+ | LinkedIn: https://www.linkedin.com/in/kostandin-kote-255382223/
+ |
+ |
+ | Class Description:
+ | This class represents the hours at which a lecture of a course took place in a day.
+ | Each HourSpan has a start hour, an end hour and a course that takes places at that time.
+ |
+ |
+ | Design:
+ | - A lecture's starting hour and ending hour should be between [8:00, 22:00] -> [START_HOUR_BOUND, END_HOUR_BOUND].
+ | - A lecture's duration cannot be more than 3 hours.
+ |
+*/
+
 package com.pasoftxperts.covidetect.time;
 
 import com.pasoftxperts.covidetect.course.Course;

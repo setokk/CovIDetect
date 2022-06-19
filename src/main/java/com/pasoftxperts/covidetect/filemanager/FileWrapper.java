@@ -4,7 +4,7 @@
  |
  |
  | Class Description:
- | This class is used to save room files and professor names to .ser files
+ | This class is used to save room files and professor names from the simulation class to .ser files
  |
  |
 */
@@ -23,7 +23,7 @@ public class FileWrapper
     public static final String PATH = System.getProperty("user.dir");
 
     //
-    // Gets input from the simulation and saves it into files
+    // Takes a university name, department name and a room list. Saves each room to a .ser file.
     //
     public static void saveFilesByRoom(String universityName, String departmentName, List<Room> roomList)
     {
@@ -52,6 +52,10 @@ public class FileWrapper
         }
     }
 
+
+    //
+    // Takes a university name, department name and a professor names list. Saves professor names list to a .ser file.
+    //
     public static void saveProfessorNames(String universityName, String departmentName, ArrayList<String> professorNames)
     {
         ArrayList<String> names = SerializationUtils.clone(professorNames);

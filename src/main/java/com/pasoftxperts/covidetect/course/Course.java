@@ -4,7 +4,7 @@
  |
  |
  | Class Description:
- | This class represents a Course. Each course has one professor.
+ | This class represents a Course. Each course has one professor, a course ID, a course name and a semester number (1 - 8).
  |
  |
 */

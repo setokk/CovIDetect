@@ -1,3 +1,15 @@
+/*
+ | Author: setokk
+ | LinkedIn: https://www.linkedin.com/in/kostandin-kote-255382223/
+ |
+ |
+ | Class Description:
+ | This class represents a student. A student has a studentId and a health indicator
+ | (0 is healthy, 1 is a covid case, 2 is a possible case). No other values allowed.
+ |
+ |
+*/
+
 package com.pasoftxperts.covidetect.student;
 
 import java.io.Serializable;

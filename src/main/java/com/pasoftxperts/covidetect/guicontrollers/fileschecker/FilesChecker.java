@@ -1,3 +1,22 @@
+/*
+ | Author: setokk
+ | LinkedIn: https://www.linkedin.com/in/kostandin-kote-255382223/
+ |
+ |
+ | Class Description:
+ | This class is used to check for files.
+ |
+ |
+ | Method Documentation:
+ |     [*] public static boolean checkSimulationFiles()
+ |         Returns true if the number of files are more than one in the path of the simulation (in this case /university of macedonia/applied informatics/)
+ |         Returns false otherwise.
+ |         In cases which the user might add one file by themselves, the system still handles the null pointer exceptions by using Optionals
+ |         (see "public Optional<Object> getResult()" in ObjectReader and TaskObjectReader classes)
+ |
+ |
+*/
+
 package com.pasoftxperts.covidetect.guicontrollers.fileschecker;
 
 import com.pasoftxperts.covidetect.guicontrollers.MainApplicationController;

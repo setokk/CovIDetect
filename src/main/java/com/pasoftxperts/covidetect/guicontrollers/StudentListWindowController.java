@@ -4,7 +4,7 @@
  |
  |
  | Class Description:
- | This class is the gui controller of the student list window (the bottom right button of room visualization scene)
+ | This class is the gui controller of the student list window (the bottom right button of room visualization scene).
  |
  |
 */

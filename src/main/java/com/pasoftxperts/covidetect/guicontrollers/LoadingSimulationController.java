@@ -4,7 +4,7 @@
  |
  |
  | Class Description:
- |
+ | This class is the GUI controller of the loading simulation video scene.
  |
  |
 */

@@ -1,3 +1,35 @@
+/*
+ | Author: setokk
+ | LinkedIn: https://www.linkedin.com/in/kostandin-kote-255382223/
+ |
+ |
+ | Class Description:
+ | This class is used to update a covid case of a student.
+ |
+ |
+ | Design:
+ | - The system looks 2 days back (DAYS_TO_LOOK_BACK) from a specific date in every room to update the student's health indicator
+ |
+ |
+ | Method Documentation:
+ |     [*] public static boolean updateStudentCovidCase(String studentId,
+ |                                               String targetDate,
+ |                                               List<Room> rooms,
+ |                                               List<Room> modifiedRooms)
+ |         Takes a student id, a target date, a list of rooms and an empty list of modified rooms as input.
+ |         Updates the status of a student and returns true or false whether they were found or not
+ |         The modifiedRooms are needed to optimize the updating and writing of the files process as we only need
+ |         to update the rooms at which the student was found at.
+ |
+ |     [*] public static int dayDistanceBetween(TimeStamp targetTimeStamp, TimeStamp currentTimeStamp)
+ |         Takes a target time stamp (date) and a current time stamp (date) as input.
+ |         Calculates the backwards day distance between currentTimeStamp and targetTimeStamp
+ |         Returns -1 (arbitrary) if the days before are more than a month's length.
+ |         (we only care about 1 or 0 month/year difference between the dates)
+ |
+ |
+*/
+
 package com.pasoftxperts.covidetect.covidcaseupdater;
 
 import com.pasoftxperts.covidetect.graphanalysis.SingleCaseNeighbourCalculator;
@@ -66,6 +98,7 @@ public class CovidCaseUpdater
 
                                 timeStamps.get(j).addSeatGraph(graph);
 
+                                // Check if room is already in modified rooms list (used to only save the rooms that were modified)
                                 if (!modifiedRooms.contains(room))
                                     modifiedRooms.add(room);
                             }
@@ -75,6 +108,7 @@ public class CovidCaseUpdater
                     seats.clear();
                 }
 
+                // If we are after the target date, break
                 if (timeStamps.get(j).isAfter(targetTimeStamp))
                     break;
             }

@@ -1,3 +1,15 @@
+/*
+ | Author: setokk
+ | LinkedIn: https://www.linkedin.com/in/kostandin-kote-255382223/
+ |
+ |
+ | Class Description:
+ | This class represents a day. It has a dayNumber in a month (can't be more than 31)
+ | and an HourSpan (the hours at which a lecture of a course occurred)
+ |
+ |
+*/
+
 package com.pasoftxperts.covidetect.time;
 
 import java.io.Serializable;

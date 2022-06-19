@@ -1,3 +1,15 @@
+/*
+ | Author: setokk
+ | LinkedIn: https://www.linkedin.com/in/kostandin-kote-255382223/
+ |
+ |
+ | Class Description:
+ | This class represents a university.
+ | Each university has a university id, a university name and a list of departments.
+ |
+ |
+*/
+
 package com.pasoftxperts.covidetect.university;
 
 import java.util.ArrayList;

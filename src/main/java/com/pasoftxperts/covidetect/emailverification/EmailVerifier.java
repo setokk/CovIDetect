@@ -38,10 +38,10 @@ public class EmailVerifier
 
     public static boolean isValid(String email) throws IOException
     {
-        boolean result  = false;
+        boolean result = false;
 
         // Run API Email Verifier Script (Python JSON)
-        OutputStream os = ExecuteExeFile.copyToTempDir("emailvalidator.exe");
+        ExecuteExeFile.copyToTempDir("emailvalidator.exe");
         File script = new File("emailvalidator.exe");
 
         Process process;
@@ -78,22 +78,18 @@ public class EmailVerifier
             if (!scriptDel || !outputDel)
                 throw new Exception("Cannot delete files.");
 
-            // Deallocate memory
-            bufferedReader = null;
-            temp = null;
-            System.gc();
-
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) { return false; }
 
         return result;
     }
 
+
     public static String checkAcademicEmail(String email)
     {
         return ACADEMIC_EMAIL_LIST.stream()
-                                   .filter(e -> email.contains(e))
-                                   .findFirst()
-                                   .orElse("Not Academic");
+                                  .filter(email::contains)
+                                  .findFirst()
+                                  .orElse("Not Academic");
     }
 }
 

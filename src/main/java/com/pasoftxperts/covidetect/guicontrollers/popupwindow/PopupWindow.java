@@ -19,7 +19,7 @@ public class PopupWindow
         Stage popupWindow = new Stage();
 
         popupWindow.initModality(Modality.APPLICATION_MODAL);
-        popupWindow.setTitle("Error");
+        popupWindow.setTitle("Prompt Message");
         popupWindow.centerOnScreen();
         popupWindow.setResizable(false);
         popupWindow.getIcons().add(new Image(RunApplication.class.getResourceAsStream("/com/pasoftxperts/covidetect/icons/covidDetectWindowIcon.png")));
@@ -34,6 +34,5 @@ public class PopupWindow
         Scene scene = new Scene(pane, 500, 80);
         popupWindow.setScene(scene);
         popupWindow.showAndWait();
-
     }
 }

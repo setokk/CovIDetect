@@ -58,7 +58,7 @@
  |     [*] public static DefaultUndirectedGraph<Seat, Integer> calculateNeighboursGraph(ArrayList<ArrayList<Seat>> seats,
  |                                                                               int rows,
  |                                                                               int cols)
- |         Takes a 2D ArrayList of Seats and the rows/cols of the list. Returns an undirected graph with all the seats adn the appropriate edges.
+ |         Takes a 2D ArrayList of Seats and the rows/cols of the list. Returns an undirected graph with all the seats and the appropriate edges.
  |         (see explanation above)
  |
  |     [*] public static boolean isCovidCase(Student student)
@@ -185,11 +185,14 @@ public class GraphNeighboursGenerator
         return graph;
     }
 
+
     // Checks if the seat has a student with a covid case
     public static boolean isCovidCase(Student student) { return student.getHealthIndicator() == 1; }
 
+
     // Calculates the number of a seat given two indexes and the number of columns of the array
     public static int numberOfSeat(int i, int j, int cols) { return i * cols + j + 1; }
+
 
     // Saves covid cases into a list for later
     public static void saveCovidCases(ArrayList<Seat> covidCases,
@@ -213,6 +216,7 @@ public class GraphNeighboursGenerator
             }
         }
     }
+
 
     // Looks either up or down and in each case, to the right too (based on a mathematical formula).
     public static void lookRight(String direction,
@@ -263,6 +267,7 @@ public class GraphNeighboursGenerator
         }
     }
 
+
     // Looks either up or down and in each case, to the left too (based on a mathematical formula).
     public static void lookLeft(String direction,
                                 ArrayList<ArrayList<Seat>> seats,
@@ -312,6 +317,8 @@ public class GraphNeighboursGenerator
         }
     }
 
+
+    // Populates the graph with seats
     public static void populateGraph(DefaultUndirectedGraph<Seat, Integer> graph,
                                      ArrayList<ArrayList<Seat>> seats,
                                      int rows,
@@ -328,7 +335,7 @@ public class GraphNeighboursGenerator
         }
     }
 
-    // Adds Edges from sourceSeat to all three other seats
+    // Adds edges from sourceSeat to all three other seats
     public static void addAllEdges(Seat sourceSeat,
                                    Seat seatOne,
                                    Seat seatTwo,
@@ -340,7 +347,8 @@ public class GraphNeighboursGenerator
         graph.addEdge(sourceSeat, seatThree, 1);
     }
 
-    /* IMPORTANT - isOccupied method returns if the student is not NULL (Handles NullPointerException).*/
+
+    /* IMPORTANT - isOccupied method returns whether the student is NULL or not (Handles NullPointerException). */
 
     // Gets a possible case and checks if there even is a student sitting.
     // Updates the student's health indicator to 2 (possible case)

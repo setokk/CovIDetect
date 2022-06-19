@@ -9,8 +9,7 @@
  |
  |
  | Design:
- |
- | Spring and fall curriculums are separated to two ArrayLists (springSemesterCurriculum), (fallSemesterCurriculum)
+ | Spring and Fall curriculums are separated to two ArrayLists (springSemesterCurriculum), (fallSemesterCurriculum)
  | We also create two other parallel ArrayLists (fallSemesterRoomIdList), (springSemesterRoomIdList) that indicate
  | which HourSpans belong to which rooms (visual representation example below):
  |
@@ -24,17 +23,17 @@
  |
  | -> fallSemesterRoomIdList AND springSemesterRoomIdList <--
  | [0]            [1]             [2]               [3]              [4]              [5]              [6]
- | [ROOM1]   -   [ROOM3]    -     [ROOM2]     -     [ROOM5]     -    [ ]              [ ]              [ ]
+ | [MONDAY]  -   [TUESDAY]    -   [WEDNESDAY]   -   [THURSDAY]   -   [FRIDAY]    -    [SATURDAY]   -   [SUNDAY]
+ | [ROOM1]       [ROOM3]          [ROOM2]           [ROOM5]          [ ]              [ ]              [ ]
  | [ROOM2]                        [ROOM4]
  |                                [ROOM1]
  |
  |
  | Method Documentation:
- |
  |     [*] public static ArrayList<String> initializeCurriculum(ArrayList<ArrayList<HourSpan>> fallSemesterCurriculum,
-                                                                          ArrayList<ArrayList<HourSpan>> springSemesterCurriculum,
-                                                                          ArrayList<String> fallSemesterRoomIdList,
-                                                                          ArrayList<String> springSemesterRoomIdList)
+ |                                                                        ArrayList<ArrayList<HourSpan>> springSemesterCurriculum,
+ |                                                                        ArrayList<String> fallSemesterRoomIdList,
+ |                                                                        ArrayList<String> springSemesterRoomIdList)
  |         Initializes the curriculum and returns the professor names.
  |         (Populates [springSemesterCurriculum], [fallSemesterCurriculum], [fallSemesterRoomIdList], [springSemesterRoomIdList] lists)
  |
@@ -379,6 +378,7 @@ public class Curriculum
         courseList.add(new Course("AIC21075", "Calculation Theory", 8));
         courseList.add(new Course("AIC21076", "Cloud Computing", 8));
 
+
         // Create Names
         professorNameList.add("James");
         professorNameList.add("Bob");
@@ -441,6 +441,7 @@ public class Curriculum
         for (int i = 0; i < courseList.size(); i++)
             courseList.get(i).addProfessor(professorList.get(i));
     }
+
 
     //
     // Find and returns a course by ID. If not found, returns a Course with ID = "Not Found".

@@ -4,7 +4,7 @@
  |
  |
  | Class Description:
- |
+ | This class is the GUI controller for the Update Covid Status scene.
  |
  |
 */

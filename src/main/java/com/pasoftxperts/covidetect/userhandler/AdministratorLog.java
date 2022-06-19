@@ -1,3 +1,37 @@
+/*
+ | Author: setokk
+ | LinkedIn: https://www.linkedin.com/in/kostandin-kote-255382223/
+ |
+ |
+ | Class Description:
+ | This class is used for managing users and user files.
+ |
+ |
+ | Design:
+ | All it holds is a list of admins.
+ |
+ |
+ | Method Documentation:
+ |     [*] public static void addAdmin(Administrator admin)
+ |         It adds an admin to the list and writes them to an adminLog.ser file which holds all the administrators' info.
+ |
+ |     [*] public static void removeAdmin(Administrator)
+ |         It removes an admin after reading the adminLog.ser file first.
+ |
+ |     [*] public static void updateAdminLog()
+ |         Writes the admin list file to the adminLog.ser file and updates it.
+ |
+ |     [*] public static void readAdminLog()
+ |         Reads the adminLog.ser file and passes it to the list.
+ |
+ |     [*] public static Administrator emailIsNotRegistered(String email)
+ |         Checks if the email is not registered.
+ |         If registered, returns the Administrator object with that email.
+ |         Otherwise, returns a new Administrator object with an email of "Not Registered"
+ |
+ |
+*/
+
 package com.pasoftxperts.covidetect.userhandler;
 
 import java.io.*;

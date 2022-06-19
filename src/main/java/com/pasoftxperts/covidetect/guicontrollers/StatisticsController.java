@@ -4,7 +4,7 @@
  |
  |
  | Class Description:
- |
+ | This class is the GUI controller for the Statistical Analysis scene.
  |
  |
 */
@@ -167,9 +167,6 @@ public class StatisticsController implements Initializable
 
     // We use a list with a capacity of 1 so that changes made to it can be returned.
     private ArrayList<Double> statisticalMethod = new ArrayList<>(1);
-
-    // Min, Max, Average
-    private ArrayList<Double> minMaxAverage = new ArrayList<>(3);
 
 
     //
@@ -548,12 +545,13 @@ public class StatisticsController implements Initializable
         lineChart.setTitle(selectedDataCategory);
         series = new XYChart.Series<String, Number>();
 
-
-        minMaxAverage = new ArrayList<>(3);
-
-        showByElements = new ArrayList<>();
-
+        // Initialize statistical data
         ArrayList<Double> yAxisData;
+        showByElements = new ArrayList<>();
+        double min;
+        double max;
+        double average;
+
         StatisticalAnalysis statisticalAnalysis = new StatisticalAnalysis();
 
         // If we want to show Attendance Rates, we want to multiply the rates by 100
@@ -570,7 +568,6 @@ public class StatisticsController implements Initializable
         {
             yAxisData = statisticalAnalysis.calculateAttendanceRates(startDateString,
                     endDateString,
-                    minMaxAverage,
                     selectedShowByOption,
                     showByElements,
                     rooms);
@@ -583,7 +580,6 @@ public class StatisticsController implements Initializable
         {
             yAxisData = statisticalAnalysis.calculateCovidCases(startDateString,
                     endDateString,
-                    minMaxAverage,
                     selectedShowByOption,
                     showByElements,
                     rooms);
@@ -592,6 +588,11 @@ public class StatisticsController implements Initializable
             percentSymbol = "";
             seriesName = "Number of Covid Cases";
         }
+
+        // Find min, max and average
+        min = statisticalAnalysis.calculateMin(yAxisData);
+        max = statisticalAnalysis.calculateMax(yAxisData);
+        average = statisticalAnalysis.calculateAverage(yAxisData);
 
         for (int i = 0; i < yAxisData.size(); i++)
             series.getData().add(new XYChart.Data<String, Number>(showByElements.get(i), yAxisData.get(i) * percentageFactor));
@@ -604,44 +605,44 @@ public class StatisticsController implements Initializable
         decimalFormat.setGroupingUsed(false);
         decimalFormat.setDecimalSeparatorAlwaysShown(false);
 
+
         //
         // In case ANY of the min, max, average and standard deviation fields are 0, we remove the '%' symbol, if any
         //
-
         // Min
-        if (minMaxAverage.get(0) == 0)
-            minField.setText("Min:\n" + decimalFormat.format(minMaxAverage.get(0) * percentageFactor));
+        if (min == 0)
+            minField.setText("Min:\n" + decimalFormat.format(min * percentageFactor));
         else
-            minField.setText("Min:\n" + decimalFormat.format(minMaxAverage.get(0) * percentageFactor) + percentSymbol);
+            minField.setText("Min:\n" + decimalFormat.format(min * percentageFactor) + percentSymbol);
 
         // Max
-        if (minMaxAverage.get(1) == 0)
-            maxField.setText("Max:\n" + decimalFormat.format(minMaxAverage.get(1) * percentageFactor));
+        if (max == 0)
+            maxField.setText("Max:\n" + decimalFormat.format(max * percentageFactor));
         else
-            maxField.setText("Max:\n" + decimalFormat.format(minMaxAverage.get(1) * percentageFactor) + percentSymbol);
+            maxField.setText("Max:\n" + decimalFormat.format(max * percentageFactor) + percentSymbol);
 
         // Average
-        if (minMaxAverage.get(2) == 0)
-            averageField.setText("Average:\n" + decimalFormat.format(minMaxAverage.get(2) * percentageFactor));
+        if (average == 0)
+            averageField.setText("Average:\n" + decimalFormat.format(average * percentageFactor));
         else
-            averageField.setText("Average:\n" + decimalFormat.format(minMaxAverage.get(2) * percentageFactor) + percentSymbol);
+            averageField.setText("Average:\n" + decimalFormat.format(average * percentageFactor) + percentSymbol);
 
 
         //
         // Calculate statistical method
         //
-        double result = 0;
+        double statMethodResult = 0;
 
         if (selectedStatisticalMethod.equals("Standard Deviation"))
-            result = statisticalAnalysis.calculateStandardDeviation(yAxisData, minMaxAverage.get(2), percentageFactor);
+            statMethodResult = statisticalAnalysis.calculateStandardDeviation(yAxisData, average, percentageFactor);
 
         // Update statistical method label
 
         // Standard Deviation
-        if (result == 0)
-            statMethodLabel.setText(selectedStatisticalMethod + ":\n" + decimalFormat.format(result));
+        if (statMethodResult == 0)
+            statMethodLabel.setText(selectedStatisticalMethod + ":\n" + decimalFormat.format(statMethodResult));
         else
-            statMethodLabel.setText(selectedStatisticalMethod + ":\n" + decimalFormat.format(result) + percentSymbol);
+            statMethodLabel.setText(selectedStatisticalMethod + ":\n" + decimalFormat.format(statMethodResult) + percentSymbol);
 
 
 

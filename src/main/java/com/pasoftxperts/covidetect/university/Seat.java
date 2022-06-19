@@ -1,3 +1,15 @@
+/*
+ | Author: setokk
+ | LinkedIn: https://www.linkedin.com/in/kostandin-kote-255382223/
+ |
+ |
+ | Class Description:
+ | This class represents a seat.
+ | Each seat has a seat number (1 - room capacity), a student and whether it's occupied or not.
+ |
+ |
+*/
+
 package com.pasoftxperts.covidetect.university;
 
 import com.pasoftxperts.covidetect.student.Student;

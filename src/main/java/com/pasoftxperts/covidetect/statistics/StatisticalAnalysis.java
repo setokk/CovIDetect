@@ -1,3 +1,51 @@
+/*
+ | Author: setokk
+ | LinkedIn: https://www.linkedin.com/in/kostandin-kote-255382223/
+ |
+ |
+ | Class Description:
+ | This class is used to extract statistical data.
+ | Implements AttendanceStats and CovidCaseStats
+ |
+ |
+ | Method Documentation:
+ |     [*] public ArrayList<Double> calculateAttendanceRates(String startDate,
+ |                                                    String endDate,
+ |                                                    String showByOption,
+ |                                                    ArrayList<String> showByElements,
+ |                                                    ArrayList<Room> roomList)
+ |         Takes a range of dates (start date to end date), a show by option (daily, monthly etc.)
+ |         show by elements list (x axis) and a room list.
+ |         Returns the attendance rates.
+ |
+ |     [*] public ArrayList<Double> calculateCovidCases(String startDate,
+ |                                                    String endDate,
+ |                                                    String showByOption,
+ |                                                    ArrayList<String> showByElements,
+ |                                                    ArrayList<Room> roomList)
+ |         Takes a range of dates (start date to end date), a show by option (daily, monthly etc.)
+ |         show by elements list (x axis) and a room list.
+ |         Returns the covid cases.
+ |
+ |     [*] public double calculateStandardDeviation(ArrayList<Double> yAxis, double average, int percentageFactor)
+ |         Takes a yAxis list, the average of yAxis and a percentage factor (100 if calculating for rates, 1 if calculating for number of covid cases) as input.
+ |         Returns the standard deviation.
+ |
+ |     [*] public double calculateAverage(ArrayList<Double> yAxis)
+ |         Takes a yAxis list as input.
+ |         Returns the average.
+ |
+ |     [*] public double calculateMax(ArrayList<Double> yAxis)
+ |         Takes a yAxis list as input.
+ |         Returns the max.
+ |
+ |     [*] public double calculateMin(ArrayList<Double> yAxis)
+ |         Takes a yAxis list as input.
+ |         Returns the min.
+ |
+ |
+*/
+
 package com.pasoftxperts.covidetect.statistics;
 
 import com.pasoftxperts.covidetect.counters.CovidCasesCounter;
@@ -15,7 +63,6 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
     @Override
     public ArrayList<Double> calculateAttendanceRates(String startDate,
                                                       String endDate,
-                                                      ArrayList<Double> minMaxAverage,
                                                       String showByOption,
                                                       ArrayList<String> showByElements,
                                                       ArrayList<Room> roomList)
@@ -204,32 +251,15 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
 
         }
 
-        // Initialize Min and Max
-        minMaxAverage.add(0,1000000.0);
-        minMaxAverage.add(1, -1.0);
 
-        // Calculate the average, min and max
-        double average = 0;
-
+        // Divide the attendanceRates so far by their show by counter
         for (int i = 0; i < attendanceRates.size(); i++)
         {
             if (showByCounter.get(i) == 0)
                 attendanceRates.set(i, 0.0);
             else
                 attendanceRates.set(i, attendanceRates.get(i) / showByCounter.get(i));
-
-
-            if (attendanceRates.get(i) < minMaxAverage.get(0))
-                minMaxAverage.set(0, attendanceRates.get(i));
-
-            if (attendanceRates.get(i) > minMaxAverage.get(1))
-                minMaxAverage.set(1, attendanceRates.get(i));
-
-            average += attendanceRates.get(i) / attendanceRates.size();
         }
-
-        minMaxAverage.add(2, average);
-
 
         showByCounter.removeAll(showByCounter);
 
@@ -239,7 +269,6 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
     @Override
     public ArrayList<Double> calculateCovidCases(String startDate,
                                                   String endDate,
-                                                  ArrayList<Double> minMaxAverage,
                                                   String showByOption,
                                                   ArrayList<String> showByElements,
                                                   ArrayList<Room> roomList)
@@ -411,26 +440,6 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
 
         }
 
-        // Initialize Min and Max
-        minMaxAverage.add(0,1000000.0);
-        minMaxAverage.add(1, -1.0);
-
-        // Calculate the average, min and max
-        double average = 0;
-
-        for (int i = 0; i < covidCases.size(); i++)
-        {
-            average += covidCases.get(i) / covidCases.size();
-
-            if (covidCases.get(i) < minMaxAverage.get(0))
-                minMaxAverage.set(0, covidCases.get(i));
-
-            if (covidCases.get(i) > minMaxAverage.get(1))
-                minMaxAverage.set(1, covidCases.get(i));
-        }
-
-        minMaxAverage.add(2, average);
-
         return covidCases;
     }
 
@@ -461,5 +470,30 @@ public class StatisticalAnalysis implements AttendanceStats, CovidCaseStats
         result = Math.sqrt(numerator / (n - 1)); // Standard Deviation of sample (n - 1)
 
         return result;
+    }
+
+
+    public double calculateAverage(ArrayList<Double> yAxis)
+    {
+        return yAxis.stream()
+                    .mapToDouble(e -> e)
+                    .average()
+                    .orElse(0);
+    }
+
+    public double calculateMax(ArrayList<Double> yAxis)
+    {
+        return yAxis.stream()
+                    .mapToDouble(e -> e)
+                    .max()
+                    .orElse(0);
+    }
+
+    public double calculateMin(ArrayList<Double> yAxis)
+    {
+        return yAxis.stream()
+                    .mapToDouble(e -> e)
+                    .min()
+                    .orElse(0);
     }
 }

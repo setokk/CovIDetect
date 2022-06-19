@@ -1,3 +1,14 @@
+/*
+ | Author: setokk
+ | LinkedIn: https://www.linkedin.com/in/kostandin-kote-255382223/
+ |
+ |
+ | Class Description:
+ | This singleton class is used to hold and transfer data from one GUI controller to another (Room Visualization to Student ID List)
+ |
+ |
+*/
+
 package com.pasoftxperts.covidetect.guicontrollers.dataholder;
 
 public class DataHolder

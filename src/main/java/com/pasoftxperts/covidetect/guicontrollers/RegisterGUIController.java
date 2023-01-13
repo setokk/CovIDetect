@@ -39,6 +39,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import static com.pasoftxperts.covidetect.utils.StringUtils.removeAllWhiteSpaces;
+
 public class RegisterGUIController implements Initializable
 {
     @FXML
@@ -106,34 +108,36 @@ public class RegisterGUIController implements Initializable
     @FXML
     protected void registerAdmin(ActionEvent event) throws Exception
     {
+        String email = removeAllWhiteSpaces(emailField.getText());
+
         // First we check if the user has not input an email
-        if (emailField.getText().trim().equals(""))
+        if (removeAllWhiteSpaces(email).isEmpty())
         {
             PopupWindow.display("Please provide an email.");
             return;
         }
 
-        // Check if the email has an academic email domain
-        if (EmailVerifier.checkAcademicEmail(emailField.getText().trim()).equals("Not Academic"))
+        // Check if the email is not an academic domain
+        if (!EmailVerifier.checkAcademicEmail(email))
         {
             PopupWindow.display("Email is not academic.");
             return;
         }
 
+
         // We use a password field (hidden) and a text field for the password text field (toggled by checkbox).
         // In order to get the appropriate text, we have to check which one is visible.
-
-        String password = passwordField.getText().trim();
-        String repeatPassword = passwordRepeatField.getText().trim();
+        String password = removeAllWhiteSpaces(passwordField.getText());
+        String repeatPassword = removeAllWhiteSpaces(passwordRepeatField.getText());
 
         if (!passwordField.isVisible())
         {
-            password = visiblePasswordField.getText().trim();
-            repeatPassword = visibleRepeatPasswordField.getText().trim();
+            password = removeAllWhiteSpaces(visiblePasswordField.getText());
+            repeatPassword = removeAllWhiteSpaces(visibleRepeatPasswordField.getText());
         }
 
         // Check if the password fields are empty.
-        if (password.equals("") || repeatPassword.equals(""))
+        if (password.isEmpty() || repeatPassword.isEmpty())
         {
             PopupWindow.display("Please provide a password.");
             return;
@@ -171,9 +175,9 @@ public class RegisterGUIController implements Initializable
         // emailIsNotRegistered returns an admin with an email of "Not Registered"
         // if it does not find an admin with a particular email
 
-        if (!AdministratorLog.emailIsNotRegistered(emailField.getText().trim())
-                .getEmail()
-                .equals("Not Registered"))
+        if (!AdministratorLog.emailIsNotRegistered(email)
+                             .getEmail()
+                             .equals("Not Registered"))
         {
             PopupWindow.display("Email is already registered.");
             return;

@@ -11,11 +11,11 @@
  |           -> Runs an email validator script (uses an email verification API).
  |            == Returns whether the email is valid or not.
  |
- |        [*] String checkAcademicEmail(String email)
+ |        [*] boolean checkAcademicEmail(String email)
  |            -> Takes an email as input.
  |            -> Checks whether email contains one of the academic email domains.
- |            == Returns a string with that academic domain name.
- |               If it is not an academic email, returns "Not Academic".
+ |            == Returns true if it's an academic domain name.
+ |               If not, returns false.
  |
 */
 
@@ -84,12 +84,13 @@ public class EmailVerifier
     }
 
 
-    public static String checkAcademicEmail(String email)
+    public static boolean checkAcademicEmail(String email)
     {
-        return ACADEMIC_EMAIL_LIST.stream()
-                                  .filter(email::contains)
-                                  .findFirst()
-                                  .orElse("Not Academic");
+        String result = ACADEMIC_EMAIL_LIST.stream()
+                                           .filter(email::contains)
+                                           .findFirst()
+                                           .orElse("Not Academic");
+        return !result.equals("Not Academic");
     }
 }
 

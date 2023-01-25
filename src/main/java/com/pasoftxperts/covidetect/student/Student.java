@@ -14,9 +14,9 @@ package com.pasoftxperts.covidetect.student;
 
 import java.io.Serializable;
 
-public class Student implements Serializable
+public class Student implements Serializable, ICovidStudent
 {
-    private String studentId;
+    private final String studentId;
     private int healthIndicator; // 0 == healthy. 1 == covid case. 2 == possible covid case.
 
 
@@ -35,8 +35,6 @@ public class Student implements Serializable
 
     public int getHealthIndicator() { return healthIndicator; }
 
-    public void setStudentId(String studentId) { this.studentId = studentId; }
-
     public void setHealthIndicator(int healthIndicator)
     {
         // Value between [0,2]
@@ -49,11 +47,16 @@ public class Student implements Serializable
     @Override
     public boolean equals(Object o)
     {
-        if (!(o instanceof Student))
+        if (!(o instanceof Student otherStudent))
             return false;
 
-        Student otherStudent = (Student) o;
-
         return (this.studentId.equals(otherStudent.getStudentId()));
+    }
+
+    // Checks if the seat has a student with a covid case
+    @Override
+    public boolean isCovidCase()
+    {
+        return (healthIndicator == 1);
     }
 }

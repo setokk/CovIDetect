@@ -111,7 +111,7 @@ public class RegisterGUIController implements Initializable
         String email = removeAllWhiteSpaces(emailField.getText());
 
         // First we check if the user has not input an email
-        if (removeAllWhiteSpaces(email).isEmpty())
+        if (email.isEmpty())
         {
             PopupWindow.display("Please provide an email.");
             return;

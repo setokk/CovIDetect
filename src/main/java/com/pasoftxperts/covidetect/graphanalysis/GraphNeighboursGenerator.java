@@ -27,10 +27,11 @@
  | []   []   []   []   []   []   [C]  [P]
  | []   []   []   []   []   []   [P]  []
  |
- | and returns an undirected graph with all the seats and their edges.
+ | and return an undirected graph with all the seats and their edges.
  |
  | In this version of the system, we only create edges with the covid cases and those surrounding them (possible cases).
- | We do that by first saving the covid cases to another arraylist. We then loop through the covid cases list and each time set the current case's health indicator to 1
+ | We do that by first saving the covid cases to another arraylist.
+ | We then loop through the covid cases list and each time set the current case's health indicator to 1
  | so that if a previous covid case was next to the current one (made it a possible case), we set the current one as a covid case again.
  |
  | After that, through a mathematical formula (lookLeft, lookRight methods), we appropriately set the possible cases.
@@ -88,7 +89,6 @@
 
 package com.pasoftxperts.covidetect.graphanalysis;
 
-import com.pasoftxperts.covidetect.student.Student;
 import com.pasoftxperts.covidetect.university.Seat;
 
 import org.jgrapht.graph.DefaultUndirectedGraph;
@@ -185,11 +185,6 @@ public class GraphNeighboursGenerator
         return graph;
     }
 
-
-    // Checks if the seat has a student with a covid case
-    public static boolean isCovidCase(Student student) { return student.getHealthIndicator() == 1; }
-
-
     // Calculates the number of a seat given two indexes and the number of columns of the array
     public static int numberOfSeat(int i, int j, int cols) { return i * cols + j + 1; }
 
@@ -209,7 +204,7 @@ public class GraphNeighboursGenerator
                 // We add the number of seat (1, 2, 3 ,4, 5 ,6 ,7, ..., 20 in this case)
                 seat = seats.get(i).get(j);
 
-                if (seat.isOccupied() && isCovidCase(seat.getStudent()))
+                if (seat.isOccupied() && seat.getStudent().isCovidCase())
                 {
                     covidCases.add(seat);
                 }

@@ -4,7 +4,7 @@
  |
  |
  | Class Description:
- | This class contains the same login of GraphNeighboursGenerator, but for a single case only.
+ | This class contains the same logic of GraphNeighboursGenerator, but for a single case only.
  | (In later versions, since the Seats of the undirected graphs will all be connected to
  | their surrounding ones, we won't need this class)
  |
@@ -38,7 +38,7 @@ public class SingleCaseNeighbourCalculator
         {
             graph.addVertex(seats.get(i));
 
-            if (seats.get(i).isOccupied() && isCovidCase(seats.get(i).getStudent()))
+            if (seats.get(i).isOccupied() && seats.get(i).getStudent().isCovidCase())
                 covidCases.add(seats.get(i));
         }
 

@@ -42,8 +42,6 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.pasoftxperts.covidetect.graphanalysis.GraphNeighboursGenerator.isCovidCase;
-
 public class CovidCaseUpdater
 {
     // Number of days to look back for possible cases after finding a covid case
@@ -86,7 +84,7 @@ public class CovidCaseUpdater
                         {
                             found = true;
 
-                            if (!isCovidCase(seats.get(k).getStudent()))
+                            if (!seats.get(k).getStudent().isCovidCase())
                             {
                                 seats.get(k).getStudent().setHealthIndicator(1);
 

@@ -17,8 +17,6 @@ import org.jgrapht.graph.DefaultUndirectedGraph;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.pasoftxperts.covidetect.graphanalysis.GraphNeighboursGenerator.isCovidCase;
-
 public class CovidCasesCounter
 {
     public static int countCovidCases(DefaultUndirectedGraph<Seat, Integer> seatGraph)
@@ -26,8 +24,8 @@ public class CovidCasesCounter
         List<Seat> seatList = new ArrayList<>(seatGraph.vertexSet());
 
         int result = (int) seatList.stream()
-                                   .filter(e -> e.isOccupied())
-                                   .filter(e -> isCovidCase(e.getStudent()))
+                                   .filter(Seat::isOccupied)
+                                   .filter(e -> e.getStudent().isCovidCase())
                                    .count();
 
         seatList.clear();

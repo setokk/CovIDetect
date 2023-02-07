@@ -1,5 +1,6 @@
 package com.pasoftxperts.covidetect.guicontrollers.scenechanger;
 
+import com.pasoftxperts.covidetect.RunApplication;
 import com.pasoftxperts.covidetect.guicontrollers.cachefxmlloader.CacheFXMLLoader;
 import javafx.event.Event;
 import javafx.scene.Node;
@@ -7,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 public class SceneChanger
 {
@@ -25,7 +27,6 @@ public class SceneChanger
             visualizationParent = CacheFXMLLoader.load(r1); // load 1600x900
         else
             visualizationParent = CacheFXMLLoader.load(r2);
-
 
         window.getScene().setRoot(visualizationParent);
         window.setTitle(title);

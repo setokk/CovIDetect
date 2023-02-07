@@ -21,7 +21,9 @@ import com.pasoftxperts.covidetect.counters.StudentCounter;
 import com.pasoftxperts.covidetect.guicontrollers.cachefxmlloader.CacheFXMLLoader;
 import com.pasoftxperts.covidetect.guicontrollers.dataholder.DataHolder;
 import com.pasoftxperts.covidetect.guicontrollers.fileschecker.FilesChecker;
+import com.pasoftxperts.covidetect.guicontrollers.font.FontInitializer;
 import com.pasoftxperts.covidetect.guicontrollers.popupwindow.PopupWindow;
+import com.pasoftxperts.covidetect.guicontrollers.roomnames.RoomNames;
 import com.pasoftxperts.covidetect.guicontrollers.scenechanger.SceneChanger;
 import com.pasoftxperts.covidetect.loginsession.LoginSession;
 import com.pasoftxperts.covidetect.student.Student;
@@ -44,6 +46,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -51,7 +54,6 @@ import javafx.stage.Stage;
 import org.jgrapht.graph.DefaultUndirectedGraph;
 
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -66,6 +68,9 @@ public class RoomVisualizationController implements Initializable
     public final static int DEFAULT_ROOM_CAPACITY = 81;
 
     public final static int DEFAULT_SEAT_ROWS = 9;
+
+    @FXML
+    private AnchorPane pane;
 
     @FXML
     private GridPane seatsGridPane;
@@ -161,6 +166,8 @@ public class RoomVisualizationController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        FontInitializer.initializeFont(pane);
+
         usernameLabel.setText("Welcome, " + LoginSession.getUsername());
 
         // Set width and height of a seat based on screen resolution
@@ -243,6 +250,7 @@ public class RoomVisualizationController implements Initializable
             // ROOM COMBO LISTENER
             roomComboBox.valueProperty().addListener((observableValue, o, t1) ->
             {
+                // Close student list window if open
                 if (studentListWindow != null)
                 {
                     studentListWindow.hide();
@@ -428,19 +436,7 @@ public class RoomVisualizationController implements Initializable
 
 
             // Read room names
-            ArrayList<String> roomNames = new ArrayList<>();
-
-            // Get list of files in main folder (simulation files)
-            new File(MainApplicationController.PATH).mkdirs();
-            File mainFolder = new File(MainApplicationController.PATH);
-
-            File[] listOfFiles = mainFolder.listFiles();
-
-            for (File file : listOfFiles)
-            {
-                if (file.getName().contains("Room") && file.getName().contains(".ser"))
-                    roomNames.add(file.getName().substring(0, file.getName().lastIndexOf('.'))); // Remove the .ser extension
-            }
+            var roomNames = RoomNames.getAllRoomNamesSorted();
 
             // Initialize room combo box
             roomComboBox.setItems(FXCollections.observableList(roomNames));

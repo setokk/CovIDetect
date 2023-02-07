@@ -21,7 +21,7 @@
 
 package com.pasoftxperts.covidetect.emailverification;
 
-import com.pasoftxperts.covidetect.executablefile.ExecuteExeFile;
+import com.pasoftxperts.covidetect.executablefile.ExecutableFile;
 
 import java.io.*;
 import java.util.Arrays;
@@ -38,19 +38,42 @@ public class EmailVerifier
 
     public static boolean isValid(String email) throws IOException
     {
+        // File name of email validator script
+        String executableName;
+
+        // Check operating system so we know which file to execute
+        var os = System.getProperty("os.name");
+        if (os.equalsIgnoreCase("linux"))
+            executableName = "emailvalidator";
+        else
+            executableName = "emailvalidator.exe";
+
         boolean result = false;
 
         // Run API Email Verifier Script (Python JSON)
-        ExecuteExeFile.copyToTempDir("emailvalidator.exe");
-        File script = new File("emailvalidator.exe");
+        ExecutableFile.copyToTempDir(executableName);
+        File script = new File(executableName);
 
         Process process;
 
         try
         {
-            process = new ProcessBuilder
-                    ("emailvalidator.exe", email, API_KEY)
-                    .start();
+            if (os.equalsIgnoreCase("linux"))
+            {
+                var grantExePermission = new ProcessBuilder("chmod", "777", executableName).start();
+                grantExePermission.waitFor();
+
+                process = new ProcessBuilder
+                        ("./" + executableName, email, API_KEY)
+                        .start();
+            }
+            else
+            {
+                process = new ProcessBuilder
+                        (executableName, email, API_KEY)
+                        .start();
+            }
+
             process.waitFor();
         }
         catch (IOException|InterruptedException e)

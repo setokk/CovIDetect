@@ -13,6 +13,7 @@ package com.pasoftxperts.covidetect.guicontrollers;
 
 import com.pasoftxperts.covidetect.RunApplication;
 import com.pasoftxperts.covidetect.emailverification.EmailVerifier;
+import com.pasoftxperts.covidetect.guicontrollers.font.FontInitializer;
 import com.pasoftxperts.covidetect.passwordchecker.PasswordChecker;
 import com.pasoftxperts.covidetect.guicontrollers.popupwindow.PopupWindow;
 import com.pasoftxperts.covidetect.userhandler.Administrator;
@@ -82,6 +83,8 @@ public class RegisterGUIController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        FontInitializer.initializeFont(pane);
+
         infoLabel.visibleProperty().bind(infoIcon.hoverProperty());
         visiblePasswordField.setVisible(false);
         visibleRepeatPasswordField.setVisible(false);

@@ -16,7 +16,9 @@ import com.pasoftxperts.covidetect.filemanager.FileWrapper;
 import com.pasoftxperts.covidetect.filemanager.TaskObjectReader;
 import com.pasoftxperts.covidetect.guicontrollers.cachefxmlloader.CacheFXMLLoader;
 import com.pasoftxperts.covidetect.guicontrollers.fileschecker.FilesChecker;
+import com.pasoftxperts.covidetect.guicontrollers.font.FontInitializer;
 import com.pasoftxperts.covidetect.guicontrollers.popupwindow.PopupWindow;
+import com.pasoftxperts.covidetect.guicontrollers.roomnames.RoomNames;
 import com.pasoftxperts.covidetect.guicontrollers.scenechanger.SceneChanger;
 import com.pasoftxperts.covidetect.loginsession.LoginSession;
 import com.pasoftxperts.covidetect.university.Room;
@@ -37,6 +39,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -48,6 +51,8 @@ import java.util.*;
 
 public class UpdateCovidStatusController implements Initializable
 {
+    @FXML
+    private AnchorPane pane;
 
     @FXML
     private Button statisticsButton;
@@ -116,6 +121,8 @@ public class UpdateCovidStatusController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        FontInitializer.initializeFont(pane);
+
         usernameLabel.setText("Welcome, " + LoginSession.getUsername());
 
         // Using platform.runLater() to initialize all the fields once the initialize phase has finished (faster scene transitions)
@@ -156,19 +163,7 @@ public class UpdateCovidStatusController implements Initializable
 
 
             // Read room names
-            ArrayList<String> roomNames = new ArrayList<>();
-
-            // Get list of files in main folder (simulation files)
-            new File(MainApplicationController.PATH).mkdirs();
-            File mainFolder = new File(MainApplicationController.PATH);
-
-            File[] listOfFiles = mainFolder.listFiles();
-
-            for (File file : listOfFiles)
-            {
-                if (file.getName().contains("Room") && file.getName().contains(".ser"))
-                    roomNames.add(file.getName().substring(0, file.getName().lastIndexOf('.'))); // Remove the .ser extension
-            }
+            var roomNames = RoomNames.getAllRoomNamesSorted();
 
             // Create and start Threads using JavaFX service threads
             for (String name : roomNames)

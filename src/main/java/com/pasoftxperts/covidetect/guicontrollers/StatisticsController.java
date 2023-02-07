@@ -15,6 +15,7 @@ import com.pasoftxperts.covidetect.filemanager.ObjectReader;
 import com.pasoftxperts.covidetect.filemanager.TaskObjectReader;
 import com.pasoftxperts.covidetect.guicontrollers.cachefxmlloader.CacheFXMLLoader;
 import com.pasoftxperts.covidetect.guicontrollers.fileschecker.FilesChecker;
+import com.pasoftxperts.covidetect.guicontrollers.font.FontInitializer;
 import com.pasoftxperts.covidetect.guicontrollers.popupwindow.PopupWindow;
 import com.pasoftxperts.covidetect.guicontrollers.scenechanger.SceneChanger;
 import com.pasoftxperts.covidetect.history.HistoryManager;
@@ -42,6 +43,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -57,6 +59,9 @@ public class StatisticsController implements Initializable
     //
     // GUI fields
     //
+    @FXML
+    private AnchorPane pane;
+
     @FXML
     private Button statisticsButton;
 
@@ -188,6 +193,8 @@ public class StatisticsController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        FontInitializer.initializeFont(pane);
+
         usernameLabel.setText("Welcome, " + LoginSession.getUsername());
 
         /*

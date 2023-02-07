@@ -12,6 +12,7 @@
 package com.pasoftxperts.covidetect.guicontrollers;
 
 import com.pasoftxperts.covidetect.RunApplication;
+import com.pasoftxperts.covidetect.guicontrollers.font.FontInitializer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
@@ -27,12 +28,16 @@ import java.util.ResourceBundle;
 public class LoadingSimulationController implements Initializable
 {
     @FXML
-    private AnchorPane centerPane;
+    private AnchorPane pane;
 
+    @FXML
+    private AnchorPane centerPane;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        FontInitializer.initializeFont(pane);
+
         // Pie Chart Video
         Media media;
 

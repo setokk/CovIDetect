@@ -13,6 +13,7 @@ package com.pasoftxperts.covidetect.guicontrollers;
 
 import com.pasoftxperts.covidetect.filemanager.RecursiveDeleter;
 import com.pasoftxperts.covidetect.guicontrollers.cachefxmlloader.CacheFXMLLoader;
+import com.pasoftxperts.covidetect.guicontrollers.font.FontInitializer;
 import com.pasoftxperts.covidetect.guicontrollers.scenechanger.SceneChanger;
 import com.pasoftxperts.covidetect.history.HistoryManager;
 import com.pasoftxperts.covidetect.loginsession.LoginSession;
@@ -47,6 +48,9 @@ import java.util.stream.Collectors;
 
 public class MainApplicationController implements Initializable
 {
+    @FXML
+    private AnchorPane pane;
+
     @FXML
     private BorderPane mainBorderPane;
 
@@ -98,6 +102,8 @@ public class MainApplicationController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        FontInitializer.initializeFont(pane);
+
         usernameLabel.setText("Welcome, " + LoginSession.getUsername());
 
         // Using platform.runLater() to initialize all the fields once the initialize phase has finished (faster scene transitions)

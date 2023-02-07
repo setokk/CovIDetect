@@ -13,10 +13,12 @@ package com.pasoftxperts.covidetect.guicontrollers;
 
 import com.pasoftxperts.covidetect.graphanalysis.GraphNeighboursGenerator;
 import com.pasoftxperts.covidetect.guicontrollers.dataholder.DataHolder;
+import com.pasoftxperts.covidetect.guicontrollers.font.FontInitializer;
 import com.pasoftxperts.covidetect.university.Seat;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -29,6 +31,9 @@ import java.util.ResourceBundle;
 public class StudentListWindowController implements Initializable
 {
     @FXML
+    private AnchorPane pane;
+
+    @FXML
     private VBox studentVbox;
 
     @FXML
@@ -38,6 +43,8 @@ public class StudentListWindowController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        FontInitializer.initializeFont(pane);
+
         // Get the instance of DataLoader singleton class
         DataHolder dataHolder = DataHolder.getInstance();
         ArrayList<Object> dataList = (ArrayList<Object>) dataHolder.getObjectData(); // In this case, we know we have an ArrayList of objects

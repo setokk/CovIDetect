@@ -63,8 +63,7 @@ public class FileWrapper
         for (int i = 0; i < names.size(); i++)
             names.set(i, "Professor " + names.get(i));
 
-        String finalPath = PATH + "/" + universityName + "/" + departmentName + "/" + "professors";
-
+        String finalPath = PATH + "/" + universityName.toLowerCase() + "/" + departmentName.toLowerCase() + "/" + "professors";
         new File(finalPath).mkdirs();
 
         try

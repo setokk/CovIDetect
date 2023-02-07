@@ -20,7 +20,6 @@ import java.io.IOException;
 public class CacheFXMLLoader
 {
     public static final FXMLLoader loader = new FXMLLoader();
-    private static int c = 0; // Counts how many times it has been initialized
 
     public static Parent load(String resourceName) throws IOException
     {

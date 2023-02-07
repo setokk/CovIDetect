@@ -85,7 +85,7 @@ java -jar -Xmx220M CovIDetect.jar
 
 Running in Linux:
 ```java
-java -jar -Xmx220M -Djdk.gtk.version=2
+java -jar -Xmx220M -Djdk.gtk.version=2 CovIDetect-Linux.jar
 ```
 will execute the app and is all that is needed. 
 

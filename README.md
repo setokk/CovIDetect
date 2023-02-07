@@ -78,9 +78,14 @@ In the jarfile folder, there is a CovIDetect.jar file which is all what's needed
 
 * Note that the folders and files of the app during execution are created at the same path that the .jar file is, so it is advised that the .jar be put in a folder.
 
-Running:
+Running in Windows:
 ```java
 java -jar -Xmx220M CovIDetect.jar
+```
+
+Running in Linux:
+```java
+java -jar -Xmx220M -Djdk.gtk.version=2
 ```
 will execute the app and is all that is needed. 
 

@@ -27,8 +27,6 @@ public class PopupWindow
         AnchorPane pane = new AnchorPane();
 
         Label errorLabel = new Label(message);
-
-        // Check operating system and add appropriate font (Corbel unavailable for Linux)
         errorLabel.setFont(Font.font("Corbel Light", FontWeight.NORMAL, 18));
 
         pane.getChildren().add(errorLabel);

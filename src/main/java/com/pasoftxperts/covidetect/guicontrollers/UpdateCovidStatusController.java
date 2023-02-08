@@ -11,17 +11,17 @@
 
 package com.pasoftxperts.covidetect.guicontrollers;
 
-import com.pasoftxperts.covidetect.covidcaseupdater.CovidCaseUpdater;
-import com.pasoftxperts.covidetect.filemanager.FileWrapper;
-import com.pasoftxperts.covidetect.filemanager.TaskObjectReader;
+import com.pasoftxperts.covidetect.client.covidcaseupdater.CovidCaseUpdater;
+import com.pasoftxperts.covidetect.client.filemanager.FileWrapper;
+import com.pasoftxperts.covidetect.client.filemanager.TaskObjectReader;
 import com.pasoftxperts.covidetect.guicontrollers.cachefxmlloader.CacheFXMLLoader;
-import com.pasoftxperts.covidetect.guicontrollers.fileschecker.FilesChecker;
-import com.pasoftxperts.covidetect.guicontrollers.font.FontInitializer;
+import com.pasoftxperts.covidetect.guicontrollers.helpers.fileschecker.FilesChecker;
+import com.pasoftxperts.covidetect.guicontrollers.helpers.font.FontInitializer;
 import com.pasoftxperts.covidetect.guicontrollers.popupwindow.PopupWindow;
-import com.pasoftxperts.covidetect.guicontrollers.roomnames.RoomNames;
-import com.pasoftxperts.covidetect.guicontrollers.scenechanger.SceneChanger;
-import com.pasoftxperts.covidetect.loginsession.LoginSession;
-import com.pasoftxperts.covidetect.university.Room;
+import com.pasoftxperts.covidetect.guicontrollers.helpers.roomnames.RoomNames;
+import com.pasoftxperts.covidetect.guicontrollers.helpers.scenechanger.SceneChanger;
+import com.pasoftxperts.covidetect.userhandler.loginsession.LoginSession;
+import com.pasoftxperts.covidetect.client.university.Room;
 import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;

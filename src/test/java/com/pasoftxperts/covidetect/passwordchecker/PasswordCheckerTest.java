@@ -1,5 +1,6 @@
 package com.pasoftxperts.covidetect.passwordchecker;
 
+import com.pasoftxperts.covidetect.client.passwordchecker.PasswordChecker;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

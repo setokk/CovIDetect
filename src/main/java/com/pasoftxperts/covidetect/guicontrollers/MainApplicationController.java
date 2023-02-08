@@ -11,12 +11,12 @@
 
 package com.pasoftxperts.covidetect.guicontrollers;
 
-import com.pasoftxperts.covidetect.filemanager.RecursiveDeleter;
+import com.pasoftxperts.covidetect.client.filemanager.RecursiveDeleter;
 import com.pasoftxperts.covidetect.guicontrollers.cachefxmlloader.CacheFXMLLoader;
-import com.pasoftxperts.covidetect.guicontrollers.font.FontInitializer;
-import com.pasoftxperts.covidetect.guicontrollers.scenechanger.SceneChanger;
-import com.pasoftxperts.covidetect.history.HistoryManager;
-import com.pasoftxperts.covidetect.loginsession.LoginSession;
+import com.pasoftxperts.covidetect.guicontrollers.helpers.font.FontInitializer;
+import com.pasoftxperts.covidetect.guicontrollers.helpers.scenechanger.SceneChanger;
+import com.pasoftxperts.covidetect.client.history.HistoryManager;
+import com.pasoftxperts.covidetect.userhandler.loginsession.LoginSession;
 import com.pasoftxperts.covidetect.simulation.Simulation;
 import javafx.application.Platform;
 import javafx.concurrent.Service;

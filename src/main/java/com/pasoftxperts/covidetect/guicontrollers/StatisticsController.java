@@ -11,18 +11,18 @@
 
 package com.pasoftxperts.covidetect.guicontrollers;
 
-import com.pasoftxperts.covidetect.filemanager.ObjectReader;
-import com.pasoftxperts.covidetect.filemanager.TaskObjectReader;
+import com.pasoftxperts.covidetect.client.filemanager.ObjectReader;
+import com.pasoftxperts.covidetect.client.filemanager.TaskObjectReader;
 import com.pasoftxperts.covidetect.guicontrollers.cachefxmlloader.CacheFXMLLoader;
-import com.pasoftxperts.covidetect.guicontrollers.fileschecker.FilesChecker;
-import com.pasoftxperts.covidetect.guicontrollers.font.FontInitializer;
+import com.pasoftxperts.covidetect.guicontrollers.helpers.fileschecker.FilesChecker;
+import com.pasoftxperts.covidetect.guicontrollers.helpers.font.FontInitializer;
 import com.pasoftxperts.covidetect.guicontrollers.popupwindow.PopupWindow;
-import com.pasoftxperts.covidetect.guicontrollers.scenechanger.SceneChanger;
-import com.pasoftxperts.covidetect.history.HistoryManager;
-import com.pasoftxperts.covidetect.history.StatisticsValues;
-import com.pasoftxperts.covidetect.loginsession.LoginSession;
-import com.pasoftxperts.covidetect.statistics.StatisticalAnalysis;
-import com.pasoftxperts.covidetect.university.Room;
+import com.pasoftxperts.covidetect.guicontrollers.helpers.scenechanger.SceneChanger;
+import com.pasoftxperts.covidetect.client.history.HistoryManager;
+import com.pasoftxperts.covidetect.client.history.StatisticsValues;
+import com.pasoftxperts.covidetect.userhandler.loginsession.LoginSession;
+import com.pasoftxperts.covidetect.client.statistics.StatisticalAnalysis;
+import com.pasoftxperts.covidetect.client.university.Room;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;

@@ -12,25 +12,25 @@
 package com.pasoftxperts.covidetect.guicontrollers;
 
 import com.pasoftxperts.covidetect.RunApplication;
-import com.pasoftxperts.covidetect.course.Course;
-import com.pasoftxperts.covidetect.filemanager.ObjectReader;
-import com.pasoftxperts.covidetect.counters.CovidCasesCounter;
-import com.pasoftxperts.covidetect.counters.FreeSeatsCounter;
-import com.pasoftxperts.covidetect.counters.PossibleCasesCounter;
-import com.pasoftxperts.covidetect.counters.StudentCounter;
+import com.pasoftxperts.covidetect.client.course.Course;
+import com.pasoftxperts.covidetect.client.filemanager.ObjectReader;
+import com.pasoftxperts.covidetect.client.counters.CovidCasesCounter;
+import com.pasoftxperts.covidetect.client.counters.FreeSeatsCounter;
+import com.pasoftxperts.covidetect.client.counters.PossibleCasesCounter;
+import com.pasoftxperts.covidetect.client.counters.StudentCounter;
 import com.pasoftxperts.covidetect.guicontrollers.cachefxmlloader.CacheFXMLLoader;
-import com.pasoftxperts.covidetect.guicontrollers.dataholder.DataHolder;
-import com.pasoftxperts.covidetect.guicontrollers.fileschecker.FilesChecker;
-import com.pasoftxperts.covidetect.guicontrollers.font.FontInitializer;
+import com.pasoftxperts.covidetect.guicontrollers.helpers.dataholder.DataHolder;
+import com.pasoftxperts.covidetect.guicontrollers.helpers.fileschecker.FilesChecker;
+import com.pasoftxperts.covidetect.guicontrollers.helpers.font.FontInitializer;
 import com.pasoftxperts.covidetect.guicontrollers.popupwindow.PopupWindow;
-import com.pasoftxperts.covidetect.guicontrollers.roomnames.RoomNames;
-import com.pasoftxperts.covidetect.guicontrollers.scenechanger.SceneChanger;
-import com.pasoftxperts.covidetect.loginsession.LoginSession;
-import com.pasoftxperts.covidetect.student.Student;
-import com.pasoftxperts.covidetect.time.HourSpan;
-import com.pasoftxperts.covidetect.time.TimeStamp;
-import com.pasoftxperts.covidetect.university.Room;
-import com.pasoftxperts.covidetect.university.Seat;
+import com.pasoftxperts.covidetect.guicontrollers.helpers.roomnames.RoomNames;
+import com.pasoftxperts.covidetect.guicontrollers.helpers.scenechanger.SceneChanger;
+import com.pasoftxperts.covidetect.userhandler.loginsession.LoginSession;
+import com.pasoftxperts.covidetect.client.student.Student;
+import com.pasoftxperts.covidetect.client.time.HourSpan;
+import com.pasoftxperts.covidetect.client.time.TimeStamp;
+import com.pasoftxperts.covidetect.client.university.Room;
+import com.pasoftxperts.covidetect.client.university.Seat;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -61,7 +61,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.List;
 
-import static com.pasoftxperts.covidetect.graphanalysis.GraphNeighboursGenerator.numberOfSeat;
+import static com.pasoftxperts.covidetect.client.graphanalysis.GraphNeighboursGenerator.numberOfSeat;
 
 public class RoomVisualizationController implements Initializable
 {

@@ -1,7 +1,8 @@
 package com.pasoftxperts.covidetect.covidcaseupdater;
 
-import com.pasoftxperts.covidetect.time.Day;
-import com.pasoftxperts.covidetect.time.TimeStamp;
+import com.pasoftxperts.covidetect.client.covidcaseupdater.CovidCaseUpdater;
+import com.pasoftxperts.covidetect.client.time.Day;
+import com.pasoftxperts.covidetect.client.time.TimeStamp;
 import org.junit.jupiter.api.Test;
 
 import java.time.Month;

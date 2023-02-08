@@ -11,10 +11,10 @@
 
 package com.pasoftxperts.covidetect.guicontrollers;
 
-import com.pasoftxperts.covidetect.graphanalysis.GraphNeighboursGenerator;
-import com.pasoftxperts.covidetect.guicontrollers.dataholder.DataHolder;
-import com.pasoftxperts.covidetect.guicontrollers.font.FontInitializer;
-import com.pasoftxperts.covidetect.university.Seat;
+import com.pasoftxperts.covidetect.client.graphanalysis.GraphNeighboursGenerator;
+import com.pasoftxperts.covidetect.guicontrollers.helpers.dataholder.DataHolder;
+import com.pasoftxperts.covidetect.guicontrollers.helpers.font.FontInitializer;
+import com.pasoftxperts.covidetect.client.university.Seat;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;

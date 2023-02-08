@@ -12,9 +12,9 @@
 package com.pasoftxperts.covidetect.guicontrollers;
 
 import com.pasoftxperts.covidetect.RunApplication;
-import com.pasoftxperts.covidetect.emailverification.EmailVerifier;
-import com.pasoftxperts.covidetect.guicontrollers.font.FontInitializer;
-import com.pasoftxperts.covidetect.passwordchecker.PasswordChecker;
+import com.pasoftxperts.covidetect.client.emailverification.EmailVerifier;
+import com.pasoftxperts.covidetect.guicontrollers.helpers.font.FontInitializer;
+import com.pasoftxperts.covidetect.client.passwordchecker.PasswordChecker;
 import com.pasoftxperts.covidetect.guicontrollers.popupwindow.PopupWindow;
 import com.pasoftxperts.covidetect.userhandler.Administrator;
 import com.pasoftxperts.covidetect.userhandler.AdministratorLog;
@@ -40,7 +40,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static com.pasoftxperts.covidetect.utils.StringUtils.removeAllWhiteSpaces;
+import static com.pasoftxperts.covidetect.client.utils.StringUtils.removeAllWhiteSpaces;
 
 public class RegisterGUIController implements Initializable
 {

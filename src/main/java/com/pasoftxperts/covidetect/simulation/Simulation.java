@@ -41,16 +41,16 @@
 
 package com.pasoftxperts.covidetect.simulation;
 
-import com.pasoftxperts.covidetect.filemanager.FileWrapper;
-import com.pasoftxperts.covidetect.graphanalysis.GraphNeighboursGenerator;
-import com.pasoftxperts.covidetect.student.Student;
-import com.pasoftxperts.covidetect.time.Day;
-import com.pasoftxperts.covidetect.time.HourSpan;
-import com.pasoftxperts.covidetect.time.TimeStamp;
-import com.pasoftxperts.covidetect.university.Department;
-import com.pasoftxperts.covidetect.university.Room;
-import com.pasoftxperts.covidetect.university.Seat;
-import com.pasoftxperts.covidetect.university.University;
+import com.pasoftxperts.covidetect.client.filemanager.FileWrapper;
+import com.pasoftxperts.covidetect.client.graphanalysis.GraphNeighboursGenerator;
+import com.pasoftxperts.covidetect.client.student.Student;
+import com.pasoftxperts.covidetect.client.time.Day;
+import com.pasoftxperts.covidetect.client.time.HourSpan;
+import com.pasoftxperts.covidetect.client.time.TimeStamp;
+import com.pasoftxperts.covidetect.client.university.Department;
+import com.pasoftxperts.covidetect.client.university.Room;
+import com.pasoftxperts.covidetect.client.university.Seat;
+import com.pasoftxperts.covidetect.client.university.University;
 import org.apache.commons.lang3.SerializationUtils;
 import org.jgrapht.graph.DefaultUndirectedGraph;
 

@@ -12,7 +12,7 @@
 package com.pasoftxperts.covidetect.guicontrollers;
 
 import com.pasoftxperts.covidetect.RunApplication;
-import com.pasoftxperts.covidetect.guicontrollers.font.FontInitializer;
+import com.pasoftxperts.covidetect.guicontrollers.helpers.font.FontInitializer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;

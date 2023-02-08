@@ -47,9 +47,9 @@
 
 package com.pasoftxperts.covidetect.simulation;
 
-import com.pasoftxperts.covidetect.course.Course;
-import com.pasoftxperts.covidetect.professor.Professor;
-import com.pasoftxperts.covidetect.time.HourSpan;
+import com.pasoftxperts.covidetect.client.course.Course;
+import com.pasoftxperts.covidetect.client.professor.Professor;
+import com.pasoftxperts.covidetect.client.time.HourSpan;
 
 import java.util.ArrayList;
 

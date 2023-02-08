@@ -13,9 +13,9 @@ package com.pasoftxperts.covidetect.guicontrollers;
 
 import com.pasoftxperts.covidetect.RunApplication;
 import com.pasoftxperts.covidetect.guicontrollers.cachefxmlloader.CacheFXMLLoader;
-import com.pasoftxperts.covidetect.guicontrollers.font.FontInitializer;
+import com.pasoftxperts.covidetect.guicontrollers.helpers.font.FontInitializer;
 import com.pasoftxperts.covidetect.guicontrollers.popupwindow.PopupWindow;
-import com.pasoftxperts.covidetect.loginsession.LoginSession;
+import com.pasoftxperts.covidetect.userhandler.loginsession.LoginSession;
 import com.pasoftxperts.covidetect.userhandler.Administrator;
 import com.pasoftxperts.covidetect.userhandler.AdministratorLog;
 import javafx.application.Platform;

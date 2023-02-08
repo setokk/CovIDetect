@@ -80,16 +80,16 @@ In the jarfile folder, there is a CovIDetect.jar file which is all what's needed
 
 Running in Windows:
 ```java
-java -jar -Xmx220M CovIDetect.jar
+java -jar -Xmx280M CovIDetect.jar
 ```
 
 Running in Linux:
 ```java
-java -jar -Xmx220M -Djdk.gtk.version=2 CovIDetect-Linux.jar
+java -jar -Xmx280M -Djdk.gtk.version=2 CovIDetect-Linux.jar
 ```
 will execute the app and is all that is needed. 
 
-The extra argument ```-Xmx220M``` is needed due to the memory increasing over every Service that is executed.
+The extra argument ```-Xmx280M``` is needed due to the memory increasing over every Service that is executed.
 
 The JVM, while considering some objects eligible for garbage collection, doesn't give back the memory to the OS as it does not deem it necessary (probably because they are Services and it thinks that they might be used again). 
 No "OutOfMemoryError" occured using the extra max heap size argument

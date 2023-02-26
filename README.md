@@ -61,7 +61,7 @@ The user can select a specific range of dates (From, To) for which they wish to 
 They can also select the data category (Attendance Rates, Covid Case Stats) as well as an additional statistical method (in this version, only standard deviation is available).
 
 # Setup
-This version of the software is available only for Windows platforms that have Java installed. Linux versions will be released in the future.
+This version of the software is available for all platforms that have Java installed.
 
 ## Requirements
 This project requires:
